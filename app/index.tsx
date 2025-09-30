@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import onboard1 from "@/assets/images/onboarding/onboarding-1.png";
+import whiteShape from "@/assets/images/onboarding/white-shape.png";
 
 export default function index() {
   return (
@@ -24,25 +25,37 @@ export default function index() {
 
       {/* Min Info */}
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>Discover Local Savings</Text>
-        <Text style={styles.description}>
-          Unlock exclusive discounts and perks at your favorite local
-          businesses. Save more while supporting your community—all in one app.
-        </Text>
+        <ImageBackground
+          source={whiteShape}
+          style={styles.whiteShape}
+          resizeMode="cover"
+        >
+          <Text style={styles.title}>Discover Local Savings</Text>
+          <Text style={styles.description}>
+            Unlock exclusive discounts and perks at your favorite local
+            businesses. Save more while supporting your community—all in one
+            app.
+          </Text>
 
-        {/* Slider points */}
-        <View style={styles.sliderPointContainer}>
-          <Pressable style={[styles.sliderPoint, styles.sliderPointActive]} />
-          <Pressable style={styles.sliderPoint} />
-          <Pressable style={styles.sliderPoint} />
-        </View>
+          {/* Slider points */}
+          <View style={styles.sliderPointContainer}>
+            <Pressable style={[styles.sliderPoint, styles.sliderPointActive]} />
+            <Pressable style={styles.sliderPoint} />
+            <Pressable style={styles.sliderPoint} />
+          </View>
 
-        {/* Next Button */}
-        <TouchableOpacity  activeOpacity={0.7}>
-          <LinearGradient colors={['#1CD77A', '#0BF3E7']} start={{x: 0, y: 1}} end={{x: 0, y: 0}} style={styles.nextButton}>
-            <Text style={styles.nextButtonText}>Next</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+          {/* Next Button */}
+          <TouchableOpacity activeOpacity={0.7}>
+            <LinearGradient
+              colors={["#1CD77A", "#0BF3E7"]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+              style={styles.nextButton}
+            >
+              <Text style={styles.nextButtonText}>Next</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -55,18 +68,29 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     width: "100%",
-    height: 648,
+    height: 632,
   },
   image: {
     width: "100%",
-    height: 648,
+    height: 628,
   },
   infoContainer: {
     flex: 1,
-    backgroundColor: "white",
-    marginTop: 10,
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: 0,
+    left: 0
+  },
+  whiteShape: {
+    width: 'auto',
+    height: 410,
+    overflow: "hidden",
+    flex: 1,
+    justifyContent: "center",
+    resizeMode: "cover",
     paddingLeft: 16,
     paddingRight: 16,
+    paddingTop: 24
   },
   title: {
     fontSize: 26,
@@ -84,7 +108,7 @@ const styles = StyleSheet.create({
     gap: 6,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 16,
+    marginTop: 18,
   },
   sliderPoint: {
     width: 12,
@@ -101,11 +125,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 20,
   },
   nextButtonText: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: 'center'
+    textAlign: "center",
   },
 });
