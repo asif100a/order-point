@@ -1,20 +1,49 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
-import { ColorSchemeTypes, ThemeTypes } from "@/types";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
+import { ColorSchemeTypes, ThemeTypes, WidgetTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 import LOGO from "@/assets/images/chooseRole/logo.png";
 import user1 from "@/assets/images/chooseRole/user1.png";
 import user2 from "@/assets/images/chooseRole/user2.png";
+import Button from "@/components/ui/Button";
+import { router } from "expo-router";
+
+const widgets: WidgetTypes[] = [
+  {
+    id: "1",
+    title: "Member",
+    description: "Select how you want to get started",
+    icon: user1,
+  },
+  {
+    id: "2",
+    title: "Local Business",
+    description: "Select how you want to get started",
+    icon: user2,
+  },
+];
 
 const ChooseRoleScreen = () => {
   const { colorScheme, theme } = useTheme();
+  const [activeWidgetIndex, setActiveWidgetIndex] = useState<number>(1);
 
   const styles = createStyles(theme, colorScheme);
+
+  const handleNext = () => {
+    router.push('/auth_option');
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={LOGO} />
+        <Image source={LOGO} style={styles.logo} />
       </View>
 
       <View style={styles.contentContainer}>
@@ -22,15 +51,48 @@ const ChooseRoleScreen = () => {
         <Text style={styles.description}>
           Select how you want to get started
         </Text>
-      </View>
 
-      {/* Widget */}
-      <View style={styles.widget}>
-        <Image source={user1} style={styles.icon} />
-        <Text style={[styles.text, styles.widgetTitle]}>Member</Text>
-        <Text style={[styles.text, styles.widgetDescription]}>
-          Select how you want to get started
-        </Text>
+        {/* Widget */}
+        <FlatList
+          data={widgets}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false} // To hide the scroll indicator
+          style={{ gap: 6 }}
+          renderItem={({
+            item,
+            index,
+          }: {
+            item: WidgetTypes;
+            index: number;
+          }) => (
+            <TouchableOpacity
+              onPress={() => setActiveWidgetIndex(parseInt(item.id))}
+              activeOpacity={0.7}
+            >
+              <View
+                style={[
+                  styles.widget,
+                  activeWidgetIndex === parseInt(item.id)
+                    ? styles.activeWidget
+                    : null,
+                  index === 0 ? { marginRight: 8 } : { marginLeft: 8 },
+                ]}
+              >
+                <Image source={item.icon} style={styles.icon} />
+                <Text style={[styles.text, styles.widgetTitle]}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.text, styles.widgetDescription]}>
+                  {item.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+
+        {/* Next Button */}
+        <Button title="Next" onPress={handleNext} style={{marginTop: 40}} />
       </View>
     </View>
   );
@@ -51,11 +113,12 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
       paddingTop: 40,
     },
     logo: {
-      width: "auto",
-      height: "auto",
+      width: 344, // Adjusted logo size
+      height: 92, // Adjusted logo size
     },
     contentContainer: {
       flex: 1,
+      marginTop: 40,
     },
     text: {
       color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
@@ -69,15 +132,44 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
       fontWeight: "regular",
       color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
     },
+    widgetContainer: {
+      width: "100%",
+      flex: 1,
+      flexDirection: "row",
+    },
     widget: {
+      width: 160, // Fixed width for each widget
+      height: 152,
       borderColor: "#E6F7EE",
       borderWidth: 1,
       borderStyle: "solid",
+      borderRadius: 12,
       backgroundColor: "#F9FEFE",
       padding: 16,
+      marginTop: 20,
+      alignItems: "center", // Center content horizontally
+      justifyContent: "center", // Center content vertically
     },
-    icon: {},
-    widgetTitle: {},
-    widgetDescription: {},
+    activeWidget: {
+      backgroundColor: "#EEF9F4", // Highlight active widget (change as needed)
+      borderColor: "#57C78F",
+    },
+    icon: {
+      width: 38,
+      height: 38,
+      marginBottom: 10, // Added margin to separate icon from text
+    },
+    widgetTitle: {
+      fontSize: 18,
+      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      marginTop: 12,
+      textAlign: "center", // Center-align the title
+    },
+    widgetDescription: {
+      fontSize: 14,
+      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      marginTop: 8,
+      textAlign: "center", // Center-align the description
+    },
   });
 }

@@ -39,3 +39,10 @@ export interface ThemeContextTypes {
   setColorScheme: React.Dispatch<React.SetStateAction<ColorSchemeTypes>>;
   theme: ThemeTypes;
 }
+
+export interface WidgetTypes {
+  id: string;
+  title: string;
+  description: string;
+  icon: ImageSourcePropType | undefined;
+}

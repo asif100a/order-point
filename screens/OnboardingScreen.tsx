@@ -14,6 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import whiteShape from "@/assets/images/onboarding/white-shape.png";
 import { ColorSchemeTypes, OnboardingTypes, ThemeTypes } from "@/types";
 import { Colors } from "@/constants/theme";
+import Button from "@/components/ui/Button";
 
 interface OnboardingScreenProps {
   data: OnboardingTypes;
@@ -76,16 +77,7 @@ export default function OnboardingScreen({
           </View>
 
           {/* Next Button */}
-          <TouchableOpacity onPress={handleNext} activeOpacity={0.7}>
-            <LinearGradient
-              colors={["#1CD77A", "#0BF3E7"]}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 0, y: 0 }}
-              style={styles.nextButton}
-            >
-              <Text style={styles.nextButtonText}>Next</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          <Button title="Next" onPress={handleNext} />
         </ImageBackground>
       </View>
     </View>
@@ -161,19 +153,6 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
   },
   sliderPointActive: {
     backgroundColor: "#57C78F",
-  },
-  nextButton: {
-    width: "100%",
-    height: 56,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  nextButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+  }
 })
 };
