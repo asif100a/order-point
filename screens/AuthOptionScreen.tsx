@@ -30,13 +30,8 @@ const widgets: WidgetTypes[] = [
 
 const AuthOptionScreen = () => {
   const { colorScheme, theme, primaryColor } = useTheme();
-  const [activeWidgetIndex, setActiveWidgetIndex] = useState<number>(1);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
-
-  const handleNext = () => {
-    router.push("/auth_option");
-  };
 
   return (
     <View style={styles.container}>

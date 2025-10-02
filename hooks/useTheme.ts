@@ -6,8 +6,7 @@ export default function useTheme() {
   const theme = useContext<ThemeContextTypes>(ThemeContext);
 
   if (!theme) {
-    console.error("❌ No theme found!");
-    return;
+    throw new Error("useTheme must be used within a ThemeContext.Provider");
   }
 
   return theme;
