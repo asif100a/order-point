@@ -15,8 +15,6 @@ export interface LightTypes {
   icon: string;
   tabIconDefault: string;
   tabIconSelected: string;
-  primaryBlack: string;
-  secondaryBlack: string;
 }
 export interface DarkTypes {
   text: string;
@@ -26,10 +24,16 @@ export interface DarkTypes {
   tabIconDefault: string;
   tabIconSelected: string;
 }
+export interface PrimaryColorTypes {
+  primaryBlack: string;
+  secondaryBlack: string;
+  greenNormal: string;
+}
 
 export interface ColorsTypes {
-    light: LightTypes;
-    dark: DarkTypes
+  light: LightTypes;
+  dark: DarkTypes;
+  primaryColor: PrimaryColorTypes;
 }
 export type ColorSchemeTypes = "light" | "dark" | undefined | null;
 export type ThemeTypes = LightTypes | DarkTypes;
@@ -38,6 +42,7 @@ export interface ThemeContextTypes {
   colorScheme: ColorSchemeTypes;
   setColorScheme: React.Dispatch<React.SetStateAction<ColorSchemeTypes>>;
   theme: ThemeTypes;
+  primaryColor: PrimaryColorTypes
 }
 
 export interface WidgetTypes {

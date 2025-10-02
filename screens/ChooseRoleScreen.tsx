@@ -1,19 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import React, { useState } from "react";
-import { ColorSchemeTypes, ThemeTypes, WidgetTypes } from "@/types";
-import useTheme from "@/hooks/useTheme";
 import LOGO from "@/assets/images/chooseRole/logo.png";
 import user1 from "@/assets/images/chooseRole/user1.png";
 import user2 from "@/assets/images/chooseRole/user2.png";
 import Button from "@/components/ui/Button";
+import useTheme from "@/hooks/useTheme";
+import {
+  ColorSchemeTypes,
+  PrimaryColorTypes,
+  ThemeTypes,
+  WidgetTypes,
+} from "@/types";
 import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const widgets: WidgetTypes[] = [
   {
@@ -31,13 +36,13 @@ const widgets: WidgetTypes[] = [
 ];
 
 const ChooseRoleScreen = () => {
-  const { colorScheme, theme } = useTheme();
+  const { colorScheme, theme, primaryColor } = useTheme();
   const [activeWidgetIndex, setActiveWidgetIndex] = useState<number>(1);
 
-  const styles = createStyles(theme, colorScheme);
+  const styles = createStyles(theme, colorScheme, primaryColor);
 
   const handleNext = () => {
-    router.push('/auth_option');
+    router.push("/auth_option");
   };
 
   return (
@@ -53,46 +58,48 @@ const ChooseRoleScreen = () => {
         </Text>
 
         {/* Widget */}
-        <FlatList
-          data={widgets}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false} // To hide the scroll indicator
-          style={{ gap: 6 }}
-          renderItem={({
-            item,
-            index,
-          }: {
-            item: WidgetTypes;
-            index: number;
-          }) => (
-            <TouchableOpacity
-              onPress={() => setActiveWidgetIndex(parseInt(item.id))}
-              activeOpacity={0.7}
-            >
-              <View
-                style={[
-                  styles.widget,
-                  activeWidgetIndex === parseInt(item.id)
-                    ? styles.activeWidget
-                    : null,
-                  index === 0 ? { marginRight: 8 } : { marginLeft: 8 },
-                ]}
+        <View style={styles.widgetContainer}>
+          <FlatList
+            data={widgets}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false} // To hide the scroll indicator
+            style={{ gap: 6 }}
+            renderItem={({
+              item,
+              index,
+            }: {
+              item: WidgetTypes;
+              index: number;
+            }) => (
+              <TouchableOpacity
+                onPress={() => setActiveWidgetIndex(parseInt(item.id))}
+                activeOpacity={0.7}
               >
-                <Image source={item.icon} style={styles.icon} />
-                <Text style={[styles.text, styles.widgetTitle]}>
-                  {item.title}
-                </Text>
-                <Text style={[styles.text, styles.widgetDescription]}>
-                  {item.description}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+                <View
+                  style={[
+                    styles.widget,
+                    activeWidgetIndex === parseInt(item.id)
+                      ? styles.activeWidget
+                      : null,
+                    index === 0 ? { marginRight: 8 } : { marginLeft: 8 },
+                  ]}
+                >
+                  <Image source={item.icon} style={styles.icon} />
+                  <Text style={[styles.text, styles.widgetTitle]}>
+                    {item.title}
+                  </Text>
+                  <Text style={[styles.text, styles.widgetDescription]}>
+                    {item.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
 
+        <Button title="Next" onPress={handleNext} style={{ marginTop: 40 }} />
         {/* Next Button */}
-        <Button title="Next" onPress={handleNext} style={{marginTop: 40}} />
       </View>
     </View>
   );
@@ -100,13 +107,18 @@ const ChooseRoleScreen = () => {
 
 export default ChooseRoleScreen;
 
-function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
+function createStyles(
+  theme: ThemeTypes,
+  colorScheme: ColorSchemeTypes,
+  primaryColor: PrimaryColorTypes
+) {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      height: "100%",
       backgroundColor: theme.background,
       paddingLeft: 16,
       paddingRight: 16,
+      paddingTop: 80,
     },
     logoContainer: {
       alignItems: "center",
@@ -117,11 +129,10 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
       height: 92, // Adjusted logo size
     },
     contentContainer: {
-      flex: 1,
       marginTop: 40,
     },
     text: {
-      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
     },
     title: {
       fontSize: 32,
@@ -130,21 +141,20 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
     description: {
       fontSize: 16,
       fontWeight: "regular",
-      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
     },
     widgetContainer: {
       width: "100%",
-      flex: 1,
       flexDirection: "row",
     },
     widget: {
       width: 160, // Fixed width for each widget
       height: 152,
-      borderColor: "#E6F7EE",
+      borderColor: "#dff7eaff",
       borderWidth: 1,
       borderStyle: "solid",
       borderRadius: 12,
-      backgroundColor: "#F9FEFE",
+      backgroundColor: "#eff7f775",
       padding: 16,
       marginTop: 20,
       alignItems: "center", // Center content horizontally
@@ -152,7 +162,7 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
     },
     activeWidget: {
       backgroundColor: "#EEF9F4", // Highlight active widget (change as needed)
-      borderColor: "#57C78F",
+      borderColor: primaryColor.greenNormal,
     },
     icon: {
       width: 38,
@@ -161,13 +171,13 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
     },
     widgetTitle: {
       fontSize: 18,
-      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
       marginTop: 12,
       textAlign: "center", // Center-align the title
     },
     widgetDescription: {
       fontSize: 14,
-      color: colorScheme === "dark" ? theme.text : theme.primaryBlack,
+      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
       marginTop: 8,
       textAlign: "center", // Center-align the description
     },

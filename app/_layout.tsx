@@ -11,14 +11,11 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <ThemeProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="choose_role" options={{ headerShown: false }} />
-        <Stack.Screen name="auth_option" options={{ headerShown: false }} />
+        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}

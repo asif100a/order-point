@@ -7,6 +7,7 @@ export const ThemeContext = createContext<ThemeContextTypes>({
   colorScheme: Appearance.getColorScheme(),
   setColorScheme: () => {},
   theme: Colors.light,
+  primaryColor: Colors.primaryColor
 });
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -17,7 +18,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const theme = colorScheme === "dark" ? Colors.dark : Colors.light;
 
   return (
-    <ThemeContext.Provider value={{ colorScheme, setColorScheme, theme }}>
+    <ThemeContext.Provider value={{ colorScheme, setColorScheme, theme, primaryColor: Colors.primaryColor }}>
       {children}
     </ThemeContext.Provider>
   );
