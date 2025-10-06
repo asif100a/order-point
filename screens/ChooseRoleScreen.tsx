@@ -1,7 +1,7 @@
-import LOGO from "@/assets/images/chooseRole/logo.png";
 import user1 from "@/assets/images/chooseRole/user1.png";
 import user2 from "@/assets/images/chooseRole/user2.png";
 import Button from "@/components/ui/Button";
+import Logo from "@/components/ui/Logo";
 import useTheme from "@/hooks/useTheme";
 import {
   ColorSchemeTypes,
@@ -48,7 +48,7 @@ const ChooseRoleScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={LOGO} style={styles.logo} />
+       <Logo />
       </View>
 
       <View style={styles.contentContainer}>

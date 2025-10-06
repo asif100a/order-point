@@ -7,11 +7,11 @@ import {
 import React, { useState } from "react";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes, WidgetTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
-import LOGO from "@/assets/images/chooseRole/logo.png";
 import user1 from "@/assets/images/chooseRole/user1.png";
 import user2 from "@/assets/images/chooseRole/user2.png";
 import Button from "@/components/ui/Button";
 import { Link, router } from "expo-router";
+import Logo from "@/components/ui/Logo";
 
 const widgets: WidgetTypes[] = [
   {
@@ -36,7 +36,7 @@ const AuthOptionScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <Image source={LOGO} style={styles.logo} />
+        <Logo />
         <Text style={styles.description}>
           Discover exclusive local discounts and perks. Sign up today and save
           while supporting your community.
@@ -79,10 +79,6 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes, primaryC
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-    },
-    logo: {
-      width: 344, // Adjusted logo size
-      height: 92, // Adjusted logo size
     },
     text: {
       fontSize: 14,

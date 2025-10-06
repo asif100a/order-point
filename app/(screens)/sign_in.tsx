@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
+import SignInScreen from '@/screens/SignInScreen'
 
 export default function sign_in() {
   return (
     <View>
-      <Text>sign_in</Text>
+      <SignInScreen />
     </View>
   )
 }
