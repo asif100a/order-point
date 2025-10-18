@@ -29,7 +29,8 @@ export const Colors: ColorsTypes = {
   primaryColor: {
     primaryBlack: "#303030",
     secondaryBlack: "#606060",
-    greenNormal: '#57C78F'
+    greenNormal: '#57C78F',
+    primaryGray: '#F3F3F5'
   },
 };
 

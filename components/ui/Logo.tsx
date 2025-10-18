@@ -3,9 +3,9 @@ import React from "react";
 
 import LOGO from "@/assets/images/logo.png";
 
-export default function Logo() {
+export default function Logo({style = {}}) {
   return (
-    <View>
+    <View style={style}>
       <Image source={LOGO} style={styles.logo} />
     </View>
   );
