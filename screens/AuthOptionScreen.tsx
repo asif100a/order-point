@@ -1,17 +1,16 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from "react-native";
-import React, { useState } from "react";
-import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes, WidgetTypes } from "@/types";
-import useTheme from "@/hooks/useTheme";
 import user1 from "@/assets/images/chooseRole/user1.png";
 import user2 from "@/assets/images/chooseRole/user2.png";
-import Button from "@/components/ui/Button";
-import { Link, router } from "expo-router";
+import Button from "@/components/ui/buttons/Button";
 import Logo from "@/components/ui/Logo";
+import useTheme from "@/hooks/useTheme";
+import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes, WidgetTypes } from "@/types";
+import { Link, router } from "expo-router";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 const widgets: WidgetTypes[] = [
   {

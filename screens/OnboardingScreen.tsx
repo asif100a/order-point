@@ -1,20 +1,18 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  Pressable,
-  TouchableOpacity,
-  GestureResponderEvent,
-  Appearance,
-} from "react-native";
-import React from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import whiteShape from "@/assets/images/onboarding/white-shape.png";
-import { ColorSchemeTypes, OnboardingTypes, ThemeTypes } from "@/types";
+import Button from "@/components/ui/buttons/Button";
 import { Colors } from "@/constants/theme";
-import Button from "@/components/ui/Button";
+import { ColorSchemeTypes, OnboardingTypes, ThemeTypes } from "@/types";
+import React from "react";
+import {
+  Appearance,
+  GestureResponderEvent,
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 interface OnboardingScreenProps {
   data: OnboardingTypes;
