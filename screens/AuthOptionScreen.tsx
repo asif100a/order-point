@@ -47,11 +47,11 @@ const AuthOptionScreen = () => {
         {/* Sign In Button */}
         <Button
           title="Sign In"
-          onPress={() => router.push("/sign_in")}
+          onPress={() => router.push("/auth/sign_in")}
           style={{ marginTop: 0 }}
         />
         {/* Sign Up Button */}
-        <Button title="Sign Up" onPress={() => router.push("/sign_up")} />
+        <Button title="Sign Up" onPress={() => router.push("/auth/sign_up")} />
 
         <Text style={[styles.text, styles.bottomText]}>
           By signing up you confirm that you have read & agree to the our{" "}

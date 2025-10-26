@@ -5,7 +5,7 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Checkbox from "expo-checkbox";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Pressable,
@@ -18,6 +18,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = () => {
+  const router = useRouter()
   const { theme, colorScheme, primaryColor } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -96,9 +97,11 @@ const SignInScreen = () => {
                   />
                   <Text style={styles.primaryFontSize}>Remember me</Text>
                 </View>
-                <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
-                  Forget your password?
-                </Text>
+                <Pressable onPress={() => router.push('/auth/forget_password')}>
+                  <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
+                    Forget your password?
+                  </Text>
+                </Pressable>
               </View>
 
               <Button title="Login" onPress={handleLogin} />
@@ -128,7 +131,10 @@ const SignInScreen = () => {
                   { marginTop: 24, textAlign: "center" },
                 ]}
               >
-                Do you have an account? <Text style={{color: '#57C78F', fontWeight: '600'}}>Sign Up</Text>
+                Do you have an account?{" "}
+                <Text style={{ color: "#57C78F", fontWeight: "600" }}>
+                  Sign Up
+                </Text>
               </Text>
             </View>
           </View>
@@ -192,7 +198,7 @@ function createStyles({
     },
     label: {
       fontWeight: "500",
-      marginBottom: 4,
+      marginBottom: 6,
     },
     inputField: {
       width: "100%",
