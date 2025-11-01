@@ -24,11 +24,11 @@ export default function ConfirmationCodeScreen() {
 
   const windowHeight = Dimensions.get("screen").height;
   const windowWidth = Dimensions.get("screen").width;
-  console.log("Window Height: ", windowHeight);
-  console.log("Window Width: ", windowWidth);
+  // console.log("Window Height: ", windowHeight);
+  // console.log("Window Width: ", windowWidth);
 
   const handleForgetPass = () => {
-    router.push("/auth/confirmation_code");
+    router.push("/auth/create_new_password");
   };
 
   const otpLength = Array.from({ length: 6 }).map((_, i) => ({

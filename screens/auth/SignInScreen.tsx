@@ -1,5 +1,7 @@
 import Button from "@/components/ui/buttons/Button";
 import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
+import EmailInputField from "@/components/ui/form/EmailInputField";
+import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Logo from "@/components/ui/Logo";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
@@ -18,7 +20,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -60,31 +62,12 @@ const SignInScreen = () => {
             {/* Form */}
             <View style={styles.form}>
               {/* Email */}
-              <View style={styles.inputContainer}>
-                <Text style={[styles.label, styles.primaryFontSize]}>
-                  Email
-                </Text>
-                <TextInput
-                  style={styles.inputField}
-                  placeholder="Enter Your Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                />
-              </View>
+              <EmailInputField value={email} onEmailChange={setEmail} />
               {/* Password */}
-              <View style={styles.inputContainer}>
-                <Text style={[styles.label, styles.primaryFontSize]}>
-                  Password
-                </Text>
-                <TextInput
-                  style={styles.inputField}
-                  placeholder="Enter Your Password"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                />
-              </View>
+              <PasswordInputField
+                value={password}
+                onPasswordChange={setPassword}
+              />
 
               {/* Remember me & Forget Password */}
               <View style={styles.rememberForgetContainer}>
@@ -97,7 +80,7 @@ const SignInScreen = () => {
                   />
                   <Text style={styles.primaryFontSize}>Remember me</Text>
                 </View>
-                <Pressable onPress={() => router.push('/auth/forget_password')}>
+                <Pressable onPress={() => router.push("/auth/forget_password")}>
                   <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
                     Forget your password?
                   </Text>
