@@ -23,6 +23,10 @@ export default function SignUpScreen() {
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
+  const handleSignUp = () => {
+    
+  }
+
   return (
     <ScreenContainer>
       <TopNavigationHeader
@@ -67,7 +71,7 @@ export default function SignUpScreen() {
           <CheckboxField value={checked} onValueChange={setChecked} label="By agreeing to the" linkText="Terms & Condition" />
 
           {/* Submit Button */}
-          <Button title="Sign Up" />
+          <Button title="Sign Up" onPress={handleSignUp} />
         </View>
       </View>
     </ScreenContainer>
