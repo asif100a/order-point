@@ -3,26 +3,41 @@ import React from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 
-export default function EmailInputField({
+export default function NumberInputField({
+  label = 'Number',
   value,
-  onEmailChange,
+  onNumberChange,
+  placeholder = "Enter Your Number"
 }: {
-  value: string;
-  onEmailChange: (value: string) => void;
+  label?: string,
+  value: number | undefined;
+  onNumberChange: (value: number | undefined) => void;
+  placeholder?: string
 }) {
   const { colorScheme, primaryColor } = useTheme();
 
   const styles = createStyles({ colorScheme, primaryColor });
 
+  const handleChange = (value: string) => {
+    if(value === '') {
+        onNumberChange(undefined)
+    }else {
+        const numericValue = Number(value);
+        if(!isNaN(numericValue)) {
+            onNumberChange(numericValue)
+        }
+    }
+  }
+
   return (
-    <View style={styles.inputContainer}>
-      <Text style={[styles.label, styles.primaryFontSize]}>Email</Text>
+    <View style={styles.inputContainer}> 
+      <Text style={[styles.label, styles.primaryFontSize]}>{label}</Text>
       <TextInput
         style={styles.inputField}
-        placeholder="Enter your email"
-        value={value}
-        onChangeText={onEmailChange}
-        keyboardType="email-address"
+        placeholder={placeholder}
+        value={value !== undefined ? value.toString() : ''}
+        onChangeText={handleChange}
+        keyboardType="number-pad"
       />
     </View>
   );

@@ -1,5 +1,6 @@
 import Button from "@/components/ui/buttons/Button";
 import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
+import CheckboxField from "@/components/ui/form/CheckboxField";
 import EmailInputField from "@/components/ui/form/EmailInputField";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Logo from "@/components/ui/Logo";
@@ -9,14 +10,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = () => {
@@ -72,14 +66,11 @@ const SignInScreen = () => {
               {/* Remember me & Forget Password */}
               <View style={styles.rememberForgetContainer}>
                 {/* Remember me */}
-                <View style={styles.rememberMe}>
-                  <Checkbox
-                    value={remember}
-                    onValueChange={setRemember}
-                    color={remember ? "#007AFF" : undefined}
-                  />
-                  <Text style={styles.primaryFontSize}>Remember me</Text>
-                </View>
+                <CheckboxField
+                  value={remember}
+                  onValueChange={setRemember}
+                  label="Remember me"
+                />
                 <Pressable onPress={() => router.push("/auth/forget_password")}>
                   <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
                     Forget your password?
@@ -115,9 +106,11 @@ const SignInScreen = () => {
                 ]}
               >
                 Do you have an account?{" "}
-                <Text style={{ color: "#57C78F", fontWeight: "600" }}>
-                  Sign Up
-                </Text>
+                <Pressable onPress={() => router.push("/auth/sign_up")}>
+                  <Text style={{ color: "#57C78F", fontWeight: "600" }}>
+                    Sign Up
+                  </Text>
+                </Pressable>
               </Text>
             </View>
           </View>
@@ -198,11 +191,6 @@ function createStyles({
       width: "100%",
       alignContent: "center",
       justifyContent: "space-between",
-    },
-    rememberMe: {
-      flexDirection: "row",
-      gap: 12,
-      alignContent: "center",
     },
     forgetPassword: {
       color: "#BF0000",

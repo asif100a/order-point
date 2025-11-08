@@ -5,16 +5,36 @@ import TopNavigationHeader from "../navigation/TopNavigationHeader";
 import SuccessIcon from "@/assets/images/common/success.png";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
+import Button from "../buttons/Button";
+import { ExternalPathString, RelativePathString, useRouter } from "expo-router";
 
 export default function SuccessPage({
   headerTitle = "",
   headerDescription = "",
+  title = '',
+  description = '',
+  buttonText,
   navigationLink,
 }: {
   headerTitle: string;
   headerDescription: string;
-  navigationLink: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  navigationLink:
+    | RelativePathString
+    | ExternalPathString
+    | "/"
+    | `/?${string}`
+    | `/#${string}`
+    | "/modal"
+    | `/modal?${string}`
+    | `/modal#${string}`
+    | "/_sitemap"
+    | `/_sitemap?${string}`
+    | `/_sitemap#${string}`;
 }) {
+  const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
@@ -26,7 +46,15 @@ export default function SuccessPage({
         description={headerDescription}
         link={navigationLink}
       />
-      <Image source={SuccessIcon} />
+      <Image source={SuccessIcon} style={styles.image} />
+      <View>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <Button
+          title={buttonText}
+          onPress={() => router.push(navigationLink)}
+        />
+      </View>
     </ScreenContainer>
   );
 }
@@ -40,5 +68,28 @@ function createStyles({
   colorScheme: ColorSchemeTypes;
   primaryColor: PrimaryColorTypes;
 }) {
-  return StyleSheet.create({});
+  return StyleSheet.create({
+    image: {
+      width: 242,
+      height: 212,
+      marginHorizontal: 'auto',
+      marginBottom: 16
+    },
+    contentContainer: {
+      width: "100%",
+      flexDirection: "column",
+      gap: 16,
+    },
+    title: {
+      fontSize: 26,
+      fontWeight: 'semibold',
+      textAlign: 'center',
+      marginBottom: 10
+    },
+    description: {
+      fontSize: 16,
+      fontWeight: 'normal',
+      textAlign: 'center'
+    }
+  });
 }

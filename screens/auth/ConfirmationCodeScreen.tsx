@@ -35,15 +35,9 @@ export default function ConfirmationCodeScreen() {
     id: i.toString(),
   }));
 
-  const otpFields = () => (
-    <TextInput
-      style={styles.inputField}
-      placeholder=''
-      value={email}
-      onChangeText={setEmail}
-      keyboardType="email-address"
-    />
-  );
+  // const otpFields = () => (
+
+  // );
 
   return (
     <View style={[styles.container, { height: windowHeight }]}>
@@ -55,7 +49,7 @@ export default function ConfirmationCodeScreen() {
           {/* Title */}
           <TopNavigationHeader
             title="Confirm OTP"
-            link="/auth/forget_password"
+            link={"/auth/forget_password" as any}
             description="To confirm your account, enter the 6-digit code we
 sent to shahidhasn@gmail.com"
           />
@@ -66,13 +60,17 @@ sent to shahidhasn@gmail.com"
               <Text style={[styles.label, styles.primaryFontSize]}>
                 Enter OTP
               </Text>
-              <View>
-                <FlatList
-                  data={otpLength}
-                  renderItem={otpFields}
-                  keyExtractor={(item) => item.id}
-                  contentContainerStyle={styles.otpContainer}
-                />
+              <View style={styles.otpContainer}>
+                {otpLength.map((item) => (
+                  <TextInput
+                    key={item.id}
+                    style={styles.inputField}
+                    placeholder=""
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="numeric"
+                  />
+                ))}
               </View>
             </View>
           </View>

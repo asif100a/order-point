@@ -1,10 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useRouter } from "expo-router";
+import { ExternalPathString, RelativePathString, useRouter } from "expo-router";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
-import { UrlObject } from "url";
 
 export default function TopNavigationHeader({
   title,
@@ -12,7 +11,7 @@ export default function TopNavigationHeader({
   description,
 }: {
   title: string;
-  link: string | UrlObject;
+  link: RelativePathString | ExternalPathString | `/?${string}` | `/#${string}` | `/modal?${string}` | `/modal#${string}` | `/_sitemap?${string}` | `/_sitemap#${string}` | "/" | "/modal" | "/_sitemap";
   description: string;
 }) {
   const router = useRouter();

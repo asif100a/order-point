@@ -6,8 +6,10 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Button from "@/components/ui/buttons/Button";
+import { useRouter } from "expo-router";
 
 export default function CreateNewPasswordScreen() {
+  const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -15,8 +17,8 @@ export default function CreateNewPasswordScreen() {
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
   const handleCreateNewPass = () => {
-
-  }
+    router.push("/auth/reset_success");
+  };
 
   return (
     <ScreenContainer>
@@ -24,7 +26,7 @@ export default function CreateNewPasswordScreen() {
         title="Create new password"
         description="Please create and enter a new password for 
 your account"
-        link={"/auth/confirmation_code"}
+        link={"/auth/confirmation_code" as any}
       />
 
       <View style={styles.form}>

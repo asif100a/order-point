@@ -3,12 +3,16 @@ import React from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 
-export default function EmailInputField({
+export default function TextInputField({
+  label = 'Text',
   value,
-  onEmailChange,
+  onTextChange,
+  placeholder = "Enter Your Text"
 }: {
+  label?: string,
   value: string;
-  onEmailChange: (value: string) => void;
+  onTextChange: (value: string) => void;
+  placeholder?: string
 }) {
   const { colorScheme, primaryColor } = useTheme();
 
@@ -16,13 +20,13 @@ export default function EmailInputField({
 
   return (
     <View style={styles.inputContainer}>
-      <Text style={[styles.label, styles.primaryFontSize]}>Email</Text>
+      <Text style={[styles.label, styles.primaryFontSize]}>{label}</Text>
       <TextInput
         style={styles.inputField}
-        placeholder="Enter your email"
+        placeholder={placeholder}
         value={value}
-        onChangeText={onEmailChange}
-        keyboardType="email-address"
+        onChangeText={onTextChange}
+        keyboardType="default"
       />
     </View>
   );
