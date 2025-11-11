@@ -22,7 +22,7 @@ export default function ForgetPasswordScreen() {
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
   const windowHeight = Dimensions.get("screen").height;
-  console.log("Window Height: ", windowHeight);
+  // console.log("Window Height: ", windowHeight);
 
   const handleForgetPass = () => {
     router.push("/auth/confirmation_code");

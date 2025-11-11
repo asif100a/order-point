@@ -6,8 +6,10 @@ import useTheme from "@/hooks/useTheme";
 
 export default function ScreenContainer({
   children,
+  customStyles = {},
 }: {
   children: React.ReactNode;
+  customStyles?: object
 }) {
   const { theme } = useTheme();
   const styles = createStyles({ theme });
@@ -15,7 +17,7 @@ export default function ScreenContainer({
   const windowHeight = Dimensions.get("screen").height;
 
   return (
-    <View style={[styles.container, { height: windowHeight }]}>
+    <View style={[styles.container, { height: windowHeight }, customStyles]}>
       <SafeAreaView>
         <ScrollView
           showsHorizontalScrollIndicator={false}

@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 export default function _layout() {
   return (
     <Stack>
+      {/* Auth Layouts */}
       <Stack.Screen name="choose_role" options={{ headerShown: false }} />
       <Stack.Screen name="auth_option" options={{ headerShown: false }} />
       <Stack.Screen name="auth/sign_in" options={{ headerShown: false }} />
@@ -12,6 +13,9 @@ export default function _layout() {
       <Stack.Screen name="auth/confirmation_code" options={{ headerShown: false }} />
       <Stack.Screen name="auth/create_new_password" options={{ headerShown: false }} />
       <Stack.Screen name="auth/reset_success" options={{ headerShown: false }} />
+
+      {/* Profile Layouts */}
+      <Stack.Screen name="profile/add_photo" options={{headerShown: false}} />
     </Stack>
   );
 }

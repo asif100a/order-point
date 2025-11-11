@@ -1,13 +1,12 @@
 import Button from "@/components/ui/buttons/Button";
-import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
 import CheckboxField from "@/components/ui/form/CheckboxField";
 import EmailInputField from "@/components/ui/form/EmailInputField";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Logo from "@/components/ui/Logo";
+import SocialLogin from "@/components/ui/parts/SocialLogin";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -23,10 +22,6 @@ const SignInScreen = () => {
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
   const handleLogin = () => {};
-
-  const handleAppleLogin = () => {};
-
-  const handleGoogleLogin = () => {};
 
   return (
     <View style={styles.container}>
@@ -80,6 +75,7 @@ const SignInScreen = () => {
 
               <Button title="Login" onPress={handleLogin} />
 
+              {/* Divider */}
               <View style={styles.dividerContainer}>
                 <View style={styles.line} />
                 <Text style={[styles.primaryFontSize, { fontWeight: "500" }]}>
@@ -88,16 +84,7 @@ const SignInScreen = () => {
                 <View style={styles.line} />
               </View>
 
-              <ButtonOutline
-                title="Login with apple"
-                onPress={handleAppleLogin}
-                style={styles.outLineButton}
-              />
-              <ButtonOutline
-                title="Login with Goople"
-                onPress={handleGoogleLogin}
-                style={styles.outLineButton}
-              />
+              <SocialLogin />
 
               <Text
                 style={[
@@ -167,7 +154,7 @@ function createStyles({
       lineHeight: 24,
     },
     form: {
-      marginTop: 24,
+      marginVertical: 32
     },
     inputContainer: {
       marginBottom: 16,
@@ -208,11 +195,6 @@ function createStyles({
       backgroundColor: primaryColor.primaryBlack,
       flex: 1,
       height: 1,
-    },
-    outLineButton: {
-      backgroundColor: theme.background,
-      borderWidth: 1,
-      borderColor: "#6ECC96",
     },
   });
 }
