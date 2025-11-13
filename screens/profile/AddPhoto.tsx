@@ -1,5 +1,11 @@
 import { View, StyleSheet, Image, Text, Pressable } from "react-native";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import PLACEHOLDER_PROFILE from "@/assets/images/profile/placeholder_profile.png";
@@ -8,12 +14,12 @@ import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function AddPhoto() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ theme, colorScheme, primaryColor });
+  const [isSheetOpen, setSheetOpen] = useState<boolean>(false);
 
   const handleAddPicture = () => {
     console.log("Choose from camera roll");
@@ -31,20 +37,18 @@ export default function AddPhoto() {
 
   // callbacks
   const handleOpenSheet = useCallback(() => {
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.expand();
   }, []);
 
-  const handleCloseSheet = useCallback(() => {
-    bottomSheetRef.current?.close()
-  }, [])
-
-  useEffect(() => {
-    handleCloseSheet()
-  }, [handleCloseSheet])
+  // const handleCloseSheet = useCallback(() => {
+  //   bottomSheetRef.current?.close()
+  // }, [])
 
   return (
-    <View>
-      <ScreenContainer>
+    <View style={{ position: "relative" }}>
+      <ScreenContainer
+        customStyles={{ backgroundColor: isSheetOpen ? "#999696ff" : theme.background }}
+      >
         <TopNavigationHeader
           title="Add Profile Picture"
           description="Everyone will be able to see your picture."
@@ -71,8 +75,12 @@ export default function AddPhoto() {
         ref={bottomSheetRef}
         style={styles.uploadContainer}
         snapPoints={snapPoints}
-        index={1}
+        index={-1}
         enablePanDownToClose={true}
+        onChange={(index) => {
+          console.log("index: ", index);
+          setSheetOpen(index !== -1);
+        }}
       >
         <BottomSheetView>
           <Text style={styles.sheetTitle}>Add Picture</Text>
