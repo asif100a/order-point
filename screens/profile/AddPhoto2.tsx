@@ -1,5 +1,5 @@
 import { View, StyleSheet, Image, Text, Pressable } from "react-native";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import PLACEHOLDER_PROFILE from "@/assets/images/profile/placeholder_profile.png";
@@ -27,70 +27,59 @@ export default function AddPhoto() {
     console.log("Skip");
   };
 
-  const snapPoints = useMemo(() => ["40%"], []);
+  const snapPoints = useMemo(() => ["30%"], []);
 
   // callbacks
-  const handleOpenSheet = useCallback(() => {
-    bottomSheetRef.current?.expand()
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
   }, []);
 
-  const handleCloseSheet = useCallback(() => {
-    bottomSheetRef.current?.close()
-  }, [])
-
-  useEffect(() => {
-    handleCloseSheet()
-  }, [handleCloseSheet])
-
   return (
-    <View>
-      <ScreenContainer>
-        <TopNavigationHeader
-          title="Add Profile Picture"
-          description="Everyone will be able to see your picture."
-          link={"/auth/sign_up" as any}
-        />
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'gray' }}>
+        <ScreenContainer>
+          <TopNavigationHeader
+            title="Add Profile Picture"
+            description="Everyone will be able to see your picture."
+            link={"/auth/sign_up" as any}
+          />
 
-        <View style={styles.addPhotoContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={PLACEHOLDER_PROFILE}
-              style={styles.image}
-              resizeMode="cover"
-            />
+          <View style={styles.addPhotoContainer}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={PLACEHOLDER_PROFILE}
+                style={styles.image}
+                resizeMode="cover"
+              />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <Button title="Add Picture" onPress={() => {}} />
+              <ButtonOutline title="Skip" onPress={handleSkip} />
+            </View>
           </View>
+        </ScreenContainer>
 
-          <View style={styles.buttonContainer}>
-            <Button title="Add Picture" onPress={handleOpenSheet} />
-            <ButtonOutline title="Skip" onPress={handleSkip} />
-          </View>
-        </View>
-      </ScreenContainer>
+        <BottomSheet
+          ref={bottomSheetRef}
+          onChange={handleSheetChanges}
+        >
+          <BottomSheetView style={styles.uploadContainer}>
+            <Text style={styles.sheetTitle}>Add Picture</Text>
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        style={styles.uploadContainer}
-        snapPoints={snapPoints}
-        index={1}
-        enablePanDownToClose={true}
-      >
-        <BottomSheetView>
-          <Text style={styles.sheetTitle}>Add Picture</Text>
+            <View style={styles.box}>
+              <Pressable onPress={handleAddPicture} style={styles.option}>
+                <Text style={styles.buttonText}>Choose from Camera Roll</Text>
+              </Pressable>
 
-          <View style={styles.box}>
-            <Pressable onPress={handleAddPicture} style={styles.option}>
-              <Text style={styles.buttonText}>Choose from Camera Roll</Text>
-            </Pressable>
+              <View style={styles.divider} />
 
-            <View style={styles.divider} />
-
-            <Pressable onPress={handleTakePhoto} style={styles.option}>
-              <Text style={styles.buttonText}>Take Photo</Text>
-            </Pressable>
-          </View>
-        </BottomSheetView>
-      </BottomSheet>
-    </View>
+              <Pressable onPress={handleTakePhoto} style={styles.option}>
+                <Text style={styles.buttonText}>Take Photo</Text>
+              </Pressable>
+            </View>
+          </BottomSheetView>
+        </BottomSheet>
+    </GestureHandlerRootView>
   );
 }
 
@@ -125,14 +114,13 @@ function createStyles({
     },
     uploadContainer: {
       padding: 24,
-      gap: 16,
+      gap: 32,
     },
     sheetTitle: {
       fontSize: 24,
       fontWeight: "600",
       textAlign: "center",
       color: colorScheme === "dark" ? "#fff" : primaryColor.primaryBlack,
-      marginBottom: 16,
     },
     box: {
       backgroundColor: colorScheme === "dark" ? "#2a2a2a" : "#f9f9f9",
