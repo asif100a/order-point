@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Text, Pressable } from "react-native";
+import { View, StyleSheet, Image, Text, Pressable, Alert } from "react-native";
 import React, {
   useCallback,
   useEffect,
@@ -14,19 +14,46 @@ import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 export default function AddPhoto() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ theme, colorScheme, primaryColor });
   const [isSheetOpen, setSheetOpen] = useState<boolean>(false);
+  const [uploadedImage, setUploadedImage] = useState<string | undefined>(
+    undefined
+  );
 
-  const handleAddPicture = () => {
-    console.log("Choose from camera roll");
+  const handleAddPicture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setUploadedImage(result.assets[0]?.uri);
+      console.log("result----------->: ", result);
+    } else {
+      alert("You didn't upload any image");
+    }
   };
 
-  const handleTakePhoto = () => {
-    console.log("Take photo");
+  const handleTakePhoto = async () => {
+    await ImagePicker.requestCameraPermissionsAsync();
+
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setUploadedImage(result.assets[0]?.uri);
+      console.log("result----------->: ", result);
+    } else {
+      alert("You didn't upload any image");
+    }
   };
 
   const handleSkip = () => {
@@ -44,10 +71,33 @@ export default function AddPhoto() {
   //   bottomSheetRef.current?.close()
   // }, [])
 
+  const handleSavePhoto = async (uri: string) => {
+    try {
+      // Create the Directory Structure
+      const uploadDir = new FileSystem.Directory(
+        FileSystem.Paths.document,
+        "uploaded",
+        "images"
+      );
+      uploadDir.create(); // Create the directory if doesn't exist
+
+      // Create Unique filename
+      const filename = `${new Date().getTime()}.jpg`;
+
+      // Create the destination file
+
+
+    } catch (error) {
+      console.error('❌Error while saving photo: ', error)
+    }
+  };
+
   return (
     <View style={{ position: "relative" }}>
       <ScreenContainer
-        customStyles={{ backgroundColor: isSheetOpen ? "#999696ff" : theme.background }}
+        customStyles={{
+          backgroundColor: isSheetOpen ? "#999696ff" : theme.background,
+        }}
       >
         <TopNavigationHeader
           title="Add Profile Picture"
@@ -58,16 +108,28 @@ export default function AddPhoto() {
         <View style={styles.addPhotoContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={PLACEHOLDER_PROFILE}
+              source={
+                uploadedImage ? { uri: uploadedImage } : PLACEHOLDER_PROFILE
+              }
               style={styles.image}
               resizeMode="cover"
             />
           </View>
 
-          <View style={styles.buttonContainer}>
-            <Button title="Add Picture" onPress={handleOpenSheet} />
-            <ButtonOutline title="Skip" onPress={handleSkip} />
-          </View>
+          {uploadedImage ? (
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Done"
+                onPress={() => handleSavePhoto(uploadedImage || "")}
+              />
+              <ButtonOutline title="Change Picture" onPress={handleOpenSheet} />
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <Button title="Add Picture" onPress={handleOpenSheet} />
+              <ButtonOutline title="Skip" onPress={handleSkip} />
+            </View>
+          )}
         </View>
       </ScreenContainer>
 
@@ -81,6 +143,7 @@ export default function AddPhoto() {
           console.log("index: ", index);
           setSheetOpen(index !== -1);
         }}
+        backgroundStyle={{ backgroundColor: "#EEEEEE" }}
       >
         <BottomSheetView>
           <Text style={styles.sheetTitle}>Add Picture</Text>
@@ -143,7 +206,7 @@ function createStyles({
       marginBottom: 16,
     },
     box: {
-      backgroundColor: colorScheme === "dark" ? "#2a2a2a" : "#f9f9f9",
+      backgroundColor: colorScheme === "dark" ? "#2a2a2a" : "white",
       borderRadius: 12,
       overflow: "hidden",
     },
