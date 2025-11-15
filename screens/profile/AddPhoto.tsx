@@ -1,7 +1,6 @@
 import { View, StyleSheet, Image, Text, Pressable, Alert } from "react-native";
 import React, {
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -85,10 +84,19 @@ export default function AddPhoto() {
       const filename = `${new Date().getTime()}.jpg`;
 
       // Create the destination file
+      const sourceFile = new FileSystem.File(uri);
+      const destinationFile = new FileSystem.File(uploadDir, filename);
 
+      // Copy the image
+      await sourceFile.copy(destinationFile);
 
+      console.log('Image saved to: ', destinationFile.uri);
+      Alert.alert('Success', "Image saved successfully!")
+
+      return destinationFile.uri
     } catch (error) {
       console.error('❌Error while saving photo: ', error)
+      Alert.alert("Error", "Failed to save image");
     }
   };
 
