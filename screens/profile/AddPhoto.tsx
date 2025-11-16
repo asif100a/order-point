@@ -27,7 +27,41 @@ export default function AddPhoto() {
   const [uploadedImage, setUploadedImage] = useState<string | undefined>(
     undefined
   );
+  const [savedImage, setSavedImage] = useState<string | undefined>(
+    undefined
+  );
   const [isSaved, setIsSaved] = useState<boolean>(false);
+
+  // If already has saved image
+  useEffect(() => {
+    async function getSavedPhoto() {
+      try {
+        const uploadDir = new FileSystem.Directory(
+          FileSystem.Paths.document,
+          "uploaded",
+          "images"
+        );
+        console.log("Upload Dir: ", uploadDir);
+        if (await uploadDir.exists) {
+          const files = uploadDir.list();
+          console.log("Saved Files: ", files);
+
+          if (files.length > 0) {
+            const sortedFiles = files.sort((a, b) => {
+              const timeA = parseInt(a.name.split(".jpg")[0], 10);
+              const timeB = parseInt(b.name.split(".jpg")[0], 10);
+              return timeA - timeB;
+            });
+            const latestFile = sortedFiles[0];
+            setSavedImage(latestFile.uri);
+          }
+        }
+      } catch (error) {
+        console.error("❌ Error while retrieving saved files: ", error);
+      }
+    }
+    getSavedPhoto();
+  }, []);
 
   const handleAddPicture = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -137,7 +171,7 @@ export default function AddPhoto() {
           <View style={styles.imageContainer}>
             <Image
               source={
-                uploadedImage ? { uri: uploadedImage } : PLACEHOLDER_PROFILE
+                uploadedImage ? { uri: uploadedImage } : savedImage ? {uri: savedImage} : PLACEHOLDER_PROFILE
               }
               style={styles.image}
               resizeMode="cover"

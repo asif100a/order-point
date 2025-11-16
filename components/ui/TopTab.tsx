@@ -36,7 +36,7 @@ export default function TopTab({
 function createStyle({ primaryColor, colorScheme }: { primaryColor: PrimaryColorTypes; colorScheme: ColorSchemeTypes }) {
   return StyleSheet.create({
     tabContainer: {
-      width: "100%",
+    //   width: "100%",
       flexDirection: "row",
       gap: 4,
     },
