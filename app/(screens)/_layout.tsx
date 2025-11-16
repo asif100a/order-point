@@ -16,6 +16,9 @@ export default function _layout() {
 
       {/* Profile Layouts */}
       <Stack.Screen name="profile/add_photo" options={{headerShown: false}} />
+
+      {/* Subscription Layouts */}
+      <Stack.Screen name="subscription/choose_plan" options={{headerShown: false}} />
     </Stack>
   );
 }

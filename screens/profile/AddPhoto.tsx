@@ -1,6 +1,7 @@
 import { View, StyleSheet, Image, Text, Pressable, Alert } from "react-native";
 import React, {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -15,8 +16,10 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { useRouter } from "expo-router";
 
 export default function AddPhoto() {
+  const router = useRouter();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ theme, colorScheme, primaryColor });
@@ -24,6 +27,7 @@ export default function AddPhoto() {
   const [uploadedImage, setUploadedImage] = useState<string | undefined>(
     undefined
   );
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const handleAddPicture = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +60,7 @@ export default function AddPhoto() {
   };
 
   const handleSkip = () => {
-    console.log("Skip");
+    router.push("/subscription/choose_plan");
   };
 
   const snapPoints = useMemo(() => ["40%"], []);
@@ -78,7 +82,7 @@ export default function AddPhoto() {
         "uploaded",
         "images"
       );
-      uploadDir.create(); // Create the directory if doesn't exist
+      uploadDir.create({ intermediates: true, idempotent: true }); // Create the directory if doesn't exist
 
       // Create Unique filename
       const filename = `${new Date().getTime()}.jpg`;
@@ -90,15 +94,25 @@ export default function AddPhoto() {
       // Copy the image
       await sourceFile.copy(destinationFile);
 
-      console.log('Image saved to: ', destinationFile.uri);
-      Alert.alert('Success', "Image saved successfully!")
+      console.log("Image saved to: ", destinationFile.uri);
+      Alert.alert("Success", "Image saved successfully!");
 
-      return destinationFile.uri
+      setIsSaved(true); // Set save after saving
+      // Return the uri
+      return destinationFile.uri;
     } catch (error) {
-      console.error('❌Error while saving photo: ', error)
+      console.error("❌Error while saving photo: ", error);
       Alert.alert("Error", "Failed to save image");
     }
   };
+
+  useEffect(() => {
+    if (isSaved) {
+      setTimeout(() => {
+        router.push("/subscription/choose_plan");
+      }, 1000);
+    }
+  }, [isSaved, router]);
 
   return (
     <View style={{ position: "relative" }}>
@@ -108,8 +122,14 @@ export default function AddPhoto() {
         }}
       >
         <TopNavigationHeader
-          title="Add Profile Picture"
-          description="Everyone will be able to see your picture."
+          title={
+            uploadedImage
+              ? "Confirm or change your profile picture"
+              : "Add Profile Picture"
+          }
+          description={
+            uploadedImage ? "" : "Everyone will be able to see your picture."
+          }
           link={"/auth/sign_up" as any}
         />
 

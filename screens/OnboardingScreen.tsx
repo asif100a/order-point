@@ -2,6 +2,7 @@ import whiteShape from "@/assets/images/onboarding/white-shape.png";
 import Button from "@/components/ui/buttons/Button";
 import { Colors } from "@/constants/theme";
 import { ColorSchemeTypes, OnboardingTypes, ThemeTypes } from "@/types";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   Appearance,
@@ -27,6 +28,7 @@ export default function OnboardingScreen({
   handleNext,
   currentIndex,
 }: OnboardingScreenProps) {
+  const router = useRouter()
 
   const colorScheme = Appearance.getColorScheme()
 
@@ -45,7 +47,7 @@ export default function OnboardingScreen({
         <Image source={data.image} style={styles.image} resizeMode="contain" />
 
         {/* Skip Button */}
-        <Pressable style={styles.skipBtn}>
+        <Pressable style={styles.skipBtn} onPress={() => router.push('/auth_option')}>
           <Text style={styles.skipText}>Skip</Text>
         </Pressable>
       </ImageBackground>
