@@ -118,7 +118,7 @@ function createStyles(
     contentContainer: {
       // position: 'absolute',
       // height: "100%",
-      backgroundColor: theme.background,
+      backgroundColor: 'transparent',
       padding: 16,
       marginTop: 16,
       flexDirection: "column",
