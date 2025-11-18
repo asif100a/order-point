@@ -1,15 +1,32 @@
-import { Text, StyleSheet, TouchableOpacity, GestureResponderEvent } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function Button({ title, onPress, style }: {title: string, onPress: (event: GestureResponderEvent) => void, style?: object}) {
+export default function Button({
+  title,
+  onPress,
+  style,
+}: {
+  title: string;
+  onPress: (event: GestureResponderEvent) => void;
+  style?: object;
+}) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={[{ marginTop: 20 }, style]}
+    >
       <LinearGradient
         colors={["#1CD77A", "#0BF3E7"]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
-        style={[styles.button, style]}
+        style={[styles.button]}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </LinearGradient>
@@ -24,7 +41,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
   },
   buttonText: {
     fontSize: 18,

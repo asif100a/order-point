@@ -16,15 +16,19 @@ export default function TopTab({
   const { theme, primaryColor, colorScheme } = useTheme();
   const styles = createStyle({ primaryColor, colorScheme });
 
+  const toCapitalize = (text: string) => {
+    return text?.slice(0, 1).toUpperCase() + text.slice(1)
+  }
+
   return (
     <View style={styles.tabContainer}>
       {tabs.map((t: string) => {
         if (t === active) {
-          return <Button key={t} title={t} onPress={() => setActive(t)} />;
+          return <Button key={t} title={toCapitalize(t)} onPress={() => setActive(t)} style={{width: '48%', marginTop: 0}} />;
         } else {
           return (
-            <TouchableOpacity key={t} style={styles.button}>
-              <Text style={styles.buttonText}>{t}</Text>
+            <TouchableOpacity onPress={() => setActive(t)} key={t} style={styles.button}>
+              <Text style={styles.buttonText}>{toCapitalize(t)}</Text>
             </TouchableOpacity>
           );
         }
@@ -36,17 +40,18 @@ export default function TopTab({
 function createStyle({ primaryColor, colorScheme }: { primaryColor: PrimaryColorTypes; colorScheme: ColorSchemeTypes }) {
   return StyleSheet.create({
     tabContainer: {
-    //   width: "100%",
       flexDirection: "row",
-      gap: 4,
+      gap: 12,
+      backgroundColor: '#F3F3F5',
+      padding: 8,
+      borderRadius: 40
     },
     button: {
-      width: "100%",
+      width: "48%",
       height: 56,
       borderRadius: 30,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: 20,
       backgroundColor: colorScheme === 'dark' ? '#1E1E1E' : 'white'
     },
     buttonText: {
