@@ -70,34 +70,45 @@ export default function ChoosePlan() {
         end={{ x: 0, y: 0 }}
         style={styles.gradientContainer}
       >
-        <View style={styles.contentContainer}>
-          <View>
-            <Image source={CrownIcon} width={48} height={48} alt="Crown" />
-            <Text>$5.00</Text>
-          </View>
-          {/* Title & Description */}
-          <View>
-            <Text>Monthly plan</Text>
-            <Text>Enjoy exclusive discounts & perks every month.</Text>
-          </View>
-          {/* Features */}
-          <View>
-            <Text>Features list</Text>
-            <View>
-              <Text>
-                <Image
-                  source={CheckMarkIcon}
-                  width={20}
-                  height={20}
-                  alt="Checkmark"
-                />{" "}
-                Unlimited access to local discounts & perks
-              </Text>
-            </View>
-          </View>
-        </View>
+        <MainContent
+          styles={styles}
+          data={active === "monthly" ? PLANS[0] : PLANS[1]}
+        />
       </LinearGradient>
     </ScreenContainer>
+  );
+}
+
+export function MainContent({ styles, data }: { styles: any; data: PlanType }) {
+  return (
+    <View style={styles.contentContainer}>
+      <View style={styles.imgPrice}>
+        <Image source={CrownIcon} width={48} height={48} alt="Crown" />
+        <Text style={styles.price}>${data.price}</Text>
+      </View>
+      {/* Title & Description */}
+      <View>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.description}>
+         {data.description}
+        </Text>
+      </View>
+      {/* Features */}
+      <View>
+        <Text style={styles.featureTitle}>Features list</Text>
+        <View style={styles.featureContainer}>
+          <Image
+            source={CheckMarkIcon}
+            width={20}
+            height={20}
+            alt="Checkmark"
+          />{" "}
+          <Text style={styles.feature}>
+            Unlimited access to local discounts & perks
+          </Text>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -108,20 +119,54 @@ function createStyles(
 ) {
   return StyleSheet.create({
     gradientContainer: {
-      position: 'relative',
-      height: 500,
+      position: "relative",
+      height: "auto",
       width: "100%",
       marginTop: 16,
       borderRadius: 16,
-      padding: 16
+      padding: 16,
     },
     contentContainer: {
-      // position: 'absolute',
-      // height: "100%",
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       padding: 16,
       marginTop: 16,
       flexDirection: "column",
+      gap: 16,
+    },
+    imgPrice: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+    price: {
+      fontSize: 26,
+      fontWeight: "semibold",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: "semibold",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+    },
+    description: {
+      fontSize: 16,
+      fontWeight: "normal",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      marginTop: 2,
+    },
+    featureTitle: {
+      fontSize: 16,
+      fontWeight: "medium",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      marginBottom: 6,
+    },
+    featureContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+    },
+    feature: {
+      fontSize: 14,
     },
   });
 }
