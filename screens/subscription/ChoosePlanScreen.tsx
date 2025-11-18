@@ -1,13 +1,19 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 import React, { useState } from "react";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import TopTab from "@/components/ui/TopTab";
 import CrownIcon from "@/assets/images/choosePlan/crown.png";
 import CheckMarkIcon from "@/assets/icons/check_mark.png";
+import plan_overlap_1 from "@/assets/icons/plan_overlap_1.png";
+import plan_overlap_2 from "@/assets/icons/plan_overlap_2.png";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "@/components/ui/buttons/Button";
+import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
+import { useRouter } from "expo-router";
 
 export type tabType = "monthly" | "yearly";
 
@@ -47,15 +53,20 @@ const PLANS: PlanType[] = [
   },
 ];
 
-export default function ChoosePlan() {
+export default function ChoosePlanScreen() {
+  const router = useRouter();
   const [active, setActive] = useState<tabType>("monthly");
 
   const { colorScheme, theme, primaryColor } = useTheme();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
+  const handlePayment = () => {
+    router.push("/subscription/payment");
+  };
+
   return (
-    <ScreenContainer>
+    <SafeAreaView style={styles.mainContainer}>
       <TopNavigationHeader
         title="Choose your plan"
         description=""
@@ -70,12 +81,34 @@ export default function ChoosePlan() {
         end={{ x: 0, y: 0 }}
         style={styles.gradientContainer}
       >
-        <MainContent
-          styles={styles}
-          data={active === "monthly" ? PLANS[0] : PLANS[1]}
-        />
+        <View>
+          {/* <Image
+            source={plan_overlap_1}
+            width={260}
+            height={150}
+            style={styles.overLapImg1}
+          />
+          <Image
+            source={plan_overlap_1}
+            width={260}
+            height={150}
+            style={styles.overLapImg2}
+          /> */}
+
+          <MainContent
+            styles={styles}
+            data={active === "monthly" ? PLANS[0] : PLANS[1]}
+          />
+        </View>
       </LinearGradient>
-    </ScreenContainer>
+
+      {/* Buttons */}
+      <Button title="Payment Now" onPress={handlePayment} />
+      <ButtonOutline
+        title="Skip"
+        onPress={() => router.push("/subscription/payment")}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -86,26 +119,35 @@ export function MainContent({ styles, data }: { styles: any; data: PlanType }) {
         <Image source={CrownIcon} width={48} height={48} alt="Crown" />
         <Text style={styles.price}>${data.price}</Text>
       </View>
+
       {/* Title & Description */}
       <View>
         <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.description}>
-         {data.description}
-        </Text>
+        <Text style={styles.description}>{data.description}</Text>
       </View>
+
       {/* Features */}
       <View>
         <Text style={styles.featureTitle}>Features list</Text>
+
         <View style={styles.featureContainer}>
-          <Image
-            source={CheckMarkIcon}
-            width={20}
-            height={20}
-            alt="Checkmark"
-          />{" "}
-          <Text style={styles.feature}>
-            Unlimited access to local discounts & perks
-          </Text>
+          <FlatList
+            data={data.features}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.feature}>
+                  <Image
+                    source={CheckMarkIcon}
+                    width={20}
+                    height={20}
+                    alt="Checkmark"
+                  />
+                  <Text style={styles.featureText}>{item}</Text>
+                </View>
+              );
+            }}
+          />
         </View>
       </View>
     </View>
@@ -118,6 +160,11 @@ function createStyles(
   primaryColor: PrimaryColorTypes
 ) {
   return StyleSheet.create({
+    mainContainer: {
+      padding: 16,
+      backgroundColor: theme.background,
+      height: "100%",
+    },
     gradientContainer: {
       position: "relative",
       height: "auto",
@@ -125,6 +172,25 @@ function createStyles(
       marginTop: 16,
       borderRadius: 16,
       padding: 16,
+      zIndex: 1,
+    },
+    overLapImg1: {
+      position: "absolute",
+      zIndex: 10,
+      top: 100,
+      right: 0,
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderColor: "white",
+    },
+    overLapImg2: {
+      width: 260,
+      height: 150,
+      top: 0,
+      right: 0,
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderColor: "white",
     },
     contentContainer: {
       backgroundColor: "transparent",
@@ -160,12 +226,13 @@ function createStyles(
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       marginBottom: 6,
     },
-    featureContainer: {
+    feature: {
       flexDirection: "row",
       alignItems: "center",
       gap: 6,
+      marginTop: 6,
     },
-    feature: {
+    featureText: {
       fontSize: 14,
     },
   });

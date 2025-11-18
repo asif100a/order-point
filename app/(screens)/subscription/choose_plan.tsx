@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
-import ChoosePlan from "@/screens/subscription/ChoosePlan";
+import ChoosePlanScreen from "@/screens/subscription/ChoosePlanScreen";
 
 export default function choose_plan() {
   return (
     <View>
-      <ChoosePlan />
+      <ChoosePlanScreen />
     </View>
   );
 }
