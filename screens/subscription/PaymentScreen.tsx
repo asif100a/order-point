@@ -8,13 +8,23 @@ import { Image } from "react-native";
 import walletIcon from "@/assets/icons/wallet.png";
 import TextInputField from "@/components/ui/form/TextInputField";
 import NumberInputField from "@/components/ui/form/NumberInputField";
+import DateInputField from "@/components/ui/form/DateInputField";
+import CheckboxField from "@/components/ui/form/CheckboxField";
+import Button from "@/components/ui/buttons/Button";
 
 export default function PaymentScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
   const [name, setName] = useState<string>("");
   const [cardNum, setCardNum] = useState<number | undefined>(undefined);
+  const [date, setDate] = useState<Date>(new Date());
+  const [cvv, setCvv] = useState<number | undefined>(undefined);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
+
+  const handlePayment = () => {
+
+  }
 
   return (
     <ScreenContainer>
@@ -30,6 +40,7 @@ export default function PaymentScreen() {
         <Text style={styles.price}>$50.00</Text>
       </View>
 
+      {/* Payment Form */}
       <View style={styles.form}>
         <TextInputField
           label="Card Holder Name"
@@ -43,7 +54,30 @@ export default function PaymentScreen() {
           value={cardNum}
           onNumberChange={setCardNum}
         />
-        <DateInputField />
+        {/* Group */}
+        <View style={styles.dateCvvContainer}>
+          <View style={styles.dateCvv}>
+            <DateInputField
+              label="Payment Date"
+              date={date}
+              onDateChange={setDate}
+              placeholder="Select a date"
+            />
+          </View>
+          <View style={[styles.dateCvv, { marginLeft: "4%" }]}>
+            <NumberInputField
+              label="CVV"
+              placeholder="***"
+              value={cvv}
+              onNumberChange={setCvv}
+            />
+          </View>
+        </View>
+        {/* Checkbox */}
+        <CheckboxField label="Save card data for future payments" value={checked} onValueChange={setChecked} />
+
+        {/* Submit Button */}
+        <Button title="Confirm Payment" onPress={handlePayment} />
       </View>
     </ScreenContainer>
   );
@@ -76,7 +110,13 @@ function createStyles(
       fontWeight: "semibold",
     },
     form: {
-        marginTop: 24
+      marginTop: 24,
+    },
+    dateCvvContainer: {
+      flexDirection: "row",
+    },
+    dateCvv: {
+      width: "48%",
     },
   });
 }
