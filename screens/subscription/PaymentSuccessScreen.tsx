@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SuccessPage from "@/components/ui/page/SuccessPage";
 import { View } from "react-native";
 import ReceiptDownloadModal from "@/app/modals/ReceiptDownloadModal";

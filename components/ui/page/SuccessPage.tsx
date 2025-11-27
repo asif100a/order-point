@@ -60,7 +60,7 @@ export default function SuccessPage({
           onPress={onButtonClick}
         />
         {backToHomeBtn && (
-          <ButtonOutline title="Back to Home" onPress={() => router.push('/')} />
+          <ButtonOutline title="Back to Home" onPress={() => router.push('/home')} />
         )}
       </View>
     </ScreenContainer>

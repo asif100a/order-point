@@ -1,5 +1,5 @@
-import { View, Text, Modal, StyleSheet, Image } from "react-native";
-import React, { Dispatch, SetStateAction } from "react";
+import { View, Text, Modal, StyleSheet, Image, Platform } from "react-native";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import useTheme from "@/hooks/useTheme";
 import { PrimaryColorTypes } from "@/types";
 import SuccessIcon from "@/assets/images/common/success_checkmark.png";
@@ -13,6 +13,13 @@ export default function ReceiptDownloadModal({
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ primaryColor });
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible(false);
+    }, 3000);
+  }, [setVisible, visible]);
 
   return (
     <View>
@@ -95,9 +102,9 @@ function createStyles({ primaryColor }: { primaryColor: PrimaryColorTypes }) {
       paddingBottom: 24,
     },
     icon: {
-      position: 'absolute',
-      top: -60, 
-      left: '38%',
+      position: "absolute",
+      top: -60,
+      left: Platform.OS === 'web' ? '48%' : "38%",
     },
     title: {
       fontSize: 18,

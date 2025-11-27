@@ -21,7 +21,9 @@ const SignInScreen = () => {
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    router.push('/home')
+  };
 
   return (
     <View style={styles.container}>
