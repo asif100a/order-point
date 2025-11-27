@@ -7,20 +7,24 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 import Button from "../buttons/Button";
 import { ExternalPathString, RelativePathString, useRouter } from "expo-router";
+import ButtonOutline from "../buttons/ButtonOutline";
 
 export default function SuccessPage({
   headerTitle = "",
   headerDescription = "",
-  title = '',
-  description = '',
+  title = "",
+  description = "",
   buttonText,
+  onButtonClick,
   navigationLink,
+  backToHomeBtn = false,
 }: {
   headerTitle: string;
   headerDescription: string;
   title: string;
   description: string;
   buttonText: string;
+  onButtonClick: () => void,
   navigationLink:
     | RelativePathString
     | ExternalPathString
@@ -33,6 +37,7 @@ export default function SuccessPage({
     | "/_sitemap"
     | `/_sitemap?${string}`
     | `/_sitemap#${string}`;
+  backToHomeBtn?: boolean;
 }) {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
@@ -52,8 +57,11 @@ export default function SuccessPage({
         <Text style={styles.description}>{description}</Text>
         <Button
           title={buttonText}
-          onPress={() => router.push(navigationLink)}
+          onPress={onButtonClick}
         />
+        {backToHomeBtn && (
+          <ButtonOutline title="Back to Home" onPress={() => router.push('/')} />
+        )}
       </View>
     </ScreenContainer>
   );
@@ -72,8 +80,8 @@ function createStyles({
     image: {
       width: 242,
       height: 212,
-      marginHorizontal: 'auto',
-      marginBottom: 16
+      marginHorizontal: "auto",
+      marginBottom: 16,
     },
     contentContainer: {
       width: "100%",
@@ -82,14 +90,14 @@ function createStyles({
     },
     title: {
       fontSize: 26,
-      fontWeight: 'semibold',
-      textAlign: 'center',
-      marginBottom: 10
+      fontWeight: "semibold",
+      textAlign: "center",
+      marginBottom: 10,
     },
     description: {
       fontSize: 16,
-      fontWeight: 'normal',
-      textAlign: 'center'
-    }
+      fontWeight: "normal",
+      textAlign: "center",
+    },
   });
 }

@@ -11,8 +11,10 @@ import NumberInputField from "@/components/ui/form/NumberInputField";
 import DateInputField from "@/components/ui/form/DateInputField";
 import CheckboxField from "@/components/ui/form/CheckboxField";
 import Button from "@/components/ui/buttons/Button";
+import { useRouter } from "expo-router";
 
 export default function PaymentScreen() {
+  const router = useRouter()
   const { colorScheme, theme, primaryColor } = useTheme();
   const [name, setName] = useState<string>("");
   const [cardNum, setCardNum] = useState<number | undefined>(undefined);
@@ -23,7 +25,7 @@ export default function PaymentScreen() {
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   const handlePayment = () => {
-
+    router.push('/subscription/payment_success')
   }
 
   return (
