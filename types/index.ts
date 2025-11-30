@@ -28,7 +28,10 @@ export interface PrimaryColorTypes {
   primaryBlack: string;
   secondaryBlack: string;
   greenNormal: string;
+  secondaryGreen: string
   primaryGray: string;
+  primaryRed: string
+  secondaryRed: string
 }
 
 export interface ColorsTypes {

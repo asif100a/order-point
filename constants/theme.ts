@@ -30,7 +30,10 @@ export const Colors: ColorsTypes = {
     primaryBlack: "#303030",
     secondaryBlack: "#606060",
     greenNormal: '#57C78F',
+    secondaryGreen: '#E0F1E8',
     primaryGray: '#F3F3F5',
+    primaryRed: '#FD003A',
+    secondaryRed: '#FD003A26'
   },
 };
 
