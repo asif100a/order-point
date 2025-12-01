@@ -76,7 +76,7 @@ function createStyle({
     },
     tab: {
       width: tabWidth,
-      height: 56,
+      height: 36,
       borderRadius: 30,
       justifyContent: "center",
       alignItems: "center",

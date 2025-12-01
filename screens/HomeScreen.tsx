@@ -9,10 +9,13 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import TextInputField from "@/components/ui/form/TextInputField";
 import Categories from "@/components/ui/homePage/Categories";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import FilterModal from "@/components/ui/homePage/FilterModal";
 
 export default function HomeScreen() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filterOpen, setFilterOpen] = useState<boolean>(false);
 
   const { colorScheme, theme, primaryColor } = useTheme();
 
@@ -43,6 +46,7 @@ export default function HomeScreen() {
           {/* 2 Buttons */}
           <View style={styles.iconsContainer}>
             <View style={{ position: "relative" }}>
+              {/* Notification */}
               <Pressable style={styles.roundButton}>
                 <Feather name="bell" size={24} color="black" />
               </Pressable>
@@ -51,8 +55,12 @@ export default function HomeScreen() {
                 <View style={styles.redDot} />
               </View>
             </View>
-            <Pressable style={styles.roundButton}>
-              <MaterialIcons name="menu-open" size={24} color="black" />
+            {/* Filter */}
+            <Pressable
+              onPress={() => setFilterOpen(true)}
+              style={styles.roundButton}
+            >
+              <Ionicons name="filter-circle-outline" size={24} color="black" />
             </Pressable>
           </View>
         </View>
@@ -68,6 +76,9 @@ export default function HomeScreen() {
 
       {/* Categories */}
       <Categories />
+
+      {/* Modal */}
+      <FilterModal visible={filterOpen} onClose={setFilterOpen} />
     </SafeAreaView>
   );
 }

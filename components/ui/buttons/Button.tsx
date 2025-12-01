@@ -11,10 +11,14 @@ export default function Button({
   title,
   onPress,
   style,
+  height,
+  padding
 }: {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
+  height?: number
+  padding?: number
 }) {
   return (
     <TouchableOpacity
@@ -26,7 +30,7 @@ export default function Button({
         colors={["#1CD77A", "#0BF3E7"]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
-        style={[styles.button]}
+        style={[styles.button, {height: height ?? 56, padding: padding ?? 0}]}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </LinearGradient>
