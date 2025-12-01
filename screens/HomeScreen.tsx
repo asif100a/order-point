@@ -77,6 +77,8 @@ export default function HomeScreen() {
       {/* Categories */}
       <Categories />
 
+      {/* Bottom Tabs */}
+
       {/* Modal */}
       <FilterModal visible={filterOpen} onClose={setFilterOpen} />
     </SafeAreaView>
