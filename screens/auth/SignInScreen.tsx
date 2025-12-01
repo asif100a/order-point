@@ -22,7 +22,7 @@ const SignInScreen = () => {
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
   const handleLogin = () => {
-    router.push('/(tabs)/home')
+    router.push('/(tabs)/index')
   };
 
   return (

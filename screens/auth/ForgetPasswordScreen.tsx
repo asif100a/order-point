@@ -38,7 +38,7 @@ export default function ForgetPasswordScreen() {
           {/* Title */}
           <TopNavigationHeader
             title="Forget Password"
-            link="/auth/sign_in"
+            link={"/auth/sign_in" as any}
             description="Please enter your email address which was used to create your account"
           />
 
