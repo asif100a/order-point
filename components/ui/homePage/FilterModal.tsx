@@ -11,6 +11,7 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import Button from "../buttons/Button";
 import DateInputField from "../form/DateInputField";
+import TimeInputField from "../form/TimeInputField";
 
 export default function FilterModal({
   visible,
@@ -21,6 +22,7 @@ export default function FilterModal({
 }) {
   const { colorScheme, theme, primaryColor } = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date | null>(new Date());
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -41,6 +43,12 @@ export default function FilterModal({
             placeholder="Enter Date"
             date={selectedDate}
             onDateChange={setSelectedDate}
+          />
+          <TimeInputField
+          label=""
+          placeholder=""
+          time={selectedTime}
+          onTimeChange={setSelectedTime}
           />
         </View>
 

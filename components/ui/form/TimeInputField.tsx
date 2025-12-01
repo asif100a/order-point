@@ -1,20 +1,22 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function TimeInputField({
-  label = 'Text',
-  value,
-  onTextChange,
-  placeholder = "Enter Your Text"
+  label = "Text",
+  time,
+  onTimeChange,
+  placeholder = "Enter Your Text",
 }: {
-  label?: string,
-  value: string;
-  onTextChange: (value: string) => void;
-  placeholder?: string
+  label?: string;
+  time: Date | null;
+  onTimeChange: Dispatch<SetStateAction<Date | null>>;
+  placeholder?: string;
 }) {
   const { colorScheme, primaryColor } = useTheme();
+  const [show, setShow] = useState<boolean>(false);
 
   const styles = createStyles({ colorScheme, primaryColor });
 
@@ -24,10 +26,19 @@ export default function TimeInputField({
       <TextInput
         style={styles.inputField}
         placeholder={placeholder}
-        value={value}
-        onChangeText={onTextChange}
+        value={time?.toLocaleTimeString()}
         keyboardType="default"
+        onPress={() => setShow(true)}
       />
+
+      {show && time && (
+        <DateTimePicker
+          value={time}
+          mode="time"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(time) => onTimeChange(time)}
+        />
+      )}
     </View>
   );
 }
