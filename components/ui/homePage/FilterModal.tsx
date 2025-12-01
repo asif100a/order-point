@@ -12,6 +12,8 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import Button from "../buttons/Button";
 import DateInputField from "../form/DateInputField";
 import TimeInputField from "../form/TimeInputField";
+import SelectInputField from "../form/SelectInputField";
+import TextInputField from "../form/TextInputField";
 
 export default function FilterModal({
   visible,
@@ -21,6 +23,8 @@ export default function FilterModal({
   onClose: (value: boolean) => void;
 }) {
   const { colorScheme, theme, primaryColor } = useTheme();
+  const [location, setLocation] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedTime, setSelectedTime] = useState<Date | null>(new Date());
 
@@ -38,18 +42,50 @@ export default function FilterModal({
       <View style={styles.modalContainer}>
         {/* Form */}
         <View style={styles.formContainer}>
-          <DateInputField
-            label="Date"
-            placeholder="Enter Date"
-            date={selectedDate}
-            onDateChange={setSelectedDate}
-          />
-          <TimeInputField
-          label=""
-          placeholder=""
-          time={selectedTime}
-          onTimeChange={setSelectedTime}
-          />
+          {/* Category & Location */}
+          <View style={styles.fieldGroup}>
+            <View style={styles.field}>
+              <SelectInputField
+                label="Category"
+                placeholder="Select category"
+                value={category}
+                onSelectChange={setCategory}
+                options={[
+                  { label: "Category 1", value: "category_1" },
+                  { label: "Category 2", value: "category_2" },
+                  { label: "Category 3", value: "category_3" },
+                ]}
+              />
+            </View>
+
+            <View style={styles.field}>
+              <TextInputField
+                label="Location"
+                placeholder="Enter location"
+                value={location}
+                onTextChange={setLocation}
+              />
+            </View>
+          </View>
+          {/* Date & Time */}
+          <View style={styles.fieldGroup}>
+            <View style={styles.field}>
+              <DateInputField
+                label="Date"
+                placeholder="Enter Date"
+                date={selectedDate}
+                onDateChange={setSelectedDate}
+              />
+            </View>
+            <View style={styles.field}>
+              <TimeInputField
+                label="Expiring soon"
+                placeholder="Enter Time"
+                time={selectedTime}
+                onTimeChange={setSelectedTime}
+              />
+            </View>
+          </View>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -90,11 +126,19 @@ function createStyles(
       position: "absolute",
       top: 0,
       padding: 16,
-      borderRadius: 16,
+      borderBottomEndRadius: 16,
+      borderBottomStartRadius: 16,
       backgroundColor: colorScheme === "dark" ? "#000000" : "white",
     },
     formContainer: {
       width: "100%",
+    },
+    fieldGroup: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    field: {
+      width: "48%",
     },
     buttonContainer: {
       flexDirection: "row",

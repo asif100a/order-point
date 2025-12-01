@@ -1,4 +1,11 @@
-import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Platform,
+  Pressable,
+} from "react-native";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
@@ -23,20 +30,26 @@ export default function TimeInputField({
   return (
     <View style={styles.inputContainer}>
       <Text style={[styles.label, styles.primaryFontSize]}>{label}</Text>
-      <TextInput
-        style={styles.inputField}
-        placeholder={placeholder}
-        value={time?.toLocaleTimeString()}
-        keyboardType="default"
-        onPress={() => setShow(true)}
-      />
+      <Pressable onPress={() => setShow(true)}>
+        <TextInput
+          style={styles.inputField}
+          placeholder={placeholder}
+          value={time?.toLocaleTimeString()}
+          keyboardType="default"
+          editable={false}
+          pointerEvents="none"
+        />
+      </Pressable>
 
       {show && time && (
         <DateTimePicker
           value={time}
           mode="time"
           display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={(time) => onTimeChange(time)}
+          onChange={(event, selectedTime) => {
+            setShow(Platform.OS === "ios");
+            if (selectedTime) onTimeChange(selectedTime);
+          }}
         />
       )}
     </View>
@@ -68,7 +81,7 @@ function createStyles({
       backgroundColor:
         colorScheme === "dark" ? "white" : primaryColor.primaryGray,
       borderColor: colorScheme === "dark" ? "white" : primaryColor.primaryGray,
-      borderRadius: 24,
+      borderRadius: 50,
       paddingHorizontal: 16,
     },
   });
