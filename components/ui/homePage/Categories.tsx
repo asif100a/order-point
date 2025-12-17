@@ -19,7 +19,6 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Ionicons from '@expo/vector-icons/Ionicons';
 import Button from "../buttons/Button";
 import { Link } from "expo-router";
 

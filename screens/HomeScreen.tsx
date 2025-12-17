@@ -2,7 +2,6 @@ import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import Profile_Image from "@/assets/images/profile/user.jpg";
 import Feather from "@expo/vector-icons/Feather";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import useTheme from "@/hooks/useTheme";
@@ -11,6 +10,7 @@ import TextInputField from "@/components/ui/form/TextInputField";
 import Categories from "@/components/ui/homePage/Categories";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterModal from "@/components/ui/homePage/FilterModal";
+import HomePageSearchbar from "@/components/ui/homePage/HomePageSearchbar";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -66,18 +66,11 @@ export default function HomeScreen() {
         </View>
 
         {/* Search bar */}
-        <TextInputField
-          label=""
-          placeholder="🔍 Looking for..."
-          value={searchTerm}
-          onTextChange={setSearchTerm}
-        />
+       <HomePageSearchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </View>
 
       {/* Categories */}
       <Categories />
-
-      {/* Bottom Tabs */}
 
       {/* Modal */}
       <FilterModal visible={filterOpen} onClose={setFilterOpen} />
