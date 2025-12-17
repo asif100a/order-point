@@ -47,7 +47,7 @@ export default function HomeScreen() {
           <View style={styles.iconsContainer}>
             <View style={{ position: "relative" }}>
               {/* Notification */}
-              <Pressable style={styles.roundButton}>
+              <Pressable style={styles.roundButton} onPress={() => router.push('/notification')}>
                 <Feather name="bell" size={24} color="black" />
               </Pressable>
 
