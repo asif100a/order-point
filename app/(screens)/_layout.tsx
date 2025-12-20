@@ -21,6 +21,9 @@ export default function _layout() {
       <Stack.Screen name="subscription/choose_plan" options={{headerShown: false}} />
       <Stack.Screen name="subscription/payment" options={{headerShown: false}} />
       <Stack.Screen name="subscription/payment_success" options={{headerShown: false}} />
+
+      {/* Notification */}
+      <Stack.Screen name="notification" options={{headerShown: false}} />
     </Stack>
   );
 }

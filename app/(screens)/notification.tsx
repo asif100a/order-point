@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import TopNavigationHeader from '@/components/ui/navigation/TopNavigationHeader'
+import { View } from "react-native";
+import React from "react";
+import NotificationScreen from "@/screens/NotificationScreen";
+import useTheme from "@/hooks/useTheme";
 
-export default function notification() {
+export default function Notification() {
+  const { theme } = useTheme();
   return (
-    <View>
-      <TopNavigationHeader title='Notifications' description='' link={'/home' as any} />
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <NotificationScreen />
     </View>
-  )
+  );
 }
