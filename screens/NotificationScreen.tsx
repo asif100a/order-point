@@ -5,8 +5,9 @@ import {
   Pressable,
   FlatList,
   TouchableHighlight,
+  Animated,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
@@ -27,7 +28,98 @@ const NOTIFICATION_DATA: NotificationData[] = [
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature.",
     time: "1h",
   },
+  {
+    title: "New Discount to near you ",
+    description:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature.",
+    time: "1h",
+  },
+  {
+    title: "New Discount to near you ",
+    description:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature.",
+    time: "1h",
+  },
+  {
+    title: "New Discount to near you ",
+    description:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature.",
+    time: "1h",
+  },
 ];
+
+const NotificationItem = ({
+  item,
+  index,
+  currentId,
+  showDelete,
+  handleViewDeleteIcon,
+  styles,
+  primaryColor,
+}: {
+  item: NotificationData;
+  index: number;
+  currentId: string;
+  showDelete: boolean;
+  handleViewDeleteIcon: (id: string) => void;
+  styles: any;
+  primaryColor: PrimaryColorTypes;
+}) => {
+  const slideAmin = useRef(new Animated.Value(80)).current;
+
+  useEffect(() => {
+    if (currentId === index.toString() && showDelete) {
+      Animated.timing(slideAmin, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(slideAmin, {
+        toValue: 80,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [currentId, showDelete, index, slideAmin]);
+
+  return (
+    <Pressable onPress={() => handleViewDeleteIcon(index.toString())}>
+      <View style={styles.card}>
+        {/* calendar */}
+        <View style={styles.calendarContainer}>
+          <FontAwesome
+            name="calendar"
+            size={24}
+            color={primaryColor.greenNormal}
+          />
+        </View>
+        <View style={styles.cardMain}>
+          <View style={styles.textContainer}>
+            <View style={styles.titleAndTime}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.time}>{item.time}</Text>
+            </View>
+            <Text style={styles.description}>{item.description}</Text>
+          </View>
+          {/* Delete Button */}
+        </View>
+        <Animated.View
+          style={[
+            styles.deleteButton,
+            {
+              transform: [{ translateX: slideAmin }],
+            },
+          ]}
+        >
+          <TouchableHighlight style={styles.deleteButton} onPress={() => console.log('Delete pressed')} underlayColor='#9A0010'>
+            <MaterialIcons name="delete-outline" size={32} color="white" />
+          </TouchableHighlight>
+        </Animated.View>
+      </View>
+    </Pressable>
+  );
+};
 
 export default function NotificationScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -37,8 +129,13 @@ export default function NotificationScreen() {
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   const handleViewDeleteIcon = (id: string) => {
-    setShowDelete(!showDelete);
-    setCurrentId(id);
+    if(currentId === id && showDelete) {
+      setShowDelete(false);
+      setCurrentId('')
+    }else{
+      setShowDelete(true)
+      setCurrentId(id)
+    }
   };
 
   return (
@@ -64,37 +161,15 @@ export default function NotificationScreen() {
           keyExtractor={(_, i) => i.toString()}
           style={styles.cardContainer}
           renderItem={({ item, index }) => (
-            <Pressable onPress={() => handleViewDeleteIcon(index.toString())}>
-              <View style={styles.card}>
-                {/* calendar */}
-                <View style={styles.calendarContainer}>
-                  <FontAwesome
-                    name="calendar"
-                    size={24}
-                    color={primaryColor.greenNormal}
-                  />
-                </View>
-                <View style={styles.cardMain}>
-                  <View style={styles.textContainer}>
-                    <View style={styles.titleAndTime}>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.time}>{item.time}</Text>
-                    </View>
-                    <Text style={styles.description}>{item.description}</Text>
-                  </View>
-                  {/* Delete Button */}
-                </View>
-                  {currentId === index.toString() && showDelete && (
-                    <TouchableHighlight style={styles.deleteButton}>
-                      <MaterialIcons
-                        name="delete-outline"
-                        size={32}
-                        color="white"
-                      />
-                    </TouchableHighlight>
-                  )}
-              </View>
-            </Pressable>
+            <NotificationItem
+              item={item}
+              index={index}
+              currentId={currentId}
+              showDelete={showDelete}
+              handleViewDeleteIcon={handleViewDeleteIcon}
+              styles={styles}
+              primaryColor={primaryColor}
+            />
           )}
         />
       </View>
@@ -140,6 +215,8 @@ function createStyles(
       padding: 16,
       backgroundColor: primaryColor.secondaryGreen,
       borderRadius: 8,
+      marginBottom: 12,
+      overflow: 'hidden'
     },
     calendarContainer: {
       backgroundColor: colorScheme === "dark" ? "#00000040" : "white",
@@ -151,7 +228,7 @@ function createStyles(
     },
     cardMain: {
       flex: 1,
-      flexDirection: 'row'
+      flexDirection: "row",
     },
     textContainer: {
       flex: 1,
@@ -180,15 +257,15 @@ function createStyles(
       color: colorScheme === "dark" ? "white" : primaryColor.secondaryBlack,
     },
     deleteButton: {
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        bottom: 0,
-        width: 72,
-        backgroundColor: '#B50012',
-        borderRadius: 8,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
+      position: "absolute",
+      right: 0,
+      top: 0,
+      bottom: 0,
+      width: 80,
+      backgroundColor: "#B50012",
+      borderRadius: 8,
+      justifyContent: "center",
+      alignItems: "center",
+    },
   });
 }

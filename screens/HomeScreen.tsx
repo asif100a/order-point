@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
-import TextInputField from "@/components/ui/form/TextInputField";
 import Categories from "@/components/ui/homePage/Categories";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterModal from "@/components/ui/homePage/FilterModal";

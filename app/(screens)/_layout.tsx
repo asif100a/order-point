@@ -24,6 +24,9 @@ export default function _layout() {
 
       {/* Notification */}
       <Stack.Screen name="notification" options={{headerShown: false}} />
+
+      {/* Map */}
+      <Stack.Screen name="map" options={{headerShown: false}} />
     </Stack>
   );
 }

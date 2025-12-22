@@ -149,7 +149,7 @@ export default function Categories() {
                       color={primaryColor.greenNormal}
                     />
 
-                    <Link href={"/home"}>
+                    <Link href={"/map"}>
                       <Text style={styles.linkText}>View</Text>
                     </Link>
                   </View>
