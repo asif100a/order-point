@@ -27,6 +27,9 @@ export default function _layout() {
 
       {/* Map */}
       <Stack.Screen name="map" options={{headerShown: false}} />
+
+      {/* Details Page */}
+      <Stack.Screen name="/details" options={{headerShown: false}} />
     </Stack>
   );
 }

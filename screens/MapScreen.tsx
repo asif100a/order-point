@@ -12,6 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 
 interface MarkerData {
   id: string;
@@ -61,6 +63,7 @@ export default function MapScreen() {
     "standard"
   );
 
+  const router = useRouter();
   const { colorScheme, theme, primaryColor } = useTheme();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
@@ -128,6 +131,14 @@ export default function MapScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Back Button */}
+      <Pressable
+        style={styles.backButton}
+        onPress={() => router.push("/(tabs)")}
+      >
+        <AntDesign name="left" size={22} color="black" />
+      </Pressable>
+
       {/* Map */}
       <MapView
         ref={mapRef}
@@ -228,6 +239,18 @@ function createStyles(
   return StyleSheet.create({
     container: {
       backgroundColor: "#fff",
+    },
+    backButton: {
+      position: "absolute",
+      top: 180,
+      left: 16,
+      zIndex: 10,
+      width: 38,
+      height: 38,
+      padding: 8,
+      borderRadius: "50%",
+      backgroundColor:
+        colorScheme === "dark" ? "white" : primaryColor.primaryGray,
     },
     map: {
       width: "100%",
