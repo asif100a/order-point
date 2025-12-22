@@ -146,141 +146,103 @@ function createStyles(
       backgroundColor: colorScheme === "dark" ? theme.background : "white",
       padding: 20,
     },
-    categoryText: {
-      fontSize: 18,
-      fontWeight: "500",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 12,
-    },
+
     card: {
       backgroundColor: theme.background,
       flexDirection: "column",
       gap: 14,
       marginBottom: 18,
     },
+
     image: {
       width: 272,
       height: 272,
       marginHorizontal: "auto",
     },
+
     qrCodeInfo: {
       marginTop: 40,
-      marginBottom: 20
+      marginBottom: 20,
     },
+
     limitationText: {
       fontSize: 18,
-      fontWeight: 500,
-      textAlign: 'center',
-      marginBottom: 6
+      fontWeight: "500",
+      textAlign: "center",
+      marginBottom: 6,
     },
+
     expirationText: {
       fontSize: 20,
-      fontWeight: 600,
-      textAlign: 'center'
+      fontWeight: "600",
+      textAlign: "center",
     },
-    discountContainer: {
-      backgroundColor: primaryColor.secondaryGreen,
-      padding: 8,
-      borderStartEndRadius: 12,
-      borderEndStartRadius: 12,
-    },
-    discountText: {
-      fontSize: 15,
-      fontWeight: "medium",
-      color: primaryColor.greenNormal,
-    },
+
     contentContainer: {
       width: "100%",
       flexDirection: "column",
       gap: 10,
     },
+
     hotelLocationContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
     },
+
     hotel: {
       flexDirection: "row",
       alignItems: "center",
       gap: 4,
     },
+
     hotelText: {
       fontSize: 18,
-      fontWeight: "semibold",
+      fontWeight: "600",
     },
-    locationContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 0,
-    },
-    linkText: {
-      color: primaryColor.greenNormal,
-      textDecorationLine: "underline",
-    },
+
     titleDescriptionContainer: {
       width: "auto",
     },
+
     titleContainer: {
       flexDirection: "row",
       alignItems: "center",
       gap: 4,
     },
+
     title: {
       fontSize: 16,
-      fontWeight: "semibold",
+      fontWeight: "600",
       marginBottom: 6,
     },
-    categoryContainer: {
-      padding: 4,
-      backgroundColor: primaryColor.secondaryGreen,
-      borderRadius: 4,
-    },
-    category: {
-      fontSize: 14,
-      fontWeight: "normal",
-      color: primaryColor.greenNormal,
-    },
-    description: {
-      fontSize: 14,
-      color: primaryColor.secondaryBlack,
-    },
+
     infoContainer: {
       width: "100%",
     },
+
     infoContentContainer: {
       flexDirection: "column",
       gap: 12,
     },
+
     infoContent: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
     },
+
     iconTitle: {
       flexDirection: "row",
       gap: 4,
       alignItems: "center",
     },
+
     infoText: {
       fontSize: 14,
-      fontWeight: "medium",
+      fontWeight: "500",
     },
-    buttonsContainer: {
-      flexDirection: "row",
-      gap: 14,
-      marginTop: 12,
-    },
-    roundButton: {
-      borderRadius: 50,
-      backgroundColor: primaryColor.secondaryGreen,
-      width: 48,
-      height: 48,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    activeButton: {
-      backgroundColor: primaryColor.secondaryRed,
-    },
+
     status: {
       color: primaryColor.greenNormal,
       backgroundColor: primaryColor.secondaryGreen,
