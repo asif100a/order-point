@@ -136,7 +136,7 @@ export default function Categories() {
             <View style={styles.contentContainer}>
               {/* Hotel Name & Location */}
               <View style={styles.hotelLocationContainer}>
-                <View>
+                <View style={styles.hotel}>
                   <Image
                     source={item.hotelImage}
                     alt={item.hotelName}
@@ -291,6 +291,11 @@ function createStyles(
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
+    },
+      hotel: {
+      flexDirection: 'row', 
+      alignItems: 'center',
+      gap: 4
     },
     hotelText: {
       fontSize: 18,

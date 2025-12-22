@@ -10,7 +10,9 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
-import { SafeAreaView } from "react-native-safe-area-context";
+import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 
 export default function DetailsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -19,8 +21,14 @@ export default function DetailsScreen() {
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   return (
-      <SafeAreaView>
+    <ScreenContainer>
         <View style={styles.container}>
+          <TopNavigationHeader
+            title="Details Page"
+            description=""
+            link={"/(tabs)" as any}
+          />
+
           {/* Image */}
           <View
             style={{
@@ -45,7 +53,7 @@ export default function DetailsScreen() {
           <View style={styles.contentContainer}>
             {/* Hotel Name & Location */}
             <View style={styles.hotelLocationContainer}>
-              <View>
+              <View style={styles.hotel}>
                 <Image
                   source={hotelImg}
                   alt={"Hotel Image"}
@@ -85,7 +93,6 @@ export default function DetailsScreen() {
               <View style={styles.infoContentContainer}>
                 {/* Discount */}
                 <View style={styles.infoContent}>
-                  {/* Icon & Title */}
                   <View style={styles.iconTitle}>
                     <MaterialCommunityIcons
                       name="ticket-percent-outline"
@@ -95,7 +102,29 @@ export default function DetailsScreen() {
                     <Text style={styles.infoText}>Discount</Text>
                   </View>
 
-                  <Text>{"item.discount"}</Text>
+                  <Text>{20}</Text>
+                </View>
+                {/* Save */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <MaterialCommunityIcons
+                      name="wallet"
+                      size={24}
+                      color="black"
+                    />
+                    <Text style={styles.infoText}>Save</Text>
+                  </View>
+
+                  <Text>${20}</Text>
+                </View>
+                {/* Location */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <EvilIcons name="location" size={24} color="black" />
+                    <Text style={styles.infoText}>Location</Text>
+                  </View>
+
+                  <Text>{"Mohakhali, gulsan 01"}</Text>
                 </View>
                 {/* Date */}
                 <View style={styles.infoContent}>
@@ -104,7 +133,7 @@ export default function DetailsScreen() {
                     <Text style={styles.infoText}>Date</Text>
                   </View>
 
-                  <Text>{"item.date"}</Text>
+                  <Text>{"23 sep 2025"}</Text>
                 </View>
                 {/* Stat time */}
                 <View style={styles.infoContent}>
@@ -113,7 +142,52 @@ export default function DetailsScreen() {
                     <Text style={styles.infoText}>Stat time</Text>
                   </View>
 
-                  <Text>{"item.startTime"}</Text>
+                  <Text>{"03:00 PM"}</Text>
+                </View>
+                {/* End time */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <Feather name="clock" size={24} color="black" />
+                    <Text style={styles.infoText}>End time</Text>
+                  </View>
+
+                  <Text>{"09:00 PM"}</Text>
+                </View>
+                {/* Same QR code can use */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <AntDesign name="qrcode" size={24} color="black" />
+                    <Text style={styles.infoText}>Same QR code can use</Text>
+                  </View>
+
+                  <Text>{"05 Time"}</Text>
+                </View>
+                {/* Website */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <MaterialCommunityIcons name="web" size={24} color="black" />
+                    <Text style={styles.infoText}>Website</Text>
+                  </View>
+
+                  <Text>{"www.dailydaawat.com"}</Text>
+                </View>
+                {/* Facebook */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                    <Feather name="facebook" size={24} color="black" />
+                    <Text style={styles.infoText}>Facebook</Text>
+                  </View>
+
+                  <Text>{"fb/dailydaawat"}</Text>
+                </View>
+                {/* LinkedIn */}
+                <View style={styles.infoContent}>
+                  <View style={styles.iconTitle}>
+                   <Feather name="linkedin" size={24} color="black" />
+                    <Text style={styles.infoText}>LinkedIn</Text>
+                  </View>
+
+                  <Text>{"linkedin/dailydaawat"}</Text>
                 </View>
               </View>
               {/* Buttons */}
@@ -141,7 +215,7 @@ export default function DetailsScreen() {
             </View>
           </View>
         </View>
-      </SafeAreaView>
+      </ScreenContainer>
   );
 }
 
@@ -151,10 +225,10 @@ function createStyles(
   primaryColor: PrimaryColorTypes
 ) {
   return StyleSheet.create({
-    container: {
+    mainContainer: {
       width: "100%",
       height: "100%",
-      padding: 20
+      backgroundColor: theme.background,
     },
     categoryText: {
       fontSize: 18,
@@ -162,8 +236,7 @@ function createStyles(
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       marginBottom: 12,
     },
-    card: {
-      backgroundColor: theme.background,
+    container: {
       flexDirection: "column",
       gap: 14,
       marginBottom: 18,
@@ -193,6 +266,11 @@ function createStyles(
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
+    },
+    hotel: {
+      flexDirection: 'row', 
+      alignItems: 'center',
+      gap: 4
     },
     hotelText: {
       fontSize: 18,
@@ -257,7 +335,7 @@ function createStyles(
     },
     buttonsContainer: {
       flexDirection: "row",
-      gap: 14,
+      justifyContent: "space-between",
       marginTop: 12,
     },
     roundButton: {
