@@ -213,7 +213,7 @@ export default function Categories() {
                   />
 
                   {/* QR Code */}
-                  <Pressable style={styles.roundButton}>
+                  <Pressable style={styles.roundButton} onPress={() => router.push('/qr_code')}>
                     <MaterialCommunityIcons
                       name="qrcode-scan"
                       size={24}

@@ -30,6 +30,9 @@ export default function _layout() {
 
       {/* Details Page */}
       <Stack.Screen name="details" options={{headerShown: false}} />
+
+      {/* Details Page */}
+      <Stack.Screen name="qr_code" options={{headerShown: false}} />
     </Stack>
   );
 }
