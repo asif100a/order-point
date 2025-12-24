@@ -9,10 +9,22 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SignInScreen = () => {
+const SignInScreen = ({
+  handleLogin,
+}: {
+  handleLogin: (email: string, pass: string) => void;
+}) => {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
   const [email, setEmail] = useState<string>("");
@@ -21,9 +33,7 @@ const SignInScreen = () => {
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
-  const handleLogin = () => {
-    router.push('/(tabs)')
-  };
+  const onSubmit = () => handleLogin(email, password);
 
   return (
     <View style={styles.container}>
@@ -32,77 +42,86 @@ const SignInScreen = () => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          {/* Prev Button */}
-          <Pressable
-            onPress={() => router.push("/auth_option")}
-            style={styles.prevArrow}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{flex: 1}}
           >
-            <AntDesign name="left" size={22} color="black" />
-          </Pressable>
-          {/* Logo */}
-          <Logo style={styles.logo} />
+            {/* Prev Button */}
+            <Pressable
+              onPress={() => router.push("/auth_option")}
+              style={styles.prevArrow}
+            >
+              <AntDesign name="left" size={22} color="black" />
+            </Pressable>
+            {/* Logo */}
+            <Logo style={styles.logo} />
 
-          {/* Main Content */}
-          <View style={styles.contentContainer}>
-            <Text style={styles.loginText}>Login</Text>
-            <Text style={[styles.description, styles.primaryFontSize]}>
-              Hi Welcome back..! Please enter your correct Information And
-              continue{" "}
-            </Text>
-
-            {/* Form */}
-            <View style={styles.form}>
-              {/* Email */}
-              <EmailInputField value={email} onEmailChange={setEmail} />
-              {/* Password */}
-              <PasswordInputField
-                value={password}
-                onPasswordChange={setPassword}
-              />
-
-              {/* Remember me & Forget Password */}
-              <View style={styles.rememberForgetContainer}>
-                {/* Remember me */}
-                <CheckboxField
-                  value={remember}
-                  onValueChange={setRemember}
-                  label="Remember me"
-                />
-                <Pressable onPress={() => router.push("/auth/forget_password")}>
-                  <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
-                    Forget your password?
-                  </Text>
-                </Pressable>
-              </View>
-
-              <Button title="Login" onPress={handleLogin} />
-
-              {/* Divider */}
-              <View style={styles.dividerContainer}>
-                <View style={styles.line} />
-                <Text style={[styles.primaryFontSize, { fontWeight: "500" }]}>
-                  Or
-                </Text>
-                <View style={styles.line} />
-              </View>
-
-              <SocialLogin />
-
-              <Text
-                style={[
-                  styles.primaryFontSize,
-                  { marginTop: 24, textAlign: "center" },
-                ]}
-              >
-                Do you have an account?{" "}
-                <Pressable onPress={() => router.push("/auth/sign_up")}>
-                  <Text style={{ color: "#57C78F", fontWeight: "600" }}>
-                    Sign Up
-                  </Text>
-                </Pressable>
+            {/* Main Content */}
+            <View style={styles.contentContainer}>
+              <Text style={styles.loginText}>Login</Text>
+              <Text style={[styles.description, styles.primaryFontSize]}>
+                Hi Welcome back..! Please enter your correct Information And
+                continue{" "}
               </Text>
+
+              {/* Form */}
+              <View style={styles.form}>
+                {/* Email */}
+                <EmailInputField value={email} onEmailChange={setEmail} />
+                {/* Password */}
+                <PasswordInputField
+                  value={password}
+                  onPasswordChange={setPassword}
+                />
+
+                {/* Remember me & Forget Password */}
+                <View style={styles.rememberForgetContainer}>
+                  {/* Remember me */}
+                  <CheckboxField
+                    value={remember}
+                    onValueChange={setRemember}
+                    label="Remember me"
+                  />
+                  <Pressable
+                    onPress={() => router.push("/auth/forget_password")}
+                  >
+                    <Text
+                      style={[styles.primaryFontSize, styles.forgetPassword]}
+                    >
+                      Forget your password?
+                    </Text>
+                  </Pressable>
+                </View>
+
+                <Button title="Login" onPress={onSubmit} />
+
+                {/* Divider */}
+                <View style={styles.dividerContainer}>
+                  <View style={styles.line} />
+                  <Text style={[styles.primaryFontSize, { fontWeight: "500" }]}>
+                    Or
+                  </Text>
+                  <View style={styles.line} />
+                </View>
+
+                <SocialLogin />
+
+                <Text
+                  style={[
+                    styles.primaryFontSize,
+                    { marginTop: 24, textAlign: "center" },
+                  ]}
+                >
+                  Do you have an account?{" "}
+                  <Pressable onPress={() => router.push("/auth/sign_up")}>
+                    <Text style={{ color: "#57C78F", fontWeight: "600" }}>
+                      Sign Up
+                    </Text>
+                  </Pressable>
+                </Text>
+              </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -156,7 +175,7 @@ function createStyles({
       lineHeight: 24,
     },
     form: {
-      marginVertical: 32
+      marginVertical: 32,
     },
     inputContainer: {
       marginBottom: 16,
