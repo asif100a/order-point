@@ -3,9 +3,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   GestureResponderEvent,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import useTheme from "@/hooks/useTheme";
 
 export default function Button({
   title,
@@ -24,6 +26,8 @@ export default function Button({
   loading?: boolean;
   loadingText?: string;
 }) {
+  const { primaryColor } = useTheme();
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -37,9 +41,11 @@ export default function Button({
         end={{ x: 0, y: 0 }}
         style={[styles.button, { height: height ?? 56, padding: padding ?? 0 }]}
       >
-        <Text style={styles.buttonText}>
-          {loading ? loadingText || title : title}
-        </Text>
+        {loading ? (
+          <Text style={styles.buttonText}>{title}</Text>
+        ) : (
+          <ActivityIndicator size="large" color={primaryColor.primaryRed} />
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );

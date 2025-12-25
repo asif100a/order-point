@@ -95,7 +95,7 @@ const SignInScreen = ({
                   </Pressable>
                 </View>
 
-                <Button title="Login" onPress={onSubmit} loading={isLoading} loadingText="Lo" />
+                <Button title="Login" onPress={onSubmit} loading={isLoading} loadingText="Logging in..." />
 
                 {/* Divider */}
                 <View style={styles.dividerContainer}>
