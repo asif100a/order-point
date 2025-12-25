@@ -10,10 +10,11 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   const handleLogin = (email: string, password: string) => {
+    console.log('Email: ', email, '\n Password: ', password)
     if(!email) {
-      return;
+      return alert('Email is missing!');
     }else if(!password) {
-      return;
+      return alert('Password is missing!');
     }
     dispatch(login({email, password}));
   };

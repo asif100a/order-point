@@ -11,25 +11,37 @@ import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader"
 import SocialLogin from "@/components/ui/parts/SocialLogin";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
+import { UserType } from "@/types/user.type";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({
+  handleSignUp,
+}: {
+  handleSignUp: (data: UserType) => void;
+}) {
   const router = useRouter();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
 
   const { theme, colorScheme, primaryColor } = useTheme();
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
-  const handleSignUp = () => {
-    router.push('/profile/add_photo')
-  };
+  const onSubmit = () =>
+    handleSignUp({
+      name,
+      email,
+      phoneNumber: phoneNumber?.toString() ?? "",
+      password,
+      confirmPassword,
+      isCheckedTermsAndConditions: checked,
+    });
 
   return (
     <ScreenContainer>
@@ -66,8 +78,8 @@ export default function SignUpScreen() {
           <PasswordInputField value={password} onPasswordChange={setPassword} />
           {/* Confirm Password */}
           <PasswordInputField
-            value={password}
-            onPasswordChange={setPassword}
+            value={confirmPassword}
+            onPasswordChange={setConfirmPassword}
             label="Confirm password"
             placeholder="Enter your confirm password"
           />
@@ -80,7 +92,7 @@ export default function SignUpScreen() {
           />
 
           {/* Submit Button */}
-          <Button title="Sign Up" onPress={handleSignUp} />
+          <Button title="Sign Up" onPress={onSubmit} />
 
           {/* Divider */}
           <View style={styles.dividerContainer}>

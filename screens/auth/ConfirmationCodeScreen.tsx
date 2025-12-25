@@ -5,39 +5,66 @@ import {
   ScrollView,
   TextInput,
   StyleSheet,
-  FlatList,
 } from "react-native";
-import React, { useState } from "react";
-import { useRouter } from "expo-router";
+import React, { useState, useRef } from "react";
 import useTheme from "@/hooks/useTheme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import Button from "@/components/ui/buttons/Button";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 
-export default function ConfirmationCodeScreen() {
-  const router = useRouter();
+export default function ConfirmationCodeScreen({
+  handleConfirmCode,
+}: {
+  handleConfirmCode: (otp: string) => void;
+}) {
   const { theme, colorScheme, primaryColor } = useTheme();
-  const [email, setEmail] = useState<string>("");
+  
+  // Store OTP as array of 6 digits
+  const [otp, setOTP] = useState<string[]>(["", "", "", "", "", ""]);
+  
+  // Create refs for each input to manage focus
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
-
   const windowHeight = Dimensions.get("screen").height;
-  const windowWidth = Dimensions.get("screen").width;
-  // console.log("Window Height: ", windowHeight);
-  // console.log("Window Width: ", windowWidth);
 
-  const handleForgetPass = () => {
-    router.push("/auth/create_new_password");
+  const handleOtpChange = (text: string, index: number) => {
+    // Only allow single digit
+    if (text.length > 1) {
+      text = text.slice(-1);
+    }
+
+    // Update OTP array
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOTP(newOtp);
+
+    // Auto-focus next input if digit entered
+    if (text && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
   };
 
-  const otpLength = Array.from({ length: 6 }).map((_, i) => ({
-    id: i.toString(),
-  }));
+  const handleKeyPress = (e: any, index: number) => {
+    // Handle backspace - move to previous input
+    if (e.nativeEvent.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
 
-  // const otpFields = () => (
-
-  // );
+  const onSubmit = () => {
+    const otpString = otp.join("");
+    
+    // Validate OTP is complete
+    if (otpString.length === 6) {
+      handleConfirmCode(otpString);
+    } else {
+      // Show error or alert
+      alert('Please complete the OTP code')
+      console.warn("Please enter complete OTP");
+    }
+  };
 
   return (
     <View style={[styles.container, { height: windowHeight }]}>
@@ -46,39 +73,41 @@ export default function ConfirmationCodeScreen() {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          {/* Title */}
           <TopNavigationHeader
             title="Confirm OTP"
             link={"/auth/forget_password" as any}
-            description="To confirm your account, enter the 6-digit code we
-sent to shahidhasn@gmail.com"
+            description="To confirm your account, enter the 6-digit code we sent to shahidhasn@gmail.com"
           />
 
-          {/* Form */}
           <View style={styles.form}>
             <View style={styles.inputContainer}>
               <Text style={[styles.label, styles.primaryFontSize]}>
                 Enter OTP
               </Text>
               <View style={styles.otpContainer}>
-                {otpLength.map((item) => (
+                {otp.map((digit, index) => (
                   <TextInput
-                    key={item.id}
+                    key={index}
+                    ref={(ref) => (inputRefs.current[index] = ref)}
                     style={styles.inputField}
-                    placeholder=""
-                    value={email}
-                    onChangeText={setEmail}
+                    value={digit}
+                    onChangeText={(text) => handleOtpChange(text, index)}
+                    onKeyPress={(e) => handleKeyPress(e, index)}
                     keyboardType="numeric"
+                    maxLength={1}
+                    textAlign="center"
+                    selectTextOnFocus
                   />
                 ))}
               </View>
             </View>
           </View>
-          {/* Main Content */}
+
           <View style={styles.contentContainer}></View>
+          
           <Button
             title="Send Code"
-            onPress={handleForgetPass}
+            onPress={onSubmit}
             style={{ marginTop: -38 }}
           />
         </ScrollView>
@@ -135,6 +164,8 @@ function createStyles({
       borderColor: colorScheme === "dark" ? "white" : primaryColor.primaryGray,
       borderRadius: 24,
       paddingHorizontal: 16,
+      fontSize: 20,
+      fontWeight: "600",
     },
     sendCode: {
       fontWeight: "500",
