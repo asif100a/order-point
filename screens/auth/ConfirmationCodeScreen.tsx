@@ -15,8 +15,10 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 
 export default function ConfirmationCodeScreen({
   handleConfirmCode,
+  isLoading
 }: {
   handleConfirmCode: (otp: string) => void;
+  isLoading: boolean
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
   
@@ -106,9 +108,11 @@ export default function ConfirmationCodeScreen({
           <View style={styles.contentContainer}></View>
           
           <Button
-            title="Send Code"
+            title="Verify Code"
             onPress={onSubmit}
             style={{ marginTop: -38 }}
+            loading={isLoading}
+            loadingText="Verifying..."
           />
         </ScrollView>
       </SafeAreaView>

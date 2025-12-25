@@ -3,14 +3,12 @@ import React from "react";
 import SignUpScreen from "@/screens/auth/SignUpScreen";
 import { UserType } from "@/types/user.type";
 import { useRouter } from "expo-router";
-import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "@/store/api/authApi";
 
 export default function SignUp() {
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const [register, {isLoading}] = useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation();
 
   const VerifyUser = (user: UserType): boolean => {
     for (const key of Object.keys(user)) {
@@ -31,7 +29,7 @@ export default function SignUp() {
     return true;
   };
 
-  const handleSignUp = async(data: UserType) => {
+  const handleSignUp = async (data: UserType) => {
     // console.log("User data: ", data);
     if (VerifyUser(data) === false) {
       return;
@@ -43,16 +41,22 @@ export default function SignUp() {
       password: data.password,
       contractNumber: data.phoneNumber,
     };
-    const res = await register(newUser as any);
-    console.log("Completed Response: ", res);
-    if(res?.data?.success) {
-      router.push('/auth/confirmation_code');
+    try {
+      const res = await register(newUser as any);
+      console.log("Completed Response: ", res);
+      if (res?.data?.success) {
+        alert('Your have signed up successfully')
+        router.push("/auth/confirmation_code");
+      }
+    } catch (error) {
+      console.error("❌ error while registering: ", error);
+      alert("Something went wrong! Please try again.");
     }
   };
 
   return (
     <View>
-      <SignUpScreen handleSignUp={handleSignUp} />
+      <SignUpScreen handleSignUp={handleSignUp} isLoading={isLoading} />
     </View>
   );
 }

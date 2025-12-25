@@ -1,38 +1,50 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {BaseQueryFn, FetchArgs, FetchBaseQueryError} from '@reduxjs/toolkit/query';
-import { tagTypes } from '../../type/tagType';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query";
+import { tagTypes } from "../../type/tagType";
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 // Custom base query with token handling
-const baseQueryWithAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async(args, api, extraOptions) => {
-    const token = await AsyncStorage.getItem('token');
-    
-    const baseQuery = fetchBaseQuery({
-        baseUrl: BACKEND_URL,
-        prepareHeaders: (headers) => {
-            if(token) {
-                headers.set('Authorization', token);
-            }
-            headers.set('Content-Type', 'application/json');
-            return headers;
-        }
-    });
+const baseQueryWithAuth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const token = await AsyncStorage.getItem("token");
+  const otpToken = await AsyncStorage.getItem("otpToken");
 
-    const result = await baseQuery(args, api, extraOptions);
+  const baseQuery = fetchBaseQuery({
+    baseUrl: BACKEND_URL,
+    prepareHeaders: (headers) => {
+      if (token) {
+        headers.set("Authorization", token);
+      }
+      if (otpToken) {
+        headers.set("Authorization", otpToken);
+      }
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+  });
 
-    // Handle 401 unauthorized - auto logout
-    if(result.error && result.error.status === 401) {
-        await AsyncStorage.removeItem('token');
-    }
+  const result = await baseQuery(args, api, extraOptions);
 
-    return result
-}
+  // Handle 401 unauthorized - auto logout
+  if (result.error && result.error.status === 401) {
+    await AsyncStorage.removeItem("token");
+  }
+
+  return result;
+};
 
 export const baseApi = createApi({
-    reducerPath: 'api',
-    baseQuery: baseQueryWithAuth,
-    tagTypes: [tagTypes.user, tagTypes.post, tagTypes.comment],
-    endpoints: () => ({})
-})
+  reducerPath: "api",
+  baseQuery: baseQueryWithAuth,
+  tagTypes: [tagTypes.user, tagTypes.post, tagTypes.comment],
+  endpoints: () => ({}),
+});

@@ -1,9 +1,7 @@
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/buttons/Button";
-import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
 import CheckboxField from "@/components/ui/form/CheckboxField";
 import EmailInputField from "@/components/ui/form/EmailInputField";
-import NumberInputField from "@/components/ui/form/NumberInputField";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import TextInputField from "@/components/ui/form/TextInputField";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
@@ -18,13 +16,15 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function SignUpScreen({
   handleSignUp,
+  isLoading,
 }: {
   handleSignUp: (data: UserType) => void;
+  isLoading: boolean;
 }) {
   const router = useRouter();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
@@ -65,13 +65,14 @@ export default function SignUpScreen({
             onTextChange={setName}
             label="User Name"
             placeholder="Enter your name"
-          />
+            />
           {/* Email */}
           <EmailInputField value={email} onEmailChange={setEmail} />
           {/* Phone Number */}
-          <NumberInputField
+          <TextInputField
             value={phoneNumber}
-            onNumberChange={setPhoneNumber}
+            label="Phone Number"
+            onTextChange={setPhoneNumber}
             placeholder="Enter your phone number"
           />
           {/* Password */}
@@ -92,7 +93,12 @@ export default function SignUpScreen({
           />
 
           {/* Submit Button */}
-          <Button title="Sign Up" onPress={onSubmit} />
+          <Button
+            title="Sign Up"
+            onPress={onSubmit}
+            loading={isLoading}
+            loadingText="Signing Up..."
+          />
 
           {/* Divider */}
           <View style={styles.dividerContainer}>
