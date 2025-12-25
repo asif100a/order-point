@@ -109,7 +109,7 @@ export default function SignUpScreen({
             <View style={styles.line} />
           </View>
 
-          <SocialLogin />
+          <SocialLogin isLoading={isLoading} />
 
           <Text
             style={[

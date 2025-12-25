@@ -14,10 +14,12 @@ export default function ButtonOutline({
   title,
   onPress,
   style,
+  loading
 }: {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
+  loading?: boolean
 }) {
   const { theme } = useTheme();
 
@@ -34,6 +36,7 @@ export default function ButtonOutline({
         onPress={onPress}
         activeOpacity={0.7}
         style={styles.button}
+        disabled={loading}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>

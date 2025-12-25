@@ -43,7 +43,7 @@ export default function SignUp() {
     };
     try {
       const res = await register(newUser as any);
-      console.log("Completed Response: ", res);
+      // console.log("Completed Response: ", res);
       if (res?.data?.success) {
         alert('Your have signed up successfully')
         router.push("/auth/confirmation_code");

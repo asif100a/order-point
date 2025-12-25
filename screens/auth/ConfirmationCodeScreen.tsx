@@ -15,16 +15,16 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 
 export default function ConfirmationCodeScreen({
   handleConfirmCode,
-  isLoading
+  isLoading,
 }: {
   handleConfirmCode: (otp: string) => void;
-  isLoading: boolean
+  isLoading: boolean;
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
-  
+
   // Store OTP as array of 6 digits
   const [otp, setOTP] = useState<string[]>(["", "", "", "", "", ""]);
-  
+
   // Create refs for each input to manage focus
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
@@ -57,13 +57,13 @@ export default function ConfirmationCodeScreen({
 
   const onSubmit = () => {
     const otpString = otp.join("");
-    
+
     // Validate OTP is complete
     if (otpString.length === 6) {
       handleConfirmCode(otpString);
     } else {
       // Show error or alert
-      alert('Please complete the OTP code')
+      alert("Please complete the OTP code");
       console.warn("Please enter complete OTP");
     }
   };
@@ -90,7 +90,9 @@ export default function ConfirmationCodeScreen({
                 {otp.map((digit, index) => (
                   <TextInput
                     key={index}
-                    ref={(ref) => (inputRefs.current[index] = ref)}
+                    ref={(ref) => {
+                      inputRefs.current[index] = ref;
+                    }}
                     style={styles.inputField}
                     value={digit}
                     onChangeText={(text) => handleOtpChange(text, index)}
@@ -106,7 +108,7 @@ export default function ConfirmationCodeScreen({
           </View>
 
           <View style={styles.contentContainer}></View>
-          
+
           <Button
             title="Verify Code"
             onPress={onSubmit}

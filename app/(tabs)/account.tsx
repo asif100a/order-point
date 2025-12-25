@@ -1,10 +1,16 @@
-import { View, Text } from 'react-native'
+import { Text } from 'react-native'
 import React from 'react'
+import PrivateRoute from '@/routes/PrivateRoute'
 
 export default function Account() {
   return (
-    <View>
+    <PrivateRoute>
       <Text>Account</Text>
-    </View>
+      <Text>Account</Text>
+      <Text>Account</Text>
+      <Text>Account</Text>
+      <Text>Account</Text>
+      <Text>Account</Text>
+    </PrivateRoute>
   )
 }

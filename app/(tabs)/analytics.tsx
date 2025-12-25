@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { Text } from "react-native";
+import React from "react";
+import PrivateRoute from "@/routes/PrivateRoute";
 
 export default function Analytics() {
   return (
-    <View>
+    <PrivateRoute>
       <Text>Analytics</Text>
-    </View>
-  )
+    </PrivateRoute>
+  );
 }

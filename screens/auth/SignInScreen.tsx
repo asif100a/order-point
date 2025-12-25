@@ -22,8 +22,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = ({
   handleLogin,
+  isLoading
 }: {
   handleLogin: (email: string, pass: string) => void;
+  isLoading: boolean
 }) => {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
@@ -93,7 +95,7 @@ const SignInScreen = ({
                   </Pressable>
                 </View>
 
-                <Button title="Login" onPress={onSubmit} />
+                <Button title="Login" onPress={onSubmit} loading={isLoading} loadingText="Lo" />
 
                 {/* Divider */}
                 <View style={styles.dividerContainer}>
@@ -104,7 +106,7 @@ const SignInScreen = ({
                   <View style={styles.line} />
                 </View>
 
-                <SocialLogin />
+                <SocialLogin isLoading={isLoading} />
 
                 <Text
                   style={[
