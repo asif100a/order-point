@@ -10,7 +10,7 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 20, frontColor: "#ED6665" },
   {
@@ -19,7 +19,7 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 40, frontColor: "#ED6665" },
   {
@@ -28,7 +28,7 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 25, frontColor: "#ED6665" },
   {
@@ -37,7 +37,7 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 20, frontColor: "#ED6665" },
   {
@@ -46,7 +46,7 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 40, frontColor: "#ED6665" },
   {
@@ -55,12 +55,12 @@ const barData = [
     spacing: 2,
     labelWidth: 30,
     labelTextStyle: { color: "gray" },
-    frontColor: "#177AD5",
+    frontColor: "#79D2DE",
   },
   { value: 30, frontColor: "#ED6665" },
 ];
 
-export default function VisitPatternChart() {
+export default function YearlySavingsChart() {
   const { primaryColor, colorScheme } = useTheme();
 
   const renderTitle = () => {
@@ -77,7 +77,7 @@ export default function VisitPatternChart() {
             } as object
           }
         >
-          Weekly Visit Pattern
+          Yearly Savings
         </Text>
         <View
           style={{
@@ -93,7 +93,7 @@ export default function VisitPatternChart() {
                 height: 12,
                 width: 12,
                 borderRadius: 6,
-                backgroundColor: "#177AD5",
+                backgroundColor: "#79D2DE",
                 marginRight: 8,
               }}
             />

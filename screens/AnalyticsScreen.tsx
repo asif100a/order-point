@@ -5,7 +5,7 @@ import {
   Image,
   ImageSourcePropType,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
@@ -17,6 +17,8 @@ import dollarPurpleIcon from "@/assets/icons/dollar-purple.png";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import VisitPatternChart from "@/components/ui/analyticsPage/VisitPatternChart";
+import FavoriteCategoriesChart from "@/components/ui/analyticsPage/FavoriteCategoriesChart";
+import YearlySavingsChart from "@/components/ui/analyticsPage/YearlySavingsChart";
 
 type StateType = {
   title: string;
@@ -74,6 +76,8 @@ const redemptionCategory: RedemptionCategoryType[] = [
 
 export default function AnalyticsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
+
+  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] = useState();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -144,6 +148,12 @@ export default function AnalyticsScreen() {
 
         {/* Weekly Visit Pattern:: Chart */}
         <VisitPatternChart />
+
+        {/* Favorite Categories:: Chart */}
+        <FavoriteCategoriesChart selected={selectedYearlyFavoriteCategory} setSelected={setSelectedYearlyFavoriteCategory} />
+
+        {/* Yearly Savings:: Chart */}
+        <YearlySavingsChart />
       </View>
     </ScreenContainer>
   );
@@ -244,16 +254,15 @@ function createStyles(
       marginVertical: 16,
     },
     overviewSection: {
-      width: "100%",
-      height: "auto",
       marginTop: 18,
-      paddingBottom: 36
+      paddingBottom: 76,
+      flexDirection: 'column',
+      gap: 24
     },
     overviewTitle: {
       fontSize: 22,
       fontWeight: 600,
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 20,
     },
     chartContainer: {
       padding: 16,
