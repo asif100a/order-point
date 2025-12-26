@@ -16,17 +16,17 @@ export default function SignIn() {
     } else if (!password) {
       return alert("Password is missing!");
     }
-    try {
-      const res = await login({email, password});
-      // console.log("Completed Response: ", res);
-      if (res?.data?.success) {
-        alert("Your have signed in successfully");
+    // try {
+    //   const res = await login({email, password});
+    //   // console.log("Completed Response: ", res);
+    //   if (res?.data?.success) {
+    //     alert("Your have signed in successfully");
         router.push("/(tabs)");
-      }
-    } catch (error) {
-      console.error("❌ error while singing in: ", error);
-      alert("Something went wrong! Please try again.");
-    }
+    //   }
+    // } catch (error) {
+    //   console.error("❌ error while singing in: ", error);
+    //   alert("Something went wrong! Please try again.");
+    // }
   };
 
   return (

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import useTheme from "@/hooks/useTheme";
-import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
+import { CategoryType, ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import Tabs from "./Tabs";
 import CategoryImg1 from "@/assets/images/category/category1.png";
 import CategoryImg2 from "@/assets/images/category/category2.png";
@@ -21,20 +21,6 @@ import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Button from "../buttons/Button";
 import { Link, useRouter } from "expo-router";
-
-interface CategoryType {
-  id: string;
-  title: string;
-  description: string;
-  hotelName: string;
-  hotelImage: string;
-  image: string;
-  discount: number;
-  date: string;
-  startTime: string;
-  category: "New Deal" | "Expire Soon";
-  location: string;
-}
 
 const TABS = ["Featured", "New", "Near by me"];
 

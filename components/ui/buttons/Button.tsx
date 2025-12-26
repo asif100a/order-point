@@ -42,9 +42,9 @@ export default function Button({
         style={[styles.button, { height: height ?? 56, padding: padding ?? 0 }]}
       >
         {loading ? (
-          <Text style={styles.buttonText}>{title}</Text>
-        ) : (
           <ActivityIndicator size="large" color={primaryColor.primaryRed} />
+        ) : (
+          <Text style={styles.buttonText}>{title}</Text>
         )}
       </LinearGradient>
     </TouchableOpacity>

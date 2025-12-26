@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,14 +15,14 @@ export default function ButtonOutline({
   title,
   onPress,
   style,
-  loading
+  loading,
 }: {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
-  loading?: boolean
+  loading?: boolean;
 }) {
-  const { theme } = useTheme();
+  const { theme, primaryColor } = useTheme();
 
   const styles = createStyles(theme);
 
@@ -38,7 +39,11 @@ export default function ButtonOutline({
         style={styles.button}
         disabled={loading}
       >
-        <Text style={styles.buttonText}>{title}</Text>
+        {loading ? (
+          <ActivityIndicator size="large" color={primaryColor.primaryRed} />
+        ) : (
+          <Text style={styles.buttonText}>{title}</Text>
+        )}
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -50,7 +55,7 @@ function createStyles(theme: ThemeTypes) {
       padding: 1,
       borderRadius: 25,
       borderColor: theme.background,
-      marginTop: 16
+      marginTop: 16,
     },
     button: {
       backgroundColor: "#fff",

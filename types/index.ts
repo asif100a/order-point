@@ -55,3 +55,17 @@ export interface WidgetTypes {
   description: string;
   icon: ImageSourcePropType | undefined;
 }
+
+export interface CategoryType {
+  id: string;
+  title: string;
+  description: string;
+  hotelName: string;
+  hotelImage: string;
+  image: string;
+  discount: number;
+  date: string;
+  startTime: string;
+  category: "New Deal" | "Expire Soon";
+  location: string;
+}
