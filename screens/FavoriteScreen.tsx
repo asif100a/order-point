@@ -142,7 +142,7 @@ function createStyles(
   return StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
+      padding: 16,
       backgroundColor: theme.background,
     },
     categoryText: {

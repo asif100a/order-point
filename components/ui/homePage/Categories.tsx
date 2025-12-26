@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useState } from "react";
 import useTheme from "@/hooks/useTheme";
@@ -104,7 +105,7 @@ export default function Categories() {
               }}
             >
               <Image
-                source={item.image as string}
+                source={item.image as ImageSourcePropType}
                 width={700}
                 height={220}
                 alt={item.title}
@@ -124,7 +125,7 @@ export default function Categories() {
               <View style={styles.hotelLocationContainer}>
                 <View style={styles.hotel}>
                   <Image
-                    source={item.hotelImage}
+                    source={item.hotelImage as ImageSourcePropType}
                     alt={item.hotelName}
                     width={32}
                     height={32}
