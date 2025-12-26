@@ -247,6 +247,7 @@ function createStyles(
       width: "100%",
       height: "auto",
       marginTop: 18,
+      paddingBottom: 36
     },
     overviewTitle: {
       fontSize: 22,
