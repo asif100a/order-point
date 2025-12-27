@@ -24,6 +24,8 @@ export default function SignIn() {
       return alert("Email is missing!");
     } else if (!password) {
       return alert("Password is missing!");
+    } else if (password.length < 6) {
+      return alert("Password must be greater than 6 or equal");
     }
     try {
       const res = await login({ email, password });

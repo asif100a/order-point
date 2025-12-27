@@ -5,32 +5,20 @@ import { UserType } from "@/types/user.type";
 import { useRouter } from "expo-router";
 import { useGetUserQuery, useRegisterMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
+import useAuth from "@/hooks/useAuth";
 
 export default function SignUp() {
   const router = useRouter();
 
   const [register, { isLoading }] = useRegisterMutation();
 
-  // If already user logged in redirect
-  const {
-    data: userRes,
-    isLoading: isProfileLoading,
-    isError,
-    error,
-  } = useGetUserQuery();
-  const user = userRes?.data;
+  const { user, hasToken, isAuthLoading } = useAuth();
 
   useEffect(() => {
-    if (user?._id) {
+    if (user?._id && !isAuthLoading && hasToken) {
       return router.push("/(tabs)");
     }
-  }, [user, router]);
-
-  useEffect(() => {
-    if (isError) {
-      console.error("❌ error while getting user: ", error);
-    }
-  }, [isError, error]);
+  }, [user, router, isAuthLoading, hasToken]);
 
   // Verify the User
   const VerifyUser = (user: UserType): boolean => {
@@ -44,6 +32,9 @@ export default function SignUp() {
     if (user.email && !emailRegex.test(user.email)) {
       alert("Please provide an valid email");
       return false;
+    } else if (user.password && user.password.length < 6) {
+      alert("Password must be greater than 6 or equal");
+      return false;
     }
     if (user.password !== user.confirmPassword) {
       alert("Password and Confirm password didn't match");
@@ -54,9 +45,7 @@ export default function SignUp() {
 
   const handleSignUp = async (data: UserType) => {
     // console.log("User data: ", data);
-    if (VerifyUser(data) === false) {
-      return;
-    }
+    if (!VerifyUser(data)) return;
 
     const newUser = {
       name: data.name,
@@ -77,7 +66,7 @@ export default function SignUp() {
     }
   };
 
-  if (isProfileLoading) {
+  if (isAuthLoading) {
     return <LoaderUI />;
   }
 

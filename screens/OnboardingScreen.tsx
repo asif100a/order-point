@@ -93,11 +93,11 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
   },
   bgImage: {
     width: "100%",
-    height: 632,
+    height: 642,
   },
   image: {
     width: "100%",
-    height: 628,
+    height: 640,
   },
   skipBtn: {
     position: "absolute",
@@ -118,7 +118,7 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
   },
   whiteShape: {
     width: "auto",
-    height: 410,
+    height: 420,
     overflow: "hidden",
     flex: 1,
     justifyContent: "center",
@@ -131,6 +131,7 @@ function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
     fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
+    backgroundColor: 'transparent',
   },
   description: {
     fontSize: 16,

@@ -76,7 +76,8 @@ const redemptionCategory: RedemptionCategoryType[] = [
 export default function AnalyticsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
 
-  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] = useState('');
+  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] =
+    useState("");
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -90,8 +91,8 @@ export default function AnalyticsScreen() {
 
       {/* States */}
       <View style={styles.stateContainer}>
-        {states.map((state: StateType) => (
-          <View key={state.title} style={styles.stateCard}>
+        {states.map((state: StateType, index: number) => (
+          <View key={index.toString()} style={styles.stateCard}>
             <View style={styles.stateTitleImgPair}>
               <Text style={styles.stateTitle}>{state.title}</Text>
               <Image
@@ -129,7 +130,7 @@ export default function AnalyticsScreen() {
         {redemptionCategory.map(
           (cat: RedemptionCategoryType, index: number) => (
             <>
-              <View key={cat.label} style={styles.redemptionCategory}>
+              <View key={index.toString()} style={styles.redemptionCategory}>
                 <Text style={styles.redemptionCategoryText}>{cat.label}</Text>
                 <Text style={styles.redemptionCategoryText}>{cat.value}%</Text>
               </View>
@@ -149,7 +150,10 @@ export default function AnalyticsScreen() {
         <VisitPatternChart />
 
         {/* Favorite Categories:: Chart */}
-        <FavoriteCategoriesChart selected={selectedYearlyFavoriteCategory} setSelected={setSelectedYearlyFavoriteCategory} />
+        <FavoriteCategoriesChart
+          selected={selectedYearlyFavoriteCategory}
+          setSelected={setSelectedYearlyFavoriteCategory}
+        />
 
         {/* Yearly Savings:: Chart */}
         <YearlySavingsChart />
@@ -255,8 +259,8 @@ function createStyles(
     overviewSection: {
       marginTop: 18,
       paddingBottom: 76,
-      flexDirection: 'column',
-      gap: 24
+      flexDirection: "column",
+      gap: 24,
     },
     overviewTitle: {
       fontSize: 22,

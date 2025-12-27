@@ -20,7 +20,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -65,16 +65,18 @@ export default function AccountScreen() {
         {/* Action buttons */}
         <View style={styles.actionButtonContainer}>
           {/* Edit Profile */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <FontAwesome name="user-o" size={24} color="black" />
-              <Text style={styles.buttonText}>Edit Profile</Text>
-            </View>
+          <Link href={"/profile/edit_profile"} asChild>
+            <Pressable style={styles.actionButton}>
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <FontAwesome name="user-o" size={24} color="black" />
+                <Text style={styles.buttonText}>Edit Profile</Text>
+              </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
+              {/* Icon */}
+              <AntDesign name="right" size={18} color="black" />
+            </Pressable>
+          </Link>
           {/* Manage Subscription */}
           <Pressable style={styles.actionButton}>
             <View style={styles.logoTextPair}>
@@ -87,16 +89,18 @@ export default function AccountScreen() {
             <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Change Password */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <Ionicons name="key-outline" size={24} color="black" />
-              <Text style={styles.buttonText}>Change Password</Text>
-            </View>
+          <Link href={"/profile/change_password"} asChild>
+            <Pressable style={styles.actionButton}>
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <Ionicons name="key-outline" size={24} color="black" />
+                <Text style={styles.buttonText}>Change Password</Text>
+              </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
+              {/* Icon */}
+              <AntDesign name="right" size={18} color="black" />
+            </Pressable>
+          </Link>
           {/* Terms & Condition */}
           <Pressable style={styles.actionButton}>
             <View style={styles.logoTextPair}>
@@ -214,6 +218,7 @@ function createStyles(
       gap: 16,
     },
     actionButton: {
+      width: "100%",
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",

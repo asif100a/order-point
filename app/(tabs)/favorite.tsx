@@ -54,8 +54,8 @@ const CATEGORIES: CategoryType[] = [
 
 export default function Favorite() {
   return (
-    // <PrivateRoute>
+    <PrivateRoute>
       <FavoriteScreen categories={CATEGORIES} />
-    // </PrivateRoute>
+    </PrivateRoute>
   )
 }
