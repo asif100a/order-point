@@ -1,15 +1,38 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import SignUpScreen from "@/screens/auth/SignUpScreen";
 import { UserType } from "@/types/user.type";
 import { useRouter } from "expo-router";
-import { useRegisterMutation } from "@/store/api/authApi";
+import { useGetUserQuery, useRegisterMutation } from "@/store/api/authApi";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
 
 export default function SignUp() {
   const router = useRouter();
 
   const [register, { isLoading }] = useRegisterMutation();
 
+  // If already user logged in redirect
+  const {
+    data: userRes,
+    isLoading: isProfileLoading,
+    isError,
+    error,
+  } = useGetUserQuery();
+  const user = userRes?.data;
+
+  useEffect(() => {
+    if (user?._id) {
+      return router.push("/(tabs)");
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    if (isError) {
+      console.error("❌ error while getting user: ", error);
+    }
+  }, [isError, error]);
+
+  // Verify the User
   const VerifyUser = (user: UserType): boolean => {
     for (const key of Object.keys(user)) {
       if (!user[key as keyof UserType]) {
@@ -45,7 +68,7 @@ export default function SignUp() {
       const res = await register(newUser as any);
       // console.log("Completed Response: ", res);
       if (res?.data?.success) {
-        alert('Your have signed up successfully')
+        alert("Your have signed up successfully");
         router.push("/auth/confirmation_code");
       }
     } catch (error) {
@@ -53,6 +76,10 @@ export default function SignUp() {
       alert("Something went wrong! Please try again.");
     }
   };
+
+  if (isProfileLoading) {
+    return <LoaderUI />;
+  }
 
   return (
     <View>

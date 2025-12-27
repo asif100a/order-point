@@ -22,10 +22,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = ({
   handleLogin,
-  isLoading
+  isLoading,
 }: {
   handleLogin: (email: string, pass: string) => void;
-  isLoading: boolean
+  isLoading: boolean;
 }) => {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
@@ -44,86 +44,82 @@ const SignInScreen = ({
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{flex: 1}}
+          {/* Prev Button */}
+          <Pressable
+            onPress={() => router.push("/auth_option")}
+            style={styles.prevArrow}
           >
-            {/* Prev Button */}
-            <Pressable
-              onPress={() => router.push("/auth_option")}
-              style={styles.prevArrow}
-            >
-              <AntDesign name="left" size={22} color="black" />
-            </Pressable>
-            {/* Logo */}
-            <Logo style={styles.logo} />
+            <AntDesign name="left" size={22} color="black" />
+          </Pressable>
+          {/* Logo */}
+          <Logo style={styles.logo} />
 
-            {/* Main Content */}
-            <View style={styles.contentContainer}>
-              <Text style={styles.loginText}>Login</Text>
-              <Text style={[styles.description, styles.primaryFontSize]}>
-                Hi Welcome back..! Please enter your correct Information And
-                continue{" "}
-              </Text>
+          {/* Main Content */}
+          <View style={styles.contentContainer}>
+            <Text style={styles.loginText}>Login</Text>
+            <Text style={[styles.description, styles.primaryFontSize]}>
+              Hi Welcome back..! Please enter your correct Information And
+              continue{" "}
+            </Text>
 
-              {/* Form */}
-              <View style={styles.form}>
-                {/* Email */}
-                <EmailInputField value={email} onEmailChange={setEmail} />
-                {/* Password */}
-                <PasswordInputField
-                  value={password}
-                  onPasswordChange={setPassword}
+            {/* Form */}
+            <View style={styles.form}>
+              {/* Email */}
+              <EmailInputField value={email} onEmailChange={setEmail} />
+              {/* Password */}
+              <PasswordInputField
+                value={password}
+                onPasswordChange={setPassword}
+              />
+
+              {/* Remember me & Forget Password */}
+              <View style={styles.rememberForgetContainer}>
+                {/* Remember me */}
+                <CheckboxField
+                  value={remember}
+                  onValueChange={setRemember}
+                  label="Remember me"
                 />
-
-                {/* Remember me & Forget Password */}
-                <View style={styles.rememberForgetContainer}>
-                  {/* Remember me */}
-                  <CheckboxField
-                    value={remember}
-                    onValueChange={setRemember}
-                    label="Remember me"
-                  />
-                  <Pressable
-                    onPress={() => router.push("/auth/forget_password")}
-                  >
-                    <Text
-                      style={[styles.primaryFontSize, styles.forgetPassword]}
-                    >
-                      Forget your password?
-                    </Text>
-                  </Pressable>
-                </View>
-
-                <Button title="Login" onPress={onSubmit} loading={isLoading} loadingText="Logging in..." />
-
-                {/* Divider */}
-                <View style={styles.dividerContainer}>
-                  <View style={styles.line} />
-                  <Text style={[styles.primaryFontSize, { fontWeight: "500" }]}>
-                    Or
+                <Pressable onPress={() => router.push("/auth/forget_password")}>
+                  <Text style={[styles.primaryFontSize, styles.forgetPassword]}>
+                    Forget your password?
                   </Text>
-                  <View style={styles.line} />
-                </View>
-
-                <SocialLogin isLoading={isLoading} />
-
-                <Text
-                  style={[
-                    styles.primaryFontSize,
-                    { marginTop: 24, textAlign: "center" },
-                  ]}
-                >
-                  Do you have an account?{" "}
-                  <Pressable onPress={() => router.push("/auth/sign_up")}>
-                    <Text style={{ color: "#57C78F", fontWeight: "600" }}>
-                      Sign Up
-                    </Text>
-                  </Pressable>
-                </Text>
+                </Pressable>
               </View>
+
+              <Button
+                title="Login"
+                onPress={onSubmit}
+                loading={isLoading}
+                loadingText="Logging in..."
+              />
+
+              {/* Divider */}
+              <View style={styles.dividerContainer}>
+                <View style={styles.line} />
+                <Text style={[styles.primaryFontSize, { fontWeight: "500" }]}>
+                  Or
+                </Text>
+                <View style={styles.line} />
+              </View>
+
+              <SocialLogin isLoading={isLoading} />
+
+              <Text
+                style={[
+                  styles.primaryFontSize,
+                  { marginTop: 24, textAlign: "center" },
+                ]}
+              >
+                Do you have an account?{" "}
+                <Pressable onPress={() => router.push("/auth/sign_up")}>
+                  <Text style={{ color: "#57C78F", fontWeight: "600" }}>
+                    Sign Up
+                  </Text>
+                </Pressable>
+              </Text>
             </View>
-          </KeyboardAvoidingView>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>

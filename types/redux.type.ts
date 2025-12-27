@@ -16,6 +16,13 @@ export interface LoginCredentials {
 export interface AuthResponse {
   token: string;
   user: UserType;
+  success?: boolean;
+  data?: {
+    accessToken?: string;
+    otpToken?: {
+      token?: string
+    }
+  }
 }
 
 export interface RegisterData {

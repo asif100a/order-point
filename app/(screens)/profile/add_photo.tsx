@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import React from "react";
 import AddPhoto from "@/screens/profile/AddPhoto";
 import { GestureHandlerRootView } from "react-native-gesture-handler";

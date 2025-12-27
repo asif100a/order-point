@@ -4,8 +4,8 @@ import AnalyticsScreen from "@/screens/AnalyticsScreen";
 
 export default function Analytics() {
   return (
-    // <PrivateRoute>
-     <AnalyticsScreen />
-    // </PrivateRoute>
+    <PrivateRoute>
+      <AnalyticsScreen />
+    </PrivateRoute>
   );
 }

@@ -6,7 +6,6 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
@@ -77,7 +76,7 @@ const redemptionCategory: RedemptionCategoryType[] = [
 export default function AnalyticsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
 
-  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] = useState();
+  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] = useState('');
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 

@@ -1,43 +1,37 @@
-import { View, ActivityIndicator, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { useGetUserQuery } from "@/store/api/authApi";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Redirect } from "expo-router";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
 
 export default function PrivateRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data: user, isLoading, isError, error } = useGetUserQuery();
-  console.log("User: ", user)
+  const { data: userRes, isLoading, isError, error } = useGetUserQuery();
+  const user = userRes?.data;
+  console.log("User from the private route: ", user)
 
-  useEffect(() => {
-    if (isError) {
-      console.error("❌ Error while getting the user profile: ", error);
-    }
-  }, [error, isError]);
-
+  // 🔄 Loading state
   if (isLoading) {
-    return (
-      <SafeAreaView style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator size="large" color="#00ff00" />
-      </SafeAreaView>
-    );
+    return <LoaderUI />;
   }
 
-  if (user?.id) return <View>{children}</View>;
-  return <Redirect href={"/sign-in" as any} />;
-}
+  // ❌ Only redirect if it's really UNAUTHORIZED
+  if (
+    isError &&
+    typeof error === "object" &&
+    "status" in error &&
+    error.status === 401
+  ) {
+    return <Redirect href="/auth/sign_in" />;
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10,
-  },
-});
+  // ❌ No user after loading
+  if (!user?._id) {
+    return <Redirect href="/auth/sign_in" />;
+  }
+
+  // ✅ User is authenticated
+  return <>{children}</>;
+}
