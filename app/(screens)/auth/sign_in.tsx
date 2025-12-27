@@ -2,33 +2,21 @@ import { View } from "react-native";
 import React, { useEffect } from "react";
 import SignInScreen from "@/screens/auth/SignInScreen";
 import { useRouter } from "expo-router";
-import { useGetUserQuery, useLoginMutation } from "@/store/api/authApi";
+import { useLoginMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
+import useAuth from "@/hooks/useAuth";
 
 export default function SignIn() {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
 
-  // If already user logged in redirect
-  const {
-    data: userRes,
-    isLoading: isProfileLoading,
-    isError,
-    error,
-  } = useGetUserQuery();
-  const user = userRes?.data;
+  const { user, hasToken, isAuthLoading } = useAuth();
 
   useEffect(() => {
-    if (user?._id) {
+    if (user?._id && !isAuthLoading && hasToken) {
       return router.push("/(tabs)");
     }
-  }, [user, router]);
-
-  useEffect(() => {
-    if (isError) {
-      console.error("❌ error while getting user: ", error);
-    }
-  }, [isError, error]);
+  }, [user, router, isAuthLoading, hasToken]);
 
   const handleLogin = async (email: string, password: string) => {
     console.log("Email: ", email, "\n Password: ", password);
@@ -50,7 +38,7 @@ export default function SignIn() {
     }
   };
 
-  if (isProfileLoading) {
+  if (isAuthLoading) {
     return <LoaderUI />;
   }
 

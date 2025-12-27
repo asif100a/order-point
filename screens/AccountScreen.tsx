@@ -10,7 +10,6 @@ import {
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
-import { SafeAreaView } from "react-native-safe-area-context";
 import PLACEHOLDER_PROFILE from "@/assets/images/profile/placeholder_profile.png";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -20,11 +19,21 @@ import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
+  const router = useRouter();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
+
+  const handleLogout = async () => {
+    // Remove the OTP from the AsyncStorage
+    await AsyncStorage.removeItem("token");
+    // Redirect to the Login page
+    router.push("/auth/sign_in");
+  };
 
   return (
     <ScreenContainer>
@@ -64,7 +73,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Manage Subscription */}
           <Pressable style={styles.actionButton}>
@@ -75,7 +84,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Change Password */}
           <Pressable style={styles.actionButton}>
@@ -86,7 +95,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Terms & Condition */}
           <Pressable style={styles.actionButton}>
@@ -97,7 +106,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Privacy & Policy */}
           <Pressable style={styles.actionButton}>
@@ -108,7 +117,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* FAQ */}
           <Pressable style={styles.actionButton}>
@@ -119,7 +128,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Notification Manage */}
           <Pressable style={styles.actionButton}>
@@ -130,7 +139,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Delete Profile */}
           <Pressable style={styles.actionButton}>
@@ -141,12 +150,13 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Log Out */}
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.actionButton, styles.logoutButton]}
+            onPress={handleLogout}
           >
             <View style={styles.logoTextPair}>
               {/* Icon */}
@@ -157,7 +167,7 @@ export default function AccountScreen() {
             </View>
 
             {/* Icon */}
-            <AntDesign name="right" size={24} color="black" />
+            <AntDesign name="right" size={18} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -172,7 +182,7 @@ function createStyles(
 ) {
   return StyleSheet.create({
     container: {
-      marginBottom: 66
+      marginBottom: 66,
     },
     addPhotoContainer: {
       justifyContent: "space-between",
