@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/theme";
 import React from "react";
 import { ImageSourcePropType } from "react-native";
 
@@ -68,4 +67,10 @@ export interface CategoryType {
   startTime: string;
   category: "New Deal" | "Expire Soon";
   location: string;
+}
+
+export interface ApiError {
+   data?: {
+      message: string
+   }
 }

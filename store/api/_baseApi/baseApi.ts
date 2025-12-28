@@ -5,7 +5,7 @@ import type {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
-import { tagTypes } from "../../type/tagType";
+import { tagTypeList } from "../../type/tagType";
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -45,6 +45,6 @@ const baseQueryWithAuth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithAuth,
-  tagTypes: [tagTypes.user, tagTypes.post, tagTypes.comment],
+  tagTypes: tagTypeList,
   endpoints: () => ({}),
 });

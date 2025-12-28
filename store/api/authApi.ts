@@ -4,20 +4,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { tagTypes } from "../type/tagType";
 import { baseApi } from "./_baseApi/baseApi";
 
-const BASE_POINT = "/users";
+const BASE_POINT = "/auth";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (credentials) => ({
-        url: "/auth/login",
+        url: BASE_POINT + "/login",
         method: "POST",
         body: credentials,
       }),
       async onQueryStarted(args, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log("Login fulfilled res: ", data);
+          // console.log("Login fulfilled res: ", data);
           if (data?.data?.accessToken)
             await AsyncStorage.setItem("token", data?.data?.accessToken);
         } catch (error) {
@@ -27,7 +27,7 @@ export const userApi = baseApi.injectEndpoints({
     }),
     register: builder.mutation<AuthResponse, RegisterData>({
       query: (userData) => ({
-        url: BASE_POINT + "/register",
+        url: "users/register",
         method: "POST",
         body: userData,
       }),
@@ -74,18 +74,22 @@ export const userApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["User"],
     }),
-    getUser: builder.query<{ data: UserType }, void>({
-      query: () => BASE_POINT + "/my-profile",
-      providesTags: [tagTypes.user],
-    }),
-    updateUser: builder.mutation<UserType, Partial<UserType>>({
-      query: (userData) => ({
-        url: "/users/user",
-        method: "PUT",
-        body: userData,
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: BASE_POINT + '/change-password',
+        method: 'POST',
+        body: data
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: [tagTypes.user, tagTypes.auth]
     }),
+    forgotPassword: builder.mutation({
+      query: (data) => ({
+        url: BASE_POINT + '/forget-password',
+        method: 'POST',
+        body: data
+      }),
+      invalidatesTags: [tagTypes.user, tagTypes.auth]
+    })
   }),
 
   overrideExisting: true,
@@ -95,6 +99,6 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useVerifyOTPMutation,
-  useGetUserQuery,
-  useUpdateUserMutation,
+  useChangePasswordMutation,
+  useForgotPasswordMutation,
 } = userApi;

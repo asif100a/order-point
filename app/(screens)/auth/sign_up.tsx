@@ -3,9 +3,28 @@ import React, { useEffect } from "react";
 import SignUpScreen from "@/screens/auth/SignUpScreen";
 import { UserType } from "@/types/user.type";
 import { useRouter } from "expo-router";
-import { useGetUserQuery, useRegisterMutation } from "@/store/api/authApi";
+import { useRegisterMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import useAuth from "@/hooks/useAuth";
+import Toast from "react-native-toast-message";
+
+type Fields = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+  isCheckedTermsAndConditions: string;
+};
+
+const fields: Fields = {
+  name: "Name",
+  email: "Email",
+  phoneNumber: "Phone Number",
+  password: "Password",
+  confirmPassword: "Confirm Password",
+  isCheckedTermsAndConditions: "Checking Terms and Conditions",
+};
 
 export default function SignUp() {
   const router = useRouter();
@@ -24,20 +43,36 @@ export default function SignUp() {
   const VerifyUser = (user: UserType): boolean => {
     for (const key of Object.keys(user)) {
       if (!user[key as keyof UserType]) {
-        alert(`${key} is required!`);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: `${fields[key as keyof Fields]} is required!`,
+        });
         return false;
       }
     }
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (user.email && !emailRegex.test(user.email)) {
-      alert("Please provide an valid email");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please provide an valid email",
+      });
       return false;
     } else if (user.password && user.password.length < 6) {
-      alert("Password must be greater than 6 or equal");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Password must be greater than 6 or equal",
+      });
       return false;
     }
     if (user.password !== user.confirmPassword) {
-      alert("Password and Confirm password didn't match");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Password and Confirm password didn't match",
+      });
       return false;
     }
     return true;
@@ -57,12 +92,20 @@ export default function SignUp() {
       const res = await register(newUser as any);
       // console.log("Completed Response: ", res);
       if (res?.data?.success) {
-        alert("Your have signed up successfully");
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your have signed up successfully",
+        });
         router.push("/auth/confirmation_code");
       }
     } catch (error) {
       console.error("❌ error while registering: ", error);
-      alert("Something went wrong! Please try again.");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something went wrong! Please try again.",
+      });
     }
   };
 

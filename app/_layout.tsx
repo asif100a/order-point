@@ -4,6 +4,7 @@ import "react-native-reanimated";
 import ThemeProvider from "@/context/ThemeContext";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import Toast from 'react-native-toast-message';
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -23,6 +24,7 @@ export default function RootLayout() {
           />
         </Stack>
         <StatusBar style="auto" />
+        <Toast />
       </ThemeProvider>
     </Provider>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { useLoginMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import useAuth from "@/hooks/useAuth";
+import Toast from "react-native-toast-message";
 
 export default function SignIn() {
   const router = useRouter();
@@ -21,22 +22,42 @@ export default function SignIn() {
   const handleLogin = async (email: string, password: string) => {
     console.log("Email: ", email, "\n Password: ", password);
     if (!email) {
-      return alert("Email is missing!");
+      return Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Email is missing!",
+      });
     } else if (!password) {
-      return alert("Password is missing!");
+      return Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Password is missing",
+      });
     } else if (password.length < 6) {
-      return alert("Password must be greater than 6 or equal");
+      return Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Password must be greater than 6 or equal",
+      });
     }
     try {
       const res = await login({ email, password });
-      console.log("Completed Login Response: ", res);
+      // console.log("Completed Login Response: ", res);
       if (res?.data?.success) {
-        alert("Your have signed in successfully");
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your have signed in successfully",
+        });
         router.push("/(tabs)");
       }
     } catch (error) {
       console.error("❌ error while singing in: ", error);
-      alert("Something went wrong! Please try again.");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something went wrong! Please try again.",
+      });
     }
   };
 

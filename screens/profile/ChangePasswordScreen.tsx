@@ -4,11 +4,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
-import TextInputField from "@/components/ui/form/TextInputField";
 import Button from "@/components/ui/buttons/Button";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 
-export default function ChangePasswordScreen({handleChangePassword}: {handleChangePassword: (oldPass: string, newPass: string, confirmPass: string) => void}) {
+export default function ChangePasswordScreen({
+  handleChangePassword,
+  isLoading
+}: {
+  handleChangePassword: (
+    oldPass: string,
+    newPass: string,
+    confirmPass: string,
+    reset: () => void
+  ) => void;
+  isLoading: boolean
+}) {
   const { theme, colorScheme, primaryColor } = useTheme();
 
   //   State definitions
@@ -18,7 +28,14 @@ export default function ChangePasswordScreen({handleChangePassword}: {handleChan
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
-  const handleOnsubmit = () => handleChangePassword(oldPass, newPass, confirmPass);
+  const reset = () => {
+    setOldPass("");
+    setNewPass("");
+    setConfirmPass("");
+  };
+
+  const handleOnsubmit = () =>
+    handleChangePassword(oldPass, newPass, confirmPass, reset);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +65,7 @@ export default function ChangePasswordScreen({handleChangePassword}: {handleChan
       />
 
       {/* Submit Button */}
-      <Button title="Update" onPress={handleOnsubmit} />
+      <Button title="Update" onPress={handleOnsubmit} loading={isLoading} />
     </SafeAreaView>
   );
 }
@@ -66,7 +83,7 @@ function createStyles({
     container: {
       backgroundColor: theme.background,
       padding: 16,
-      height: '100%'
+      height: "100%",
     },
     overlay: {
       position: "absolute",

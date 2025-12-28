@@ -1,5 +1,7 @@
 export const tagTypes = {
     user: 'User',
     post: 'Post',
-    comment: 'Comment'
+    auth: 'Auth'
 }
+
+export const tagTypeList = Object.values(tagTypes)
