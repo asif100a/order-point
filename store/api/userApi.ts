@@ -1,6 +1,4 @@
-import { AuthResponse, LoginRequest, RegisterData } from "@/types/redux.type";
 import { UserType } from "@/types/user.type";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { tagTypes } from "../type/tagType";
 import { baseApi } from "./_baseApi/baseApi";
 

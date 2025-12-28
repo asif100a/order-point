@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetUserQuery } from "@/store/api/authApi";
+import { useGetUserQuery } from "@/store/api/userApi";
 import { Redirect } from "expo-router";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGetUserQuery } from "@/store/api/authApi";
+import { useGetUserQuery } from "@/store/api/userApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserType } from "@/types/user.type";
 

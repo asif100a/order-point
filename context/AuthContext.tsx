@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useGetUserQuery } from "@/store/api/authApi";
+import { useGetUserQuery } from "@/store/api/userApi";
 
 interface AuthContextType {
   isAuthenticated: boolean;
