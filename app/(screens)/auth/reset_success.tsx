@@ -1,11 +1,22 @@
-import { View } from 'react-native'
-import React from 'react'
-import SuccessPage from '@/components/ui/page/SuccessPage'
+import { View } from "react-native";
+import React from "react";
+import SuccessPage from "@/components/ui/page/SuccessPage";
+import { useRouter } from "expo-router";
 
-export default function reset_success() {
+export default function ResetSuccess() {
+  const router = useRouter();
+
   return (
     <View>
-      <SuccessPage title='Password Reset Successfully' description='Now you can login by using your new password' buttonText='Go to Login' navigationLink='/auth/sign_in' />
+      <SuccessPage
+        headerTitle="Reset Successful"
+        headerDescription=""
+        title="Password Reset Successfully"
+        description="Now you can go to the home page"
+        buttonText="Go to Home"
+        navigationLink={"/auth/create_new_password" as any}
+        onButtonClick={() => router.push("/(tabs)")}
+      />
     </View>
-  )
+  );
 }

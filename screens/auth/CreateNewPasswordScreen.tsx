@@ -7,7 +7,13 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Button from "@/components/ui/buttons/Button";
 
-export default function CreateNewPasswordScreen({handleCreateNewPass}: {handleCreateNewPass: (newPass: string, confirmPass: string) => void}) {
+export default function CreateNewPasswordScreen({
+  handleCreateNewPass,
+  isLoading,
+}: {
+  handleCreateNewPass: (newPass: string, confirmPass: string) => void;
+  isLoading: boolean;
+}) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -38,7 +44,7 @@ your account"
           label="Confirm Password"
           placeholder="Enter your confirm password"
         />
-        <Button title="Update" onPress={onSubmit} />
+        <Button title="Update" onPress={onSubmit} loading={isLoading} />
       </View>
     </ScreenContainer>
   );

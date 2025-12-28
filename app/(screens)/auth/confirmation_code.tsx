@@ -10,23 +10,26 @@ export default function ConfirmationCode() {
   const router = useRouter();
   const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
 
-  const {destination, email} = useLocalSearchParams();
-  console.log("Destination: ", destination)
+  const { destination, email } = useLocalSearchParams();
+  // console.log("Destination: ", destination);
 
   const handleConfirmCode = async (code: string) => {
     // console.log("OTP code: ", code);
     try {
       const res = await verifyOTP({ otp: code });
-      console.log("Verified Response: ", res);
+      // console.log("Verified Response: ", res);
       if (res?.data?.success) {
         Toast.show({
           type: "success",
           text1: "Success",
-          text2: 'You have verified successfully',
+          text2: "You have verified successfully",
         });
-        if(destination) {
-          router.push(destination as any);
-        }else {
+        if (destination) {
+          router.push({
+            pathname: destination as any,
+            params: { email },
+          });
+        } else {
           router.push("/(tabs)");
         }
       }
