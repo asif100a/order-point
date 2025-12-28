@@ -7,6 +7,7 @@ import { useRegisterMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import useAuth from "@/hooks/useAuth";
 import Toast from "react-native-toast-message";
+import { emailRegex } from "@/utils";
 
 type Fields = {
   name: string;
@@ -51,7 +52,6 @@ export default function SignUp() {
         return false;
       }
     }
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (user.email && !emailRegex.test(user.email)) {
       Toast.show({
         type: "error",
@@ -97,7 +97,10 @@ export default function SignUp() {
           text1: "Success",
           text2: "Your have signed up successfully",
         });
-        router.push("/auth/confirmation_code");
+        router.push({
+          pathname: "/auth/confirmation_code",
+          params: { email: user?.email },
+        });
       }
     } catch (error) {
       console.error("❌ error while registering: ", error);

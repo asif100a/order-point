@@ -6,19 +6,15 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import PasswordInputField from "@/components/ui/form/PasswordInputField";
 import Button from "@/components/ui/buttons/Button";
-import { useRouter } from "expo-router";
 
-export default function CreateNewPasswordScreen() {
-  const router = useRouter();
+export default function CreateNewPasswordScreen({handleCreateNewPass}: {handleCreateNewPass: (newPass: string, confirmPass: string) => void}) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
 
-  const handleCreateNewPass = () => {
-    router.push("/auth/reset_success");
-  };
+  const onSubmit = () => handleCreateNewPass(newPassword, confirmPassword);
 
   return (
     <ScreenContainer>
@@ -42,7 +38,7 @@ your account"
           label="Confirm Password"
           placeholder="Enter your confirm password"
         />
-        <Button title="Update" onPress={handleCreateNewPass} />
+        <Button title="Update" onPress={onSubmit} />
       </View>
     </ScreenContainer>
   );

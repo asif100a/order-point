@@ -1,5 +1,4 @@
 import { AuthResponse, LoginRequest, RegisterData } from "@/types/redux.type";
-import { UserType } from "@/types/user.type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { tagTypes } from "../type/tagType";
 import { baseApi } from "./_baseApi/baseApi";
@@ -56,7 +55,7 @@ export const userApi = baseApi.injectEndpoints({
         method: "POST",
         body: otp,
       }),
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(args, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           //   console.log("Response of Verify Otp: ", data)
@@ -76,20 +75,45 @@ export const userApi = baseApi.injectEndpoints({
     }),
     changePassword: builder.mutation({
       query: (data) => ({
-        url: BASE_POINT + '/change-password',
-        method: 'POST',
-        body: data
+        url: BASE_POINT + "/change-password",
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags: [tagTypes.user, tagTypes.auth]
+      invalidatesTags: [tagTypes.user, tagTypes.auth],
     }),
     forgotPassword: builder.mutation({
       query: (data) => ({
-        url: BASE_POINT + '/forget-password',
-        method: 'POST',
-        body: data
+        url: BASE_POINT + "/forget-password",
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags: [tagTypes.user, tagTypes.auth]
-    })
+      async onQueryStarted(args, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          const token = data?.data?.verifyToken;
+          //   console.log("Register data from query started function: ", data);
+          //   console.log("Register token from query started function: ", token);
+
+          //   Remove if exists
+          const existToken = await AsyncStorage.getItem("otpToken");
+          if (existToken) {
+            await AsyncStorage.removeItem("otpToken");
+          }
+          if (token) await AsyncStorage.setItem("otpToken", token);
+          console.log("✅ Registration successful, OTP sent");
+        } catch (error) {
+          console.error("❌ Registration failed:", error);
+        }
+      },
+    }),
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: BASE_POINT + "/reset-password",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user, tagTypes.auth],
+    }),
   }),
 
   overrideExisting: true,
@@ -101,4 +125,5 @@ export const {
   useVerifyOTPMutation,
   useChangePasswordMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = userApi;

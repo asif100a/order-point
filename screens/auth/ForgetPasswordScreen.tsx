@@ -10,12 +10,16 @@ import React, { useState } from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import Button from "@/components/ui/buttons/Button";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 
-export default function ForgetPasswordScreen() {
-  const router = useRouter();
+export default function ForgetPasswordScreen({
+  handleForgetPass,
+  isLoading
+}: {
+  handleForgetPass: (email: string) => void;
+  isLoading: boolean
+}) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const [email, setEmail] = useState<string>("");
 
@@ -24,9 +28,7 @@ export default function ForgetPasswordScreen() {
   const windowHeight = Dimensions.get("screen").height;
   // console.log("Window Height: ", windowHeight);
 
-  const handleForgetPass = () => {
-    router.push("/auth/confirmation_code");
-  };
+  const onSubmit = () => handleForgetPass(email);
 
   return (
     <View style={[styles.container, { height: windowHeight }]}>
@@ -59,8 +61,9 @@ export default function ForgetPasswordScreen() {
           <View style={styles.contentContainer}></View>
           <Button
             title="Send Code"
-            onPress={handleForgetPass}
+            onPress={onSubmit}
             style={{ marginTop: -38 }}
+            loading={isLoading}
           />
         </ScrollView>
       </SafeAreaView>

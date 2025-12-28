@@ -16,9 +16,11 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 export default function ConfirmationCodeScreen({
   handleConfirmCode,
   isLoading,
+  email
 }: {
   handleConfirmCode: (otp: string) => void;
   isLoading: boolean;
+  email: string
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
 
@@ -78,7 +80,7 @@ export default function ConfirmationCodeScreen({
           <TopNavigationHeader
             title="Confirm OTP"
             link={"/auth/forget_password" as any}
-            description="To confirm your account, enter the 6-digit code we sent to shahidhasn@gmail.com"
+            description={`To confirm your account, enter the 6-digit code we sent to ${email}`}
           />
 
           <View style={styles.form}>

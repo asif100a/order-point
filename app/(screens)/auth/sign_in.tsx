@@ -6,6 +6,7 @@ import { useLoginMutation } from "@/store/api/authApi";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import useAuth from "@/hooks/useAuth";
 import Toast from "react-native-toast-message";
+import { emailRegex } from "@/utils";
 
 export default function SignIn() {
   const router = useRouter();
@@ -26,6 +27,12 @@ export default function SignIn() {
         type: "error",
         text1: "Error",
         text2: "Email is missing!",
+      });
+    } else if (email && !emailRegex.test(email)) {
+      return Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please provide an valid email",
       });
     } else if (!password) {
       return Toast.show({
