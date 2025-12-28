@@ -32,13 +32,13 @@ export default function SignUp() {
 
   const [register, { isLoading }] = useRegisterMutation();
 
-  const { user, hasToken, isAuthLoading } = useAuth();
+  // const { user, hasToken, isAuthLoading } = useAuth();
 
-  useEffect(() => {
-    if (user?._id && !isAuthLoading && hasToken) {
-      return router.push("/(tabs)");
-    }
-  }, [user, router, isAuthLoading, hasToken]);
+  // useEffect(() => {
+  //   if (user?._id && !isAuthLoading && hasToken) {
+  //     return router.push("/(tabs)");
+  //   }
+  // }, [user, router, isAuthLoading, hasToken]);
 
   // Verify the User
   const VerifyUser = (user: UserType): boolean => {
@@ -107,7 +107,7 @@ export default function SignUp() {
 
         return Toast.show({
           type: "error",
-          text1: "Login Failed",
+          text1: "Registration Failed",
           text2: errorMessage,
         });
       }
@@ -120,22 +120,17 @@ export default function SignUp() {
         });
         router.push({
           pathname: "/auth/confirmation_code",
-          params: { email: user?.email },
+          params: { email: data?.email },
         });
       }
     } catch (error) {
       console.error("❌ error while registering: ", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Something went wrong! Please try again.",
-      });
     }
   };
 
-  if (isAuthLoading) {
-    return <LoaderUI />;
-  }
+  // if (isAuthLoading) {
+  //   return <LoaderUI />;
+  // }
 
   return (
     <View>
