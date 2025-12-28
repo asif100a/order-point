@@ -26,8 +26,8 @@ export default function CreateNewPassword() {
     try {
       const res = await resetPassword({
         email,
-        newPassword: "user123",
-        confirmPassword: "user123",
+        newPassword: newPass,
+        confirmPassword: confirmPass,
       }).unwrap();
       if (res.success) {
         Toast.show({

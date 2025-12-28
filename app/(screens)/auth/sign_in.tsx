@@ -50,6 +50,27 @@ export default function SignIn() {
     try {
       const res = await login({ email, password });
       // console.log("Completed Login Response: ", res);
+      
+      // ✅ Check for error in the response
+      if ("error" in res) {
+        // Handle different error types
+        const err = res.error as {
+          status?: number;
+          message?: string;
+          data?: { message: string };
+        };
+        const errorMessage =
+          "status" in err && err.status != null
+            ? `Error: ${err.status} ${err.message || err?.data?.message}`
+            : "Unknown error";
+
+        return Toast.show({
+          type: "error",
+          text1: "Login Failed",
+          text2: errorMessage,
+        });
+      }
+
       if (res?.data?.success) {
         Toast.show({
           type: "success",
@@ -60,11 +81,6 @@ export default function SignIn() {
       }
     } catch (error) {
       console.error("❌ error while singing in: ", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Something went wrong! Please try again.",
-      });
     }
   };
 
