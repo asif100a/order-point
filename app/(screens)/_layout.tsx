@@ -4,6 +4,9 @@ import { Stack } from "expo-router";
 export default function _layout() {
   return (
     <Stack>
+      {/* Onboarding Screen */}
+      <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+
       {/* Auth Layouts */}
       <Stack.Screen name="choose_role" options={{ headerShown: false }} />
       <Stack.Screen name="auth_option" options={{ headerShown: false }} />

@@ -120,7 +120,7 @@ export default function SignUp() {
         });
         router.push({
           pathname: "/auth/confirmation_code",
-          params: { email: data?.email },
+          params: { email: data?.email, destination: "/auth/sign_in" },
         });
       }
     } catch (error) {

@@ -1,50 +1,41 @@
-import OnboardingScreen from "@/screens/OnboardingScreen";
-import onboard1 from "@/assets/images/onboarding/onboarding-1.png";
-import onboard2 from "@/assets/images/onboarding/onboarding-2.png";
-import onboard3 from "@/assets/images/onboarding/onboarding-3.png";
-import { OnboardingTypes } from "@/types";
-import { useState } from "react";
-import { router } from "expo-router";
+import { StyleSheet, Image } from "react-native";
+import React, { useEffect } from "react";
+import onboardingLogo from "@/assets/images/onboarding_logo.png";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 
-const onboardings: OnboardingTypes[] = [
-  {
-    title: "Discover Local Savings",
-    description:
-      "Unlock exclusive discounts and perks at your favorite local businesses. Save more while supporting your community—all in one app.",
-    image: onboard1,
-  },
-  {
-    title: "Easy Membership Access",
-    description:
-      "Choose a plan that fits you best. Get your digital membership with a unique QR code for instant discount validation.",
-    image: onboard2,
-  },
-  {
-    title: "Manage & Stay Updated",
-    description:
-      "Track your perks, receive real-time updates, and enjoy a smooth, secure shopping experience every time you use the app.",
-    image: onboard3,
-  },
-];
+export default function SplashScreen() {
+  const router = useRouter();
 
-export default function Onboarding() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // const router = router
-
-  const handleNext = () => {
-    if (currentIndex < 2) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      router.push("/choose_role");
-    }
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      router.push("/onboarding");
+    }, 3000);
+  }, [router]);
 
   return (
-    <OnboardingScreen
-      data={onboardings[currentIndex]}
-      handleNext={handleNext}
-      onChangeIndex={setCurrentIndex}
-      currentIndex={currentIndex}
-    />
+    <LinearGradient
+      colors={["#6ECC96", "#0BE4F3", "#57C78F"]}
+      style={styles.container}
+    >
+      <Image
+        source={onboardingLogo}
+        alt="onboarding-logo"
+        style={styles.logo}
+      />
+    </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: 300,
+    height: 210,
+    resizeMode: "contain",
+  },
+});
