@@ -19,34 +19,34 @@ export default function RootLayout() {
   const [expoPushToken, setExpoPushToken] = useState<string>('');
   const [notification, setNotification] = useState<Notifications.Notification | null>(null);
 
-  useEffect(() => {
-    // Configure notification handler
-    confitureNotificationHandler();
+  // useEffect(() => {
+  //   // Configure notification handler
+  //   confitureNotificationHandler();
 
-    // Initialize notifications
-    initializeNotifications();
+  //   // Initialize notifications
+  //   initializeNotifications();
 
-    // Set up listeners
-    const cleanup = setupNotificationListeners(
-      // Called when notification is received
-      (notification: Notifications.Notification) => {
-        setNotification(notification)
-      },
-      // Called when user taps notification
-      (response: Notifications.NotificationResponse) => {
-        console.log('User tapped notification: ', response);
-        const data = response.notification.request.content.data;
-        // Handle navigation or other actions based on notification data
-        if(data?.screens) {
-          // Navigate to specific screen
-          console.log('Navigate to: ', data.screen);
-        }
-      }
-    )
+  //   // Set up listeners
+  //   const cleanup = setupNotificationListeners(
+  //     // Called when notification is received
+  //     (notification: Notifications.Notification) => {
+  //       setNotification(notification)
+  //     },
+  //     // Called when user taps notification
+  //     (response: Notifications.NotificationResponse) => {
+  //       console.log('User tapped notification: ', response);
+  //       const data = response.notification.request.content.data;
+  //       // Handle navigation or other actions based on notification data
+  //       if(data?.screens) {
+  //         // Navigate to specific screen
+  //         console.log('Navigate to: ', data.screen);
+  //       }
+  //     }
+  //   )
 
-    // Cleanup listeners on unmount
-    return cleanup;
-  }, [])
+  //   // Cleanup listeners on unmount
+  //   return cleanup;
+  // }, [])
 
   const initializeNotifications = async (): Promise<void> => {
     try {
