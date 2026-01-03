@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -8,9 +8,29 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { UserRole } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TabLayout() {
+  const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
+  const [loading, setLoading] = useState<boolean>(false);
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    const getUserRole = async() => {
+      try {
+        setLoading(true)
+        const role = await AsyncStorage.getItem('userRole');
+        if(role) {
+          setUserRole(role as UserRole);
+        }
+      } catch (error) {
+        
+      }finally {
+        setLoading(false);
+      }
+    }
+  }, [])
 
   return (
     <Tabs
@@ -26,13 +46,25 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
+      {/* User tabs */}
       <Tabs.Screen
         name="favorite"
         options={{
           title: 'Favorite',
           tabBarIcon: ({ color }) => <FontAwesome name="bookmark" size={24} color={color} />,
+          href:'/favorite'
         }}
       />
+      {/* Business tabs */}
+       <Tabs.Screen
+        name="deals"
+        options={{
+          title: 'Favorite',
+          tabBarIcon: ({ color }) => <FontAwesome name="bookmark" size={24} color={color} />,
+          href:'/favorite'
+        }}
+      />
+      {/* Common tabs */}
       <Tabs.Screen
         name="analytics"
         options={{

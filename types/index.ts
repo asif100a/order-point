@@ -27,10 +27,10 @@ export interface PrimaryColorTypes {
   primaryBlack: string;
   secondaryBlack: string;
   greenNormal: string;
-  secondaryGreen: string
+  secondaryGreen: string;
   primaryGray: string;
-  primaryRed: string
-  secondaryRed: string
+  primaryRed: string;
+  secondaryRed: string;
 }
 
 export interface ColorsTypes {
@@ -45,7 +45,7 @@ export interface ThemeContextTypes {
   colorScheme: ColorSchemeTypes;
   setColorScheme: React.Dispatch<React.SetStateAction<ColorSchemeTypes>>;
   theme: ThemeTypes;
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes;
 }
 
 export interface WidgetTypes {
@@ -70,7 +70,9 @@ export interface CategoryType {
 }
 
 export interface ApiError {
-   data?: {
-      message: string
-   }
+  data?: {
+    message: string;
+  };
 }
+
+export type UserRole = "user" | "business";
