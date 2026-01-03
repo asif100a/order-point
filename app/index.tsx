@@ -1,17 +1,34 @@
 import { StyleSheet, Image } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import onboardingLogo from "@/assets/images/onboarding_logo.png";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SplashScreen() {
   const router = useRouter();
+  const [isFirstLaunchApp, setIsFirstLaunchApp] = useState(false);
+
+  useEffect(() => {
+    const getIsFirstLaunch = async () => {
+      const firstLaunchStatus = await AsyncStorage.getItem("isFirstLaunch");
+      if (firstLaunchStatus === null) {
+        setIsFirstLaunchApp(true);
+        await AsyncStorage.setItem("isFirstLaunch", "false");
+      } else {
+        setIsFirstLaunchApp(false);
+      }
+    };
+    getIsFirstLaunch();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      router.push("/onboarding");
+      if (isFirstLaunchApp) {
+        router.push("/onboarding");
+      } else router.push("/auth_option");
     }, 3000);
-  }, [router]);
+  }, [router, isFirstLaunchApp]);
 
   return (
     <LinearGradient
