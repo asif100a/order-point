@@ -17,9 +17,10 @@ import {
 
 interface OnboardingScreenProps {
   data: OnboardingTypes;
-  onChangeIndex: React.Dispatch<React.SetStateAction<number>>;
+  onChangeIndex: (index: number) => void;
   handleNext: (event: GestureResponderEvent) => void;
   currentIndex: number;
+  width: number
 }
 
 export default function OnboardingScreen({
@@ -27,6 +28,7 @@ export default function OnboardingScreen({
   onChangeIndex,
   handleNext,
   currentIndex,
+  width
 }: OnboardingScreenProps) {
   const router = useRouter()
 
@@ -34,7 +36,7 @@ export default function OnboardingScreen({
 
   const theme = colorScheme === 'dark' ? Colors.dark : Colors.light;
 
-  const styles = createStyles(theme, colorScheme);
+  const styles = createStyles(theme, colorScheme, width);
 
   return (
     <View style={styles.container}>
@@ -84,9 +86,10 @@ export default function OnboardingScreen({
   );
 }
 
-function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes) {
+function createStyles(theme: ThemeTypes, colorScheme: ColorSchemeTypes, width: number) {
   return StyleSheet.create({
   container: {
+    width: width,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "white",

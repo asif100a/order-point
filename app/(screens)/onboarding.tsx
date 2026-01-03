@@ -3,8 +3,9 @@ import onboard1 from "@/assets/images/onboarding/onboarding-1.png";
 import onboard2 from "@/assets/images/onboarding/onboarding-2.png";
 import onboard3 from "@/assets/images/onboarding/onboarding-3.png";
 import { OnboardingTypes } from "@/types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { router } from "expo-router";
+import { Dimensions, FlatList, View, ViewToken } from "react-native";
 
 const onboardings: OnboardingTypes[] = [
   {
@@ -29,22 +30,67 @@ const onboardings: OnboardingTypes[] = [
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const router = router
+  const flatListRef = useRef<FlatList>(null);
+  const { width } = Dimensions.get("window");
 
   const handleNext = () => {
-    if (currentIndex < 2) {
-      setCurrentIndex(currentIndex + 1);
+    if (currentIndex < onboardings.length - 1) {
+      flatListRef.current?.scrollToIndex({
+        index: currentIndex + 1,
+        animated: true
+      })
     } else {
       router.push("/choose_role");
     }
   };
 
+  const handleIndexChange = (index: number) => {
+    flatListRef?.current?.scrollToIndex({
+      index,
+      animated: true,
+    });
+  };
+
+  // Update the currentIndex when the user swipes
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems.length > 0 && viewableItems[0].index !== null) {
+        setCurrentIndex(viewableItems[0].index);
+      }
+    }
+  ).current;
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current;
+
+  const renderItem = ({ item }: { item: OnboardingTypes }) => {
+    return (
+      <OnboardingScreen
+        data={item}
+        handleNext={handleNext}
+        onChangeIndex={handleIndexChange}
+        currentIndex={currentIndex}
+        width={width}
+      />
+    );
+  };
+
   return (
-    <OnboardingScreen
-      data={onboardings[currentIndex]}
-      handleNext={handleNext}
-      onChangeIndex={setCurrentIndex}
-      currentIndex={currentIndex}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        ref={flatListRef}
+        data={onboardings}
+        keyExtractor={(item) => item.title}
+        renderItem={renderItem}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        scrollEventThrottle={16}
+      />
+    </View>
   );
 }
