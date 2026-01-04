@@ -2,28 +2,44 @@ import OnboardingScreen from "@/screens/OnboardingScreen";
 import onboard1 from "@/assets/images/onboarding/onboarding-1.png";
 import onboard2 from "@/assets/images/onboarding/onboarding-2.png";
 import onboard3 from "@/assets/images/onboarding/onboarding-3.png";
-import { OnboardingTypes } from "@/types";
+import {
+  ColorSchemeTypes,
+  OnboardingTypes,
+  PrimaryColorTypes,
+  ThemeTypes,
+} from "@/types";
 import { useRef, useState } from "react";
 import { router } from "expo-router";
-import { Dimensions, FlatList, View, ViewToken } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ViewToken,
+} from "react-native";
+import Button from "@/components/ui/buttons/Button";
+import useTheme from "@/hooks/useTheme";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const onboardings: OnboardingTypes[] = [
   {
-    title: "Discover Local Savings",
+    title: "Discover Discounts Nearby",
     description:
-      "Unlock exclusive discounts and perks at your favorite local businesses. Save more while supporting your community—all in one app.",
+      "Find the best discounts from shops around you.",
     image: onboard1,
   },
   {
-    title: "Easy Membership Access",
+    title: "Get Exclusive Membership Benefits",
     description:
-      "Choose a plan that fits you best. Get your digital membership with a unique QR code for instant discount validation.",
+      "Unlock premium deals with membership.",
     image: onboard2,
   },
   {
-    title: "Manage & Stay Updated",
+    title: "Redeem Discounts Instantly",
     description:
-      "Track your perks, receive real-time updates, and enjoy a smooth, secure shopping experience every time you use the app.",
+      "Tap “Use Discount” and follow the on-screen steps to redeem.",
     image: onboard3,
   },
 ];
@@ -33,14 +49,18 @@ export default function Onboarding() {
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
 
+  const { theme, colorScheme, primaryColor } = useTheme();
+
+  const styles = createStyles(theme, colorScheme, primaryColor, width);
+
   const handleNext = () => {
     if (currentIndex < onboardings.length - 1) {
       flatListRef.current?.scrollToIndex({
         index: currentIndex + 1,
-        animated: true
-      })
+        animated: true,
+      });
     } else {
-      router.push("/choose_role");
+      router.push("/auth_option");
     }
   };
 
@@ -68,16 +88,21 @@ export default function Onboarding() {
     return (
       <OnboardingScreen
         data={item}
-        handleNext={handleNext}
-        onChangeIndex={handleIndexChange}
-        currentIndex={currentIndex}
-        width={width}
+        width={width - 32}
       />
     );
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
+      {/* Skip Button */}
+      <Pressable
+        style={styles.skipBtn}
+        onPress={() => router.push("/auth_option")}
+      >
+        <Text style={styles.skipText}>Skip</Text>
+      </Pressable>
+
       <FlatList
         ref={flatListRef}
         data={onboardings}
@@ -91,6 +116,89 @@ export default function Onboarding() {
         viewabilityConfig={viewabilityConfig}
         scrollEventThrottle={16}
       />
-    </View>
+
+      {/* Min Info */}
+      <View style={styles.btnContainer}>
+        {/* Slider points */}
+        <View style={styles.sliderPointContainer}>
+          {[0, 1, 2].map((key) => (
+            <Pressable
+              key={key}
+              onPress={() => handleIndexChange(key)}
+              style={[
+                styles.sliderPoint,
+                key === currentIndex && styles.sliderPointActive,
+              ]}
+            />
+          ))}
+        </View>
+
+        {/* Next Button */}
+        <Button title="Next" onPress={handleNext} style={{marginTop: 24}} />
+      </View>
+    </SafeAreaView>
   );
+}
+
+function createStyles(
+  theme: ThemeTypes,
+  colorScheme: ColorSchemeTypes,
+  primaryColor: PrimaryColorTypes,
+  width: number
+) {
+  return StyleSheet.create({
+    container: {
+      width: width,
+      flex: 1,
+      flexDirection: "column",
+      backgroundColor: theme.background,
+      paddingHorizontal: 16,
+    },
+    image: {
+      width: "100%",
+      height: 640,
+    },
+    skipBtn: {
+      marginTop: 16,
+    },
+    skipText: {
+      color: primaryColor.primaryBlack,
+      fontSize: 18,
+      fontWeight: 600,
+      textAlign: "right",
+    },
+    title: {
+      fontSize: 26,
+      fontWeight: "bold",
+      textAlign: "center",
+      backgroundColor: "transparent",
+    },
+    description: {
+      fontSize: 16,
+      fontWeight: "regular",
+      textAlign: "center",
+      marginTop: 8,
+    },
+    btnContainer: {
+      marginBottom: 64
+    },
+    sliderPointContainer: {
+      flexDirection: "row",
+      gap: 6,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 24,
+    },
+    sliderPoint: {
+      width: 12,
+      height: 12,
+      backgroundColor: "#A5B9A5",
+      borderRadius: "100%",
+    },
+    sliderPointActive: {
+      backgroundColor: "#556D55",
+      width: 30,
+      borderRadius: 25
+    },
+  });
 }

@@ -3,7 +3,7 @@ import React from "react";
 
 import LOGO from "@/assets/images/logo.png";
 
-export default function Logo({style = {}}) {
+export default function Logo({ style = {} }) {
   return (
     <View style={style}>
       <Image source={LOGO} style={styles.logo} />
@@ -13,7 +13,7 @@ export default function Logo({style = {}}) {
 
 const styles = StyleSheet.create({
   logo: {
-    width: 344, // Adjusted logo size
-    height: 92, // Adjusted logo size
+    width: 110,
+    height: 110,
   },
 });

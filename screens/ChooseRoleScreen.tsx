@@ -37,7 +37,11 @@ const widgets: WidgetTypes[] = [
   },
 ];
 
-const ChooseRoleScreen = () => {
+const ChooseRoleScreen = ({
+  isFirstLaunchApp,
+}: {
+  isFirstLaunchApp: boolean;
+}) => {
   const { colorScheme, theme, primaryColor } = useTheme();
   const [activeWidgetIndex, setActiveWidgetIndex] = useState<number>(1);
 
@@ -50,9 +54,11 @@ const ChooseRoleScreen = () => {
       } else {
         await AsyncStorage.setItem("userRole", "business");
       }
-      router.push("/auth_option");
+      if (isFirstLaunchApp) {
+        router.push("/onboarding");
+      } else router.push("/auth_option");
     } catch (error) {
-      console.error('❌ Failed to set user role: ', error);
+      console.error("❌ Failed to set user role: ", error);
     }
   };
 
@@ -76,12 +82,7 @@ const ChooseRoleScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 16 }}
-            renderItem={({
-              item,
-            }: {
-              item: WidgetTypes;
-              index: number;
-            }) => (
+            renderItem={({ item }: { item: WidgetTypes; index: number }) => (
               <TouchableOpacity
                 onPress={() => setActiveWidgetIndex(parseInt(item.id))}
                 activeOpacity={0.7}
@@ -97,9 +98,6 @@ const ChooseRoleScreen = () => {
                   <Image source={item.icon} style={styles.icon} />
                   <Text style={[styles.text, styles.widgetTitle]}>
                     {item.title}
-                  </Text>
-                  <Text style={[styles.text, styles.widgetDescription]}>
-                    {item.description}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -120,7 +118,7 @@ function createStyles(
   colorScheme: ColorSchemeTypes,
   primaryColor: PrimaryColorTypes
 ) {
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const containerPadding = 32; // 16px left + 16px right
   const gap = 16; // gap between widgets
   const widgetWidth = (screenWidth - containerPadding - gap) / 2;
@@ -137,24 +135,22 @@ function createStyles(
       alignItems: "center",
       paddingTop: 40,
     },
-    logo: {
-      width: 344,
-      height: 92,
-    },
     contentContainer: {
       marginTop: 40,
     },
     text: {
-      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
+      color: colorScheme === "dark" ? theme.text : '#303030',
     },
     title: {
       fontSize: 32,
-      fontWeight: "semibold",
+      fontWeight: 600,
+      textAlign: 'center'
     },
     description: {
       fontSize: 16,
       fontWeight: "regular",
       color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
+      textAlign: 'center'
     },
     widgetContainer: {
       width: "100%",
@@ -162,18 +158,17 @@ function createStyles(
     },
     widget: {
       width: widgetWidth,
-      height: 152,
-      borderColor: "#dff7eaff",
+      borderColor: "#E6E9E6",
       borderWidth: 1,
       borderStyle: "solid",
       borderRadius: 12,
-      backgroundColor: "#eff7f775",
+      backgroundColor: "#ffff",
       padding: 16,
       alignItems: "center",
       justifyContent: "center",
     },
     activeWidget: {
-      backgroundColor: "#EEF9F4",
+      backgroundColor: primaryColor.secondaryGreen,
       borderColor: primaryColor.greenNormal,
     },
     icon: {
@@ -184,13 +179,6 @@ function createStyles(
     widgetTitle: {
       fontSize: 18,
       color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
-      marginTop: 12,
-      textAlign: "center",
-    },
-    widgetDescription: {
-      fontSize: 14,
-      color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
-      marginTop: 8,
       textAlign: "center",
     },
   });

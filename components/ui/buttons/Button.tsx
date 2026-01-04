@@ -16,7 +16,6 @@ export default function Button({
   height,
   padding,
   loading,
-  loadingText,
 }: {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
@@ -36,7 +35,7 @@ export default function Button({
       disabled={loading}
     >
       <LinearGradient
-        colors={["#1CD77A", "#0BF3E7"]}
+        colors={["#556D55", "#76A976"]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
         style={[styles.button, { height: height ?? 56, padding: padding ?? 0 }]}
@@ -63,5 +62,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
+    color: 'white'
   },
 });

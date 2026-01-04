@@ -1,46 +1,21 @@
-import { StyleSheet, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import onboardingLogo from "@/assets/images/onboarding_logo.png";
-import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Image, View } from "react-native";
+import React, { useEffect } from "react";
+import logo from "@/assets/images/logo.png";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SplashScreen() {
   const router = useRouter();
-  const [isFirstLaunchApp, setIsFirstLaunchApp] = useState(false);
-
-  useEffect(() => {
-    const getIsFirstLaunch = async () => {
-      const firstLaunchStatus = await AsyncStorage.getItem("isFirstLaunch");
-      if (firstLaunchStatus === null) {
-        setIsFirstLaunchApp(true);
-        await AsyncStorage.setItem("isFirstLaunch", "false");
-      } else {
-        setIsFirstLaunchApp(false);
-      }
-    };
-    getIsFirstLaunch();
-  }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      if (isFirstLaunchApp) {
-        router.push("/onboarding");
-      } else router.push("/choose_role");
+      router.push("/choose_role");
     }, 3000);
-  }, [router, isFirstLaunchApp]);
+  }, [router]);
 
   return (
-    <LinearGradient
-      colors={["#6ECC96", "#0BE4F3", "#57C78F"]}
-      style={styles.container}
-    >
-      <Image
-        source={onboardingLogo}
-        alt="onboarding-logo"
-        style={styles.logo}
-      />
-    </LinearGradient>
+    <View style={styles.container}>
+      <Image source={logo} alt="Save Key" style={styles.logo} />
+    </View>
   );
 }
 
@@ -49,10 +24,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#E9EFEB",
   },
   logo: {
-    width: 300,
-    height: 210,
+    width: 280,
+    height: 252,
     resizeMode: "contain",
   },
 });
