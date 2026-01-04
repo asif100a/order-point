@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -10,6 +10,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { UserRole } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoaderUI from '@/components/ui/loader/LoaderUI';
 
 export default function TabLayout() {
   const [userRole, setUserRole] = useState<UserRole | undefined>(undefined)
@@ -25,12 +26,16 @@ export default function TabLayout() {
           setUserRole(role as UserRole);
         }
       } catch (error) {
-        
+        console.error('❌ Failed to get user: ', error);
+        router.push('/choose_role')
       }finally {
         setLoading(false);
       }
     }
+    getUserRole()
   }, [])
+
+  if(loading) return <LoaderUI />
 
   return (
     <Tabs
@@ -52,16 +57,16 @@ export default function TabLayout() {
         options={{
           title: 'Favorite',
           tabBarIcon: ({ color }) => <FontAwesome name="bookmark" size={24} color={color} />,
-          href:'/favorite'
+          href: userRole === 'user' ? '/favorite' : null
         }}
       />
       {/* Business tabs */}
        <Tabs.Screen
         name="deals"
         options={{
-          title: 'Favorite',
+          title: 'Deals',
           tabBarIcon: ({ color }) => <FontAwesome name="bookmark" size={24} color={color} />,
-          href:'/favorite'
+          href:userRole === 'business' ? '/deals' : null
         }}
       />
       {/* Common tabs */}

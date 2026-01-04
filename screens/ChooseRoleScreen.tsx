@@ -9,6 +9,7 @@ import {
   ThemeTypes,
   WidgetTypes,
 } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -41,14 +42,23 @@ const ChooseRoleScreen = () => {
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
-  const handleNext = () => {
-    router.push("/auth_option");
+  const handleNext = async () => {
+    try {
+      if (activeWidgetIndex === 1) {
+        await AsyncStorage.setItem("userRole", "user");
+      }else {
+        await AsyncStorage.setItem("userRole", "business");
+      }
+      router.push("/auth_option");
+    } catch (error) {
+      console.error('❌ Failed to set user role: ', error)
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-       <Logo />
+        <Logo />
       </View>
 
       <View style={styles.contentContainer}>
@@ -99,7 +109,6 @@ const ChooseRoleScreen = () => {
         </View>
 
         <Button title="Next" onPress={handleNext} style={{ marginTop: 40 }} />
-        {/* Next Button */}
       </View>
     </View>
   );
