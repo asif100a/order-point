@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function scan() {
+export default function Insights() {
   return (
     <View>
-      <Text>scan</Text>
+      <Text>Insights</Text>
     </View>
   )
 }

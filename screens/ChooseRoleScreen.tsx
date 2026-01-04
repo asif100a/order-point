@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
+  Dimensions,
   FlatList,
   Image,
   StyleSheet,
@@ -46,12 +47,12 @@ const ChooseRoleScreen = () => {
     try {
       if (activeWidgetIndex === 1) {
         await AsyncStorage.setItem("userRole", "user");
-      }else {
+      } else {
         await AsyncStorage.setItem("userRole", "business");
       }
       router.push("/auth_option");
     } catch (error) {
-      console.error('❌ Failed to set user role: ', error)
+      console.error('❌ Failed to set user role: ', error);
     }
   };
 
@@ -73,11 +74,10 @@ const ChooseRoleScreen = () => {
             data={widgets}
             keyExtractor={(item) => item.id}
             horizontal
-            showsHorizontalScrollIndicator={false} // To hide the scroll indicator
-            style={{ gap: 6 }}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 16 }}
             renderItem={({
               item,
-              index,
             }: {
               item: WidgetTypes;
               index: number;
@@ -92,7 +92,6 @@ const ChooseRoleScreen = () => {
                     activeWidgetIndex === parseInt(item.id)
                       ? styles.activeWidget
                       : null,
-                    index === 0 ? { marginRight: 8 } : { marginLeft: 8 },
                   ]}
                 >
                   <Image source={item.icon} style={styles.icon} />
@@ -121,6 +120,11 @@ function createStyles(
   colorScheme: ColorSchemeTypes,
   primaryColor: PrimaryColorTypes
 ) {
+  const screenWidth = Dimensions.get('window').width;
+  const containerPadding = 32; // 16px left + 16px right
+  const gap = 16; // gap between widgets
+  const widgetWidth = (screenWidth - containerPadding - gap) / 2;
+
   return StyleSheet.create({
     container: {
       height: "100%",
@@ -134,8 +138,8 @@ function createStyles(
       paddingTop: 40,
     },
     logo: {
-      width: 344, // Adjusted logo size
-      height: 92, // Adjusted logo size
+      width: 344,
+      height: 92,
     },
     contentContainer: {
       marginTop: 40,
@@ -154,10 +158,10 @@ function createStyles(
     },
     widgetContainer: {
       width: "100%",
-      flexDirection: "row",
+      marginTop: 20,
     },
     widget: {
-      width: 160, // Fixed width for each widget
+      width: widgetWidth,
       height: 152,
       borderColor: "#dff7eaff",
       borderWidth: 1,
@@ -165,30 +169,29 @@ function createStyles(
       borderRadius: 12,
       backgroundColor: "#eff7f775",
       padding: 16,
-      marginTop: 20,
-      alignItems: "center", // Center content horizontally
-      justifyContent: "center", // Center content vertically
+      alignItems: "center",
+      justifyContent: "center",
     },
     activeWidget: {
-      backgroundColor: "#EEF9F4", // Highlight active widget (change as needed)
+      backgroundColor: "#EEF9F4",
       borderColor: primaryColor.greenNormal,
     },
     icon: {
       width: 38,
       height: 38,
-      marginBottom: 10, // Added margin to separate icon from text
+      marginBottom: 10,
     },
     widgetTitle: {
       fontSize: 18,
       color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
       marginTop: 12,
-      textAlign: "center", // Center-align the title
+      textAlign: "center",
     },
     widgetDescription: {
       fontSize: 14,
       color: colorScheme === "dark" ? theme.text : primaryColor.primaryBlack,
       marginTop: 8,
-      textAlign: "center", // Center-align the description
+      textAlign: "center",
     },
   });
 }

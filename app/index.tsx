@@ -26,7 +26,7 @@ export default function SplashScreen() {
     setTimeout(() => {
       if (isFirstLaunchApp) {
         router.push("/onboarding");
-      } else router.push("/auth_option");
+      } else router.push("/choose_role");
     }, 3000);
   }, [router, isFirstLaunchApp]);
 
