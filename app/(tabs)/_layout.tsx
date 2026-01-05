@@ -1,7 +1,6 @@
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
 
-import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -12,6 +11,7 @@ import { UserRole } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { CustomTabBar } from "@/components/ui/tabBar/CustomTabBar";
 
 export default function TabLayout() {
   const [userRole, setUserRole] = useState<UserRole | undefined>(undefined);
@@ -40,10 +40,10 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} userRole={userRole} />} // Pass userRole to custom tab bar
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
       }}
     >
       <Tabs.Screen
