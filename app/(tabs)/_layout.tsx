@@ -49,10 +49,19 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          title: userRole === "user" ? "Home" : "Dashboard",
+          tabBarIcon: ({ color }) => {
+            if (userRole === "user") {
+              return <IconSymbol size={28} name="house.fill" color={color} />;
+            } else
+              return (
+                <MaterialCommunityIcons
+                  name="view-dashboard-outline"
+                  size={24}
+                  color={color}
+                />
+              );
+          },
         }}
       />
       {/* User tabs */}

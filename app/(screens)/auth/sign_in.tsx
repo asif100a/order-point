@@ -50,7 +50,7 @@ export default function SignIn() {
     try {
       const res = await login({ email, password });
       // console.log("Completed Login Response: ", res);
-      
+
       // ✅ Check for error in the response
       if ("error" in res) {
         // Handle different error types
