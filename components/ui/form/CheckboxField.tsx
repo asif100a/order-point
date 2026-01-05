@@ -1,7 +1,7 @@
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 import { Checkbox } from "expo-checkbox";
-import { ExternalPathString, RelativePathString, useRouter } from "expo-router";
+import { ExternalPathString, Link, RelativePathString, useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -36,14 +36,14 @@ export default function CheckboxField({
       <Checkbox
         value={value}
         onValueChange={onValueChange}
-        color={value ? "#007AFF" : undefined}
+        color={value ? "#76A976" : undefined}
       />
       <Text style={styles.label}>
         {label} {" "}
         {linkText && (
-          <Pressable onPress={() => router.push(link)} style={styles.linkText}>
-            <Text>{linkText}</Text>
-          </Pressable>
+          <Link href={link}>
+            <Text style={styles.linkText}>{linkText}</Text>
+          </Link>
         )}
       </Text>
     </View>
@@ -69,10 +69,10 @@ function createStyles({
     },
     linkText: {
       fontSize: 16,
-      fontWeight: "medium",
-      color: primaryColor.greenNormal,
+      fontWeight: 500,
+      color: '#556D55',
       textDecorationLine: "underline",
-      marginTop: 8
+      marginTop: 8,
     },
   });
 }

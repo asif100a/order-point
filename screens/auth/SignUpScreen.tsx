@@ -1,4 +1,3 @@
-import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/buttons/Button";
 import CheckboxField from "@/components/ui/form/CheckboxField";
 import EmailInputField from "@/components/ui/form/EmailInputField";
@@ -10,9 +9,9 @@ import SocialLogin from "@/components/ui/parts/SocialLogin";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import { UserType } from "@/types/user.type";
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function SignUpScreen({
   handleSignUp,
@@ -21,10 +20,9 @@ export default function SignUpScreen({
   handleSignUp: (data: UserType) => void;
   isLoading: boolean;
 }) {
-  const router = useRouter();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
@@ -46,18 +44,12 @@ export default function SignUpScreen({
   return (
     <ScreenContainer>
       <TopNavigationHeader
-        title=""
-        description=""
+        title="Create account"
+        description="Fill your information below or register with your account."
         link={"/auth_option" as any}
       />
-      <Logo />
 
       <View>
-        <Text style={styles.title}>Create account</Text>
-        <Text style={styles.description}>
-          Fill your information below or register with your account.
-        </Text>
-
         <View style={styles.formContainer}>
           {/* Name */}
           <TextInputField
@@ -65,7 +57,7 @@ export default function SignUpScreen({
             onTextChange={setName}
             label="User Name"
             placeholder="Enter your name"
-            />
+          />
           {/* Email */}
           <EmailInputField value={email} onEmailChange={setEmail} />
           {/* Phone Number */}
@@ -117,12 +109,10 @@ export default function SignUpScreen({
               { marginTop: 24, textAlign: "center" },
             ]}
           >
-            Do you have an account?{" "}
-            <Pressable onPress={() => router.push("/auth/sign_in")}>
-              <Text style={{ color: "#57C78F", fontWeight: "600" }}>
-                Sign In
-              </Text>
-            </Pressable>
+            Already have an account?{" "}
+            <Link href={"/auth/sign_in"}>
+              <Text style={{ color: "#556D55", fontWeight: 600 }}>Sign In</Text>
+            </Link>
           </Text>
         </View>
       </View>
@@ -140,16 +130,6 @@ function createStyles({
   primaryColor: PrimaryColorTypes;
 }) {
   return StyleSheet.create({
-    title: {
-      fontSize: 32,
-      fontWeight: "semibold",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-    },
-    description: {
-      fontSize: 16,
-      fontWeight: "normal",
-      color: colorScheme === "dark" ? "white" : primaryColor.secondaryBlack,
-    },
     primaryFontSize: {
       fontSize: 16,
     },

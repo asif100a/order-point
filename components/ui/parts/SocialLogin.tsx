@@ -4,7 +4,7 @@ import ButtonOutline from "../buttons/ButtonOutline";
 import useTheme from "@/hooks/useTheme";
 import { ThemeTypes } from "@/types";
 
-export default function SocialLogin({isLoading}: {isLoading: boolean}) {
+export default function SocialLogin({isLoading, disabled}: {isLoading?: boolean; disabled?: boolean}) {
   const { theme } = useTheme();
 
   const styles = createStyles({ theme });
@@ -16,16 +16,18 @@ export default function SocialLogin({isLoading}: {isLoading: boolean}) {
   return (
     <View>
       <ButtonOutline
-        title="Login with apple"
+        title="Login with Apple"
         onPress={handleAppleLogin}
         style={styles.outLineButton}
         loading={isLoading}
+        disabled={disabled}
         />
       <ButtonOutline
         title="Login with Google"
         onPress={handleGoogleLogin}
         style={styles.outLineButton}
         loading={isLoading}
+        disabled={disabled}
       />
     </View>
   );

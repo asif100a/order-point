@@ -6,9 +6,9 @@ import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader"
 import SocialLogin from "@/components/ui/parts/SocialLogin";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignInScreen = ({
@@ -24,7 +24,14 @@ const SignInScreen = ({
   const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(false);
 
-  const styles = createStyles({ theme, colorScheme, primaryColor });
+  const windowHeight = Dimensions.get("window")?.height;
+
+  const styles = createStyles({
+    theme,
+    colorScheme,
+    primaryColor,
+    windowHeight,
+  });
 
   const onSubmit = () => handleLogin(email, password);
 
@@ -32,7 +39,7 @@ const SignInScreen = ({
     <SafeAreaView style={styles.container}>
       <TopNavigationHeader
         title="Login"
-        description="Hi Welcome back..! Please enter your correct Information And continue "
+        description="Hi Welcome back..! Please enter your correct information and continue"
         link={"/auth_option" as any}
       />
 
@@ -76,7 +83,7 @@ const SignInScreen = ({
             <View style={styles.line} />
           </View>
 
-          <SocialLogin isLoading={isLoading} />
+          <SocialLogin disabled={isLoading} />
 
           <Text
             style={[
@@ -85,11 +92,9 @@ const SignInScreen = ({
             ]}
           >
             Do you have an account?{" "}
-            <Pressable onPress={() => router.push("/auth/sign_up")}>
-              <Text style={{ color: "#57C78F", fontWeight: "600" }}>
-                Sign Up
-              </Text>
-            </Pressable>
+            <Link href={"/auth/sign_up"}>
+              <Text style={{ color: "#556D55", fontWeight: 600 }}>Sign Up</Text>
+            </Link>
           </Text>
         </View>
       </View>
@@ -103,13 +108,16 @@ function createStyles({
   theme,
   colorScheme,
   primaryColor,
+  windowHeight,
 }: {
   theme: ThemeTypes;
   colorScheme: ColorSchemeTypes;
   primaryColor: PrimaryColorTypes;
+  windowHeight: number;
 }) {
   return StyleSheet.create({
     container: {
+      height: windowHeight,
       backgroundColor: theme.background,
       paddingLeft: 16,
       paddingRight: 16,

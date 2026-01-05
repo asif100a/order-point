@@ -15,11 +15,13 @@ export default function ButtonOutline({
   title,
   onPress,
   style,
+  disabled,
   loading,
 }: {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
+  disabled?: boolean;
   loading?: boolean;
 }) {
   const { theme, primaryColor } = useTheme();
@@ -28,7 +30,7 @@ export default function ButtonOutline({
 
   return (
     <LinearGradient
-      colors={["#6ECC96", "#0BF3E7", "#57C78F"]}
+      colors={["#556D55", "#76A976"]}
       start={{ x: 0, y: 1 }}
       end={{ x: 0, y: 0 }}
       style={[styles.gradientBorder, style]}
@@ -37,7 +39,7 @@ export default function ButtonOutline({
         onPress={onPress}
         activeOpacity={0.7}
         style={styles.button}
-        disabled={loading}
+        disabled={disabled || loading}
       >
         {loading ? (
           <ActivityIndicator size="large" color={primaryColor.primaryRed} />
