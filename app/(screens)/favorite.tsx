@@ -1,10 +1,10 @@
-import { View } from 'react-native'
-import React from 'react'
-import FavoriteScreen from '@/screens/FavoriteScreen'
 import CategoryImg1 from "@/assets/images/category/category1.png";
 import CategoryImg2 from "@/assets/images/category/category2.png";
 import CategoryImg3 from "@/assets/images/category/category3.png";
 import hotelImg from "@/assets/images/category/hotel.png";
+import FavoriteScreen from '@/screens/user/FavoriteScreen';
+import React from 'react';
+import { View } from 'react-native';
 
 export interface CategoryType {
   id: string;

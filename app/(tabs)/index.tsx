@@ -1,9 +1,10 @@
-import { Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import HomeScreen from '@/screens/HomeScreen'
-import { UserRole } from '@/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoaderUI from '@/components/ui/loader/LoaderUI';
+import { Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import HomeScreen from "@/screens/HomeScreen";
+import { UserRole } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
+import DashboardScreen from "@/screens/business/DashboardScreen";
 
 export default function Index() {
   const [userRole, setUserRole] = useState<UserRole | undefined>(undefined);
@@ -29,12 +30,6 @@ export default function Index() {
   if (loading) return <LoaderUI />;
 
   return (
-    <View>
-     {userRole === 'user' ?  <HomeScreen /> : (
-      <View>
-        <Text>Hi from the dashboard</Text>
-      </View>
-     )}
-    </View>
-  )
+    <View>{userRole === "user" ? <HomeScreen /> : <DashboardScreen />}</View>
+  );
 }

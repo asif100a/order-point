@@ -1,11 +1,11 @@
-import React from 'react'
-import PrivateRoute from '@/routes/PrivateRoute'
-import FavoriteScreen from '@/screens/FavoriteScreen'
-import { CategoryType } from '@/types';
 import CategoryImg1 from "@/assets/images/category/category1.png";
 import CategoryImg2 from "@/assets/images/category/category2.png";
 import CategoryImg3 from "@/assets/images/category/category3.png";
 import hotelImg from "@/assets/images/category/hotel.png";
+import PrivateRoute from '@/routes/PrivateRoute';
+import FavoriteScreen from '@/screens/user/FavoriteScreen';
+import { CategoryType } from '@/types';
+import React from 'react';
 
 const CATEGORIES: CategoryType[] = [
   {

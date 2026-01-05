@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import useTheme from "@/hooks/useTheme";
-import { CategoryType, ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
+import {
+  CategoryType,
+  ColorSchemeTypes,
+  PrimaryColorTypes,
+  ThemeTypes,
+} from "@/types";
 import Tabs from "./Tabs";
 import CategoryImg1 from "@/assets/images/category/category1.png";
 import CategoryImg2 from "@/assets/images/category/category2.png";
@@ -84,7 +89,7 @@ export default function Categories() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.categoryText}>Categories</Text>
+      <Text style={styles.categoryText}>Available Discounts</Text>
       {/* Tabs */}
       <Tabs tabs={TABS} active={activeTab} setActive={setActiveTab} />
 
@@ -200,7 +205,10 @@ export default function Categories() {
                   />
 
                   {/* QR Code */}
-                  <Pressable style={styles.roundButton} onPress={() => router.push('/qr_code')}>
+                  <Pressable
+                    style={styles.roundButton}
+                    onPress={() => router.push("/qr_code")}
+                  >
                     <MaterialCommunityIcons
                       name="qrcode-scan"
                       size={24}
@@ -279,10 +287,10 @@ function createStyles(
       justifyContent: "space-between",
       alignItems: "center",
     },
-      hotel: {
-      flexDirection: 'row', 
-      alignItems: 'center',
-      gap: 4
+    hotel: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
     },
     hotelText: {
       fontSize: 18,

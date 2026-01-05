@@ -69,29 +69,19 @@ function createStyle({
     tabContainer: {
       flexDirection: "row",
       gap: gap,
-      backgroundColor: "#F3F3F5",
       padding: containerPadding,
-      borderRadius: 40,
       alignItems: "center",
     },
     tab: {
       width: tabWidth,
       height: 36,
-      borderRadius: 30,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "transparent",
     },
     activeTab: {
-      backgroundColor: "#00D9A5", // Your primary color
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 3,
-      elevation: 3,
+      borderBottomWidth: 1,
+      borderBottomColor: primaryColor.greenNormal
     },
     tabText: {
       fontSize: 16,
@@ -100,7 +90,7 @@ function createStyle({
       color: "#666",
     },
     activeTabText: {
-      color: colorScheme === 'dark' ? "#FFF" : primaryColor.primaryBlack,
+      color: primaryColor.greenNormal,
       fontWeight: "700",
     },
   });

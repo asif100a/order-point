@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
+import DealsScreen from '@/screens/business/DealsScreen'
 
 export default function deals() {
   return (
     <View>
-      <Text>deals</Text>
+      <DealsScreen />
     </View>
   )
 }
