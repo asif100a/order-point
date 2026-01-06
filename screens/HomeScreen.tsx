@@ -10,6 +10,7 @@ import Categories from "@/components/ui/homePage/Categories";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterModal from "@/components/ui/homePage/FilterModal";
 import HomePageSearchbar from "@/components/ui/homePage/HomePageSearchbar";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -44,9 +45,19 @@ export default function HomeScreen() {
 
           {/* 2 Buttons */}
           <View style={styles.iconsContainer}>
+            {/* Filter */}
+            <Pressable
+              onPress={() => setFilterOpen(true)}
+              style={styles.roundButton}
+            >
+              <EvilIcons name="search" size={24} color="black" />
+            </Pressable>
+            {/* Notification */}
             <View style={{ position: "relative" }}>
-              {/* Notification */}
-              <Pressable style={styles.roundButton} onPress={() => router.push('/notification')}>
+              <Pressable
+                style={styles.roundButton}
+                onPress={() => router.push("/notification")}
+              >
                 <Feather name="bell" size={24} color="black" />
               </Pressable>
 
@@ -55,17 +66,20 @@ export default function HomeScreen() {
               </View>
             </View>
             {/* Filter */}
-            <Pressable
+            {/* <Pressable
               onPress={() => setFilterOpen(true)}
               style={styles.roundButton}
             >
               <Ionicons name="filter-circle-outline" size={24} color="black" />
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 
         {/* Search bar */}
-       <HomePageSearchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <HomePageSearchbar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
       </View>
 
       {/* Categories */}
@@ -88,7 +102,7 @@ function createStyles(
       height: "100%",
       backgroundColor: colorScheme === "dark" ? theme.background : "white",
       padding: 16,
-      paddingBottom: 120
+      paddingBottom: 120,
     },
     topContainer: {
       width: "100%",

@@ -101,7 +101,7 @@ export default function SignUpScreen({
             <View style={styles.line} />
           </View>
 
-          <SocialLogin isLoading={isLoading} />
+          <SocialLogin disabled={isLoading} />
 
           <Text
             style={[
