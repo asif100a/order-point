@@ -89,9 +89,13 @@ export default function Categories() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.categoryText}>Available Discounts</Text>
       {/* Tabs */}
+      <View style={styles.tabContainer}>
+
       <Tabs tabs={TABS} active={activeTab} setActive={setActiveTab} />
+      </View>
+
+      <Text style={styles.categoryText}>Available Discounts</Text>
 
       {/* Category Cards */}
       <FlatList
@@ -248,6 +252,9 @@ function createStyles(
     container: {
       width: "100%",
       height: "100%",
+    },
+    tabContainer: {
+      marginTop: 32
     },
     categoryText: {
       fontSize: 18,

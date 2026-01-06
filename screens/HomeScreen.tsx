@@ -76,10 +76,10 @@ export default function HomeScreen() {
         </View>
 
         {/* Search bar */}
-        <HomePageSearchbar
+        {/* <HomePageSearchbar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-        />
+        /> */}
       </View>
 
       {/* Categories */}
