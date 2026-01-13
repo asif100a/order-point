@@ -102,7 +102,7 @@ function createStyles(
       height: "100%",
       backgroundColor: colorScheme === "dark" ? theme.background : "white",
       padding: 16,
-      paddingBottom: 120,
+      // paddingBottom: 120,
     },
     topContainer: {
       width: "100%",

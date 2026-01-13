@@ -18,7 +18,7 @@ export default function Button({
   loading,
 }: {
   title: string;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
   style?: object;
   height?: number;
   padding?: number;
@@ -29,7 +29,7 @@ export default function Button({
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={onPress ? onPress : () => {}}
       activeOpacity={0.7}
       style={[{ marginTop: 20 }, style]}
       disabled={loading}
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    color: 'white'
+    color: "white",
   },
 });
