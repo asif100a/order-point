@@ -23,7 +23,7 @@ import hotelImg from "@/assets/images/category/hotel.png";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Button from "../buttons/Button";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 
 const TABS = ["Featured", "New", "Near by me"];
 
@@ -79,15 +79,16 @@ const CATEGORIES: CategoryType[] = [
 ];
 
 export default function Categories() {
-  const router = useRouter();
   const { colorScheme, theme, primaryColor } = useTheme();
   const [activeTab, setActiveTab] = useState<string>(TABS[0]);
-  const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(new Set());
+  const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(
+    new Set()
+  );
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   const toggleBookmark = (itemId: string) => {
-    setBookmarkedItems(prev => {
+    setBookmarkedItems((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
@@ -101,7 +102,7 @@ export default function Categories() {
   const category = useCallback(
     ({ item }: { item: CategoryType }) => {
       const isBookmarked = bookmarkedItems.has(item.id);
-      
+
       return (
         <View style={styles.card}>
           <View style={styles.cardContent}>
@@ -117,25 +118,34 @@ export default function Categories() {
             <View style={styles.rightContent}>
               {/* Title and Bookmark */}
               <View style={styles.titleRow}>
-                <Text style={styles.title} numberOfLines={1}>
-                  {item.hotelName}
-                </Text>
+                <View style={styles.titleDiscount}>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.hotelName}
+                  </Text>
+                  {/* Discount */}
+                  <Text style={styles.discountText}>
+                    {item.discount}% off on all time
+                  </Text>
+                </View>
                 <Pressable
-                  style={styles.bookmarkButton}
+                  style={[styles.bookmarkButton, isBookmarked && {borderColor: '#FFA7A7'}]}
                   onPress={() => toggleBookmark(item.id)}
                 >
                   {isBookmarked ? (
-                    <FontAwesome name="bookmark" size={20} color={primaryColor.greenNormal} />
+                    <FontAwesome
+                      name="bookmark"
+                      size={20}
+                      color={primaryColor.primaryRed}
+                    />
                   ) : (
-                    <Feather name="bookmark" size={20} color={primaryColor.greenNormal} />
+                    <FontAwesome
+                      name="bookmark-o"
+                      size={20}
+                      color={primaryColor.greenNormal}
+                    />
                   )}
                 </Pressable>
               </View>
-
-              {/* Discount */}
-              <Text style={styles.discountText}>
-                {item.discount}% off on all time
-              </Text>
 
               {/* Usage Info */}
               <View style={styles.infoRow}>
@@ -152,37 +162,16 @@ export default function Categories() {
                   {item.location}
                 </Text>
               </View>
-
-              {/* Use Discount Button */}
-              <Link href={`/details/[${item.id}]`} asChild>
-                <Pressable style={styles.useButton}>
-                  <Text style={styles.useButtonText}>Use Discount</Text>
-                </Pressable>
-              </Link>
             </View>
           </View>
+          {/* Use Discount Button */}
+          <Link href={`/details/[${item.id}]`} asChild>
+            <Button title="Use Discount" />
+          </Link>
         </View>
       );
     },
-    [
-      bookmarkedItems,
-      primaryColor.greenNormal,
-      styles.bookmarkButton,
-      styles.card,
-      styles.cardContent,
-      styles.discountText,
-      styles.image,
-      styles.imageContainer,
-      styles.infoLabel,
-      styles.infoRow,
-      styles.infoValue,
-      styles.locationLink,
-      styles.rightContent,
-      styles.title,
-      styles.titleRow,
-      styles.useButton,
-      styles.useButtonText,
-    ]
+    [bookmarkedItems, primaryColor.greenNormal, primaryColor.primaryRed, styles.bookmarkButton, styles.card, styles.cardContent, styles.discountText, styles.image, styles.imageContainer, styles.infoLabel, styles.infoRow, styles.infoValue, styles.locationLink, styles.rightContent, styles.title, styles.titleDiscount, styles.titleRow]
   );
 
   return (
@@ -217,7 +206,8 @@ function createStyles(
       height: "100%",
     },
     tabContainer: {
-      marginTop: 32,
+      marginTop: 12,
+      marginBottom: 8,
     },
     categoryText: {
       fontSize: 18,
@@ -227,20 +217,14 @@ function createStyles(
     },
     card: {
       backgroundColor: theme.background,
+      borderWidth: 1,
+      borderColor: "#E3E3E3",
       borderRadius: 12,
       marginBottom: 16,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 3,
+      padding: 12,
     },
     cardContent: {
       flexDirection: "row",
-      padding: 12,
     },
     imageContainer: {
       width: 100,
@@ -261,52 +245,45 @@ function createStyles(
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-start",
-      marginBottom: 4,
     },
+    titleDiscount: {},
     title: {
       fontSize: 16,
-      fontWeight: "600",
+      fontWeight: 600,
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       flex: 1,
       marginRight: 8,
-    },
-    bookmarkButton: {
-      padding: 4,
+      marginBottom: 4,
     },
     discountText: {
       fontSize: 14,
       color: primaryColor.secondaryBlack,
       marginBottom: 8,
     },
+    bookmarkButton: {
+      paddingVertical: 6,
+      paddingHorizontal: 8,
+      borderWidth: 1,
+      borderColor: "#E3E3E3",
+      borderRadius: 50,
+    },
     infoRow: {
       flexDirection: "row",
       alignItems: "center",
+      justifyContent: "space-between",
       marginBottom: 4,
     },
     infoLabel: {
-      fontSize: 13,
+      fontSize: 14,
       color: primaryColor.secondaryBlack,
       marginRight: 8,
     },
     infoValue: {
-      fontSize: 13,
+      fontSize: 14,
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
     },
     locationLink: {
       textDecorationLine: "underline",
-    },
-    useButton: {
-      backgroundColor: primaryColor.greenNormal,
-      borderRadius: 8,
-      paddingVertical: 12,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 8,
-    },
-    useButtonText: {
-      color: "white",
-      fontSize: 14,
-      fontWeight: "600",
     },
   });
 }

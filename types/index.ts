@@ -67,6 +67,8 @@ export interface CategoryType {
   startTime: string;
   category: "New Deal" | "Expire Soon";
   location: string;
+  usedCount?: number;
+  maxUsage?: number;
 }
 
 export interface ApiError {
