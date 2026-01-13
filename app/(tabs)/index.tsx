@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import HomeScreen from "@/screens/HomeScreen";
 import { UserRole } from "@/types";

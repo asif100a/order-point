@@ -18,13 +18,14 @@ export default function SuccessPage({
   onButtonClick,
   navigationLink,
   backToHomeBtn = false,
+  extraDescription,
 }: {
   headerTitle: string;
   headerDescription: string;
   title: string;
   description: string;
   buttonText: string;
-  onButtonClick: () => void,
+  onButtonClick: () => void;
   navigationLink:
     | RelativePathString
     | ExternalPathString
@@ -38,6 +39,7 @@ export default function SuccessPage({
     | `/_sitemap?${string}`
     | `/_sitemap#${string}`;
   backToHomeBtn?: boolean;
+  extraDescription?: boolean;
 }) {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
@@ -55,12 +57,32 @@ export default function SuccessPage({
       <View>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
-        <Button
-          title={buttonText}
-          onPress={onButtonClick}
-        />
+        {extraDescription && (
+          <View style={{ marginTop: 24 }}>
+            <Text style={{ textAlign: "center" }}>
+              Enjoy your discount and keep saving with
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 2,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.description, { color: "#9810FA" }]}>
+                LumeFitness Premium
+              </Text>{" "}
+              <Text>✨</Text>
+            </View>
+          </View>
+        )}
+        <Button title={buttonText} onPress={onButtonClick} />
         {backToHomeBtn && (
-          <ButtonOutline title="Back to Home" onPress={() => router.push('/home' as any)} />
+          <ButtonOutline
+            title="Back to Home"
+            onPress={() => router.push("/home" as any)}
+          />
         )}
       </View>
     </ScreenContainer>
@@ -93,6 +115,7 @@ function createStyles({
       fontWeight: "semibold",
       textAlign: "center",
       marginBottom: 10,
+      color: "#9810FA",
     },
     description: {
       fontSize: 16,

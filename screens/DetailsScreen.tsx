@@ -163,7 +163,7 @@ export default function DetailsScreen() {
                 <Feather
                   name="check-circle"
                   size={18}
-                  color={primaryColor.greenNormal}
+                  color={'#FC7757'}
                 />
                 <Text style={styles.conditionTitle}>
                   Entrance & Welcome Area
@@ -207,7 +207,7 @@ export default function DetailsScreen() {
                 <Feather
                   name="check-circle"
                   size={18}
-                  color={primaryColor.greenNormal}
+                  color={'#FC7757'}
                 />
                 <Text style={styles.conditionTitle}>
                   Cake & Dessert Section
@@ -247,7 +247,7 @@ export default function DetailsScreen() {
                 <Feather
                   name="check-circle"
                   size={18}
-                  color={primaryColor.greenNormal}
+                  color={'#FC7757'}
                 />
                 <Text style={styles.conditionTitle}>Photo Zone</Text>
               </View>
