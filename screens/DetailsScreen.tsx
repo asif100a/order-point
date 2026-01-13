@@ -354,7 +354,7 @@ function createStyles(
       top: 12,
       right: 12,
       backgroundColor: "rgba(0, 0, 0, 0.4)",
-      borderRadius: 8,
+      borderRadius: 50,
       padding: 8,
       width: 36,
       height: 36,
