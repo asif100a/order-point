@@ -11,7 +11,18 @@ export default function TopNavigationHeader({
   description,
 }: {
   title: string;
-  link: RelativePathString | ExternalPathString | `/?${string}` | `/#${string}` | `/modal?${string}` | `/modal#${string}` | `/_sitemap?${string}` | `/_sitemap#${string}` | "/" | "/modal" | "/_sitemap";
+  link?:
+    | RelativePathString
+    | ExternalPathString
+    | `/?${string}`
+    | `/#${string}`
+    | `/modal?${string}`
+    | `/modal#${string}`
+    | `/_sitemap?${string}`
+    | `/_sitemap#${string}`
+    | "/"
+    | "/modal"
+    | "/_sitemap";
   description: string;
 }) {
   const router = useRouter();
@@ -23,9 +34,11 @@ export default function TopNavigationHeader({
     <View>
       <View style={styles.titleContainer}>
         {/* Prev Button */}
-        <Pressable onPress={() => router.push(link)} style={styles.prevArrow}>
-          <AntDesign name="left" size={22} color="black" />
-        </Pressable>
+        {link && (
+          <Pressable onPress={() => router.push(link)} style={styles.prevArrow}>
+            <AntDesign name="left" size={22} color="black" />
+          </Pressable>
+        )}
 
         <Text style={styles.title}>{title || ""}</Text>
       </View>
@@ -67,7 +80,7 @@ function createStyles({
       fontWeight: "400",
       lineHeight: 24,
       marginTop: 12,
-      fontSize: 16
+      fontSize: 16,
     },
   });
 }

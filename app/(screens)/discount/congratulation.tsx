@@ -1,12 +1,12 @@
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import TopNavigationHeader from "../navigation/TopNavigationHeader";
 import SuccessIcon from "@/assets/images/common/success.png";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
-import Button from "../buttons/Button";
+import Button from "../../../components/ui/buttons/Button";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 
 export default function Congratulation() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function Congratulation() {
         <TopNavigationHeader
           title={"Congratulation!"}
           description=""
-          link={"/(tabs)"}
+          link={"/(tabs)" as any}
         />
         
         <View style={styles.contentWrapper}>

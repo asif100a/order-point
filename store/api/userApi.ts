@@ -10,7 +10,7 @@ export const userApi = baseApi.injectEndpoints({
       query: () => BASE_POINT + "/my-profile",
       providesTags: [tagTypes.user, tagTypes.auth],
     }),
-    updateUser: builder.mutation<UserType, Partial<UserType>>({
+    updateUser: builder.mutation({
       query: (data) => ({
         url: BASE_POINT + "/update-my-profile",
         method: "PUT",

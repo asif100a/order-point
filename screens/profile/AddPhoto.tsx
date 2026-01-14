@@ -15,8 +15,9 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import { useRouter } from "expo-router";
+import { useUpdateUserMutation } from "@/store/api/userApi";
+import Toast from "react-native-toast-message";
 
 export default function AddPhoto() {
   const router = useRouter();
@@ -27,35 +28,15 @@ export default function AddPhoto() {
   const [uploadedImage, setUploadedImage] = useState<string | undefined>(
     undefined
   );
-  const [savedImage, setSavedImage] = useState<string | undefined>(
-    undefined
-  );
+  const [savedImage, setSavedImage] = useState<string | undefined>(undefined);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+
+  const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
 
   // If already has saved image
   useEffect(() => {
     async function getSavedPhoto() {
       try {
-        const uploadDir = new FileSystem.Directory(
-          FileSystem.Paths.document,
-          "uploaded",
-          "images"
-        );
-        console.log("Upload Dir: ", uploadDir);
-        if (await uploadDir.exists) {
-          const files = uploadDir.list();
-          console.log("Saved Files: ", files);
-
-          if (files.length > 0) {
-            const sortedFiles = files.sort((a, b) => {
-              const timeA = parseInt(a.name.split(".jpg")[0], 10);
-              const timeB = parseInt(b.name.split(".jpg")[0], 10);
-              return timeA - timeB;
-            });
-            const latestFile = sortedFiles[0];
-            setSavedImage(latestFile.uri);
-          }
-        }
       } catch (error) {
         console.error("❌ Error while retrieving saved files: ", error);
       }
@@ -93,10 +74,6 @@ export default function AddPhoto() {
     }
   };
 
-  const handleSkip = () => {
-    router.push("/subscription/choose_plan");
-  };
-
   const snapPoints = useMemo(() => ["40%"], []);
 
   // callbacks
@@ -104,56 +81,71 @@ export default function AddPhoto() {
     bottomSheetRef.current?.expand();
   }, []);
 
-  // const handleCloseSheet = useCallback(() => {
-  //   bottomSheetRef.current?.close()
-  // }, [])
+  const handleCloseSheet = useCallback(() => {
+    bottomSheetRef.current?.close();
+  }, []);
 
   const handleSavePhoto = async (uri: string) => {
+    if (!uri) {
+      Toast.show({
+        type: "error",
+        text1: "Failed to save photo",
+        text2: 'Photo not found!',
+      });
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", uri);
     try {
-      // Create the Directory Structure
-      const uploadDir = new FileSystem.Directory(
-        FileSystem.Paths.document,
-        "uploaded",
-        "images"
-      );
-      uploadDir.create({ intermediates: true, idempotent: true }); // Create the directory if doesn't exist
+      const res = await updateUser(formData).unwrap();
+      // ✅ Check for error in the response
+      if ("error" in res) {
+        // Handle different error types
+        const err = res.error as {
+          status?: number;
+          message?: string;
+          data?: { message: string };
+        };
+        const errorMessage =
+          "status" in err && err.status != null
+            ? `Error: ${err.status} ${err.message || err?.data?.message}`
+            : "Unknown error";
 
-      // Create Unique filename
-      const filename = `${new Date().getTime()}.jpg`;
+        return Toast.show({
+          type: "error",
+          text1: "Failed to save photo",
+          text2: errorMessage,
+        });
+      }
 
-      // Create the destination file
-      const sourceFile = new FileSystem.File(uri);
-      const destinationFile = new FileSystem.File(uploadDir, filename);
-
-      // Copy the image
-      await sourceFile.copy(destinationFile);
-
-      console.log("Image saved to: ", destinationFile.uri);
-      Alert.alert("Success", "Image saved successfully!");
-
-      setIsSaved(true); // Set save after saving
-      // Return the uri
-      return destinationFile.uri;
+      if (res.success) {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Photo saved successfully",
+        });
+      }
     } catch (error) {
       console.error("❌Error while saving photo: ", error);
-      Alert.alert("Error", "Failed to save image");
     }
   };
 
+  const handleSkip = () => {
+    router.push("/auth/sign_in");
+  };
+
   useEffect(() => {
-    if (isSaved) {
-      setTimeout(() => {
-        router.push("/subscription/choose_plan");
-      }, 1000);
-    }
-  }, [isSaved, router]);
+    if (uploadedImage) handleCloseSheet();
+  }, [uploadedImage, handleCloseSheet]);
 
   return (
     <View style={{ position: "relative" }}>
       <ScreenContainer
-        customStyles={{
-          backgroundColor: isSheetOpen ? "#999696ff" : theme.background,
-        }}
+        customStyles={
+          {
+            // backgroundColor: isSheetOpen ? "#999696ff" : theme.background,
+          }
+        }
       >
         <TopNavigationHeader
           title={
@@ -164,14 +156,17 @@ export default function AddPhoto() {
           description={
             uploadedImage ? "" : "Everyone will be able to see your picture."
           }
-          link={"/auth/sign_up" as any}
         />
 
         <View style={styles.addPhotoContainer}>
           <View style={styles.imageContainer}>
             <Image
               source={
-                uploadedImage ? { uri: uploadedImage } : savedImage ? {uri: savedImage} : PLACEHOLDER_PROFILE
+                uploadedImage
+                  ? { uri: uploadedImage }
+                  : savedImage
+                  ? { uri: savedImage }
+                  : PLACEHOLDER_PROFILE
               }
               style={styles.image}
               resizeMode="cover"
@@ -202,7 +197,6 @@ export default function AddPhoto() {
         index={-1}
         enablePanDownToClose={true}
         onChange={(index) => {
-          // console.log("index: ", index);
           setSheetOpen(index !== -1);
         }}
         backgroundStyle={{ backgroundColor: "#EEEEEE" }}

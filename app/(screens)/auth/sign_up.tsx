@@ -80,7 +80,7 @@ export default function SignUp() {
 
   const handleSignUp = async (data: UserType) => {
     // console.log("User data: ", data);
-    if (!VerifyUser(data)) return;
+    // if (!VerifyUser(data)) return;
 
     const newUser = {
       name: data.name,
@@ -89,6 +89,8 @@ export default function SignUp() {
       contractNumber: data.phoneNumber,
     };
     try {
+router.push('/profile/add_photo')
+      return;
       const res = await register(newUser as any);
       // console.log("Completed Response: ", res);
 
@@ -120,7 +122,7 @@ export default function SignUp() {
         });
         router.push({
           pathname: "/auth/confirmation_code",
-          params: { email: data?.email, destination: "/auth/sign_in" },
+          params: { email: data?.email, destination: "/add_photo" },
         });
       }
     } catch (error) {
