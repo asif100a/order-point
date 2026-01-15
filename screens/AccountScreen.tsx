@@ -26,7 +26,7 @@ import LoaderUI from "@/components/ui/loader/LoaderUI";
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
   const router = useRouter();
-  const {isAuthLoading, user} = useAuth()
+  const { isAuthLoading, user } = useAuth();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -37,7 +37,7 @@ export default function AccountScreen() {
     router.push("/auth/sign_in");
   };
 
-  if(isAuthLoading) return <LoaderUI />
+  if (isAuthLoading) return <LoaderUI />;
 
   return (
     <ScreenContainer>
@@ -52,7 +52,9 @@ export default function AccountScreen() {
         <View style={styles.addPhotoContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={user?.photoUrl ? {uri: user?.photoUrl} : PLACEHOLDER_PROFILE}
+              source={
+                user?.photoUrl ? { uri: user?.photoUrl } : PLACEHOLDER_PROFILE
+              }
               style={styles.image}
               resizeMode="cover"
             />
@@ -132,16 +134,22 @@ export default function AccountScreen() {
             <AntDesign name="right" size={18} color="black" />
           </Pressable>
           {/* Notification Manage */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <Ionicons name="notifications-outline" size={24} color="black" />
-              <Text style={styles.buttonText}>Notification Manage</Text>
-            </View>
+          <Link href={"/notification"} asChild>
+            <Pressable style={styles.actionButton}>
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <Ionicons
+                  name="notifications-outline"
+                  size={24}
+                  color="black"
+                />
+                <Text style={styles.buttonText}>Notification Manage</Text>
+              </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
+              {/* Icon */}
+              <AntDesign name="right" size={18} color="black" />
+            </Pressable>
+          </Link>
           {/* Delete Profile */}
           <Pressable style={styles.actionButton}>
             <View style={styles.logoTextPair}>

@@ -7,13 +7,20 @@ import {
   TouchableHighlight,
   Animated,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import DeleteNotificationModal from "@/app/modals/DeleteNotificationModal";
 
 interface NotificationData {
   title: string;
@@ -56,6 +63,7 @@ const NotificationItem = ({
   handleViewDeleteIcon,
   styles,
   primaryColor,
+  setShowDeleteModal,
 }: {
   item: NotificationData;
   index: number;
@@ -64,6 +72,7 @@ const NotificationItem = ({
   handleViewDeleteIcon: (id: string) => void;
   styles: any;
   primaryColor: PrimaryColorTypes;
+  setShowDeleteModal: Dispatch<SetStateAction<boolean>>;
 }) => {
   const slideAmin = useRef(new Animated.Value(80)).current;
 
@@ -112,7 +121,11 @@ const NotificationItem = ({
             },
           ]}
         >
-          <TouchableHighlight style={styles.deleteButton} onPress={() => console.log('Delete pressed')} underlayColor='#9A0010'>
+          <TouchableHighlight
+            style={styles.deleteButton}
+            onPress={() => setShowDeleteModal(true)}
+            underlayColor="#9A0010"
+          >
             <MaterialIcons name="delete-outline" size={32} color="white" />
           </TouchableHighlight>
         </Animated.View>
@@ -125,16 +138,17 @@ export default function NotificationScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
   const [currentId, setCurrentId] = useState<string>("");
   const [showDelete, setShowDelete] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   const handleViewDeleteIcon = (id: string) => {
-    if(currentId === id && showDelete) {
+    if (currentId === id && showDelete) {
       setShowDelete(false);
-      setCurrentId('')
-    }else{
-      setShowDelete(true)
-      setCurrentId(id)
+      setCurrentId("");
+    } else {
+      setShowDelete(true);
+      setCurrentId(id);
     }
   };
 
@@ -169,10 +183,17 @@ export default function NotificationScreen() {
               handleViewDeleteIcon={handleViewDeleteIcon}
               styles={styles}
               primaryColor={primaryColor}
+              setShowDeleteModal={setShowDeleteModal}
             />
           )}
         />
       </View>
+
+      {/* Display modal */}
+      <DeleteNotificationModal
+        visible={showDeleteModal}
+        setVisible={setShowDeleteModal}
+      />
     </SafeAreaView>
   );
 }
@@ -216,7 +237,7 @@ function createStyles(
       backgroundColor: primaryColor.secondaryGreen,
       borderRadius: 8,
       marginBottom: 12,
-      overflow: 'hidden'
+      overflow: "hidden",
     },
     calendarContainer: {
       backgroundColor: colorScheme === "dark" ? "#00000040" : "white",

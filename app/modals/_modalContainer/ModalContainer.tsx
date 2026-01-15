@@ -33,11 +33,6 @@ export default function ModalContainer({
 
 function createStyles({ primaryColor, colorScheme }: { colorScheme: ColorSchemeTypes, primaryColor: PrimaryColorTypes }) {
   return StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-    },
     overlay: {
       flex: 1,
       backgroundColor: "rgba(0,0,0,0.5)",
@@ -45,7 +40,7 @@ function createStyles({ primaryColor, colorScheme }: { colorScheme: ColorSchemeT
       alignItems: "center",
     },
     modalBox: {
-      width: "80%",
+      width: "93%",
       backgroundColor: colorScheme === 'dark' ? '#1a1515' : "#fff",
       borderRadius: 10,
       padding: 20,

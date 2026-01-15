@@ -63,8 +63,11 @@ export default function _layout() {
       {/* Details Page */}
       <Stack.Screen name="details" options={{ headerShown: false }} />
 
-      {/* Details Page */}
+      {/* qr_code Page */}
       <Stack.Screen name="qr_code" options={{ headerShown: false }} />
+
+      {/* Search Page */}
+      <Stack.Screen name="user/search" options={{ headerShown: false }} />
     </Stack>
   );
 }

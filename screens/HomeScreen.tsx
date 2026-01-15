@@ -47,7 +47,7 @@ export default function HomeScreen() {
           <View style={styles.iconsContainer}>
             {/* Filter */}
             <Pressable
-              onPress={() => setFilterOpen(true)}
+              onPress={() => router.push('/user/search')}
               style={styles.roundButton}
             >
               <EvilIcons name="search" size={24} color="black" />
