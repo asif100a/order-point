@@ -191,7 +191,6 @@ export default function EditProfileScreen({
         index={-1}
         enablePanDownToClose={true}
         onChange={(index) => {
-          console.log("index: ", index);
           setSheetOpen(index !== -1);
         }}
         backgroundStyle={{ backgroundColor: "#EEEEEE" }}

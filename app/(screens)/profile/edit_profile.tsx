@@ -3,6 +3,7 @@ import EditProfileScreen from "@/screens/profile/EditProfileScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { useUpdateUserMutation } from "@/store/api/userApi";
+import { uploadedImageFormatter } from "@/utils";
 
 export default function EditProfile() {
   const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
@@ -14,14 +15,6 @@ export default function EditProfile() {
     phoneNumber: string,
     photoURI: string
   ) => {
-    if (!photoURI) {
-      Toast.show({
-        type: "error",
-        text1: "Failed to edit profile",
-        text2: "Photo not found!",
-      });
-      return;
-    }
     const newData = {
       name,
       contractNumber: phoneNumber,
@@ -29,18 +22,18 @@ export default function EditProfile() {
       longitude: 0,
       address,
     };
-    console.log("Photo URI: ", photoURI);
+    // console.log("Photo URI: ", photoURI);
     // ✅ Create a proper file object for the image
-    const filename = photoURI.split('/').pop() || 'photo.jpg';
-    const match = /\.(\w+)$/.exec(filename);
-    const type = match ? `image/${match[1]}` : 'image/jpeg';
-    
+    const { filename, type } = uploadedImageFormatter(photoURI);
+
     const formData = new FormData();
-    formData.append("image", {
-      uri: photoURI,
-      name: filename,
-      type
-    } as any);
+    if (photoURI) {
+      formData.append("image", {
+        uri: photoURI,
+        name: filename,
+        type,
+      } as any);
+    }
     formData.append("data", JSON.stringify(newData));
     try {
       const res = await updateUser(formData).unwrap();

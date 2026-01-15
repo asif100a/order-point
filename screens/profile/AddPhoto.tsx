@@ -18,6 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useUpdateUserMutation } from "@/store/api/userApi";
 import Toast from "react-native-toast-message";
+import { uploadedImageFormatter } from "@/utils";
 
 export default function AddPhoto() {
   const router = useRouter();
@@ -89,15 +90,21 @@ export default function AddPhoto() {
       Toast.show({
         type: "error",
         text1: "Failed to save photo",
-        text2: 'Photo not found!',
+        text2: "Photo not found!",
       });
       return;
     }
     const formData = new FormData();
-    formData.append("image", uri);
+    // ✅ Create a proper file object for the image
+    const { filename, type } = uploadedImageFormatter(uri);
+    formData.append("image", {
+      uri,
+      name: filename,
+      type,
+    } as any);
     try {
       const res = await updateUser(formData).unwrap();
-      console.log('Photo update Res: ', res)
+      console.log("Photo update Res: ", res);
       // ✅ Check for error in the response
       if ("error" in res) {
         // Handle different error types
@@ -124,7 +131,7 @@ export default function AddPhoto() {
           text1: "Success",
           text2: "Photo saved successfully",
         });
-        router.push('/auth/sign_in')
+        router.push("/auth/sign_in");
       }
     } catch (error) {
       console.error("❌Error while saving photo: ", error);
