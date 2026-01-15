@@ -6,9 +6,11 @@ import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 export default function EmailInputField({
   value,
   onEmailChange,
+  readOnly = false
 }: {
   value: string;
   onEmailChange: (value: string) => void;
+  readOnly?: boolean
 }) {
   const { colorScheme, primaryColor } = useTheme();
 
@@ -23,6 +25,7 @@ export default function EmailInputField({
         value={value}
         onChangeText={onEmailChange}
         keyboardType="email-address"
+        readOnly={readOnly}
       />
     </View>
   );

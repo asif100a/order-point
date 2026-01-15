@@ -11,7 +11,6 @@ import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader"
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import PLACEHOLDER_PROFILE from "@/assets/images/profile/placeholder_profile.png";
-import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -21,10 +20,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import ScreenContainer from "@/components/ui/layout/ScreenContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
+import useAuth from "@/hooks/useAuth";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
   const router = useRouter();
+  const {isAuthLoading, user} = useAuth()
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -34,6 +36,8 @@ export default function AccountScreen() {
     // Redirect to the Login page
     router.push("/auth/sign_in");
   };
+
+  if(isAuthLoading) return <LoaderUI />
 
   return (
     <ScreenContainer>
@@ -48,17 +52,10 @@ export default function AccountScreen() {
         <View style={styles.addPhotoContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={PLACEHOLDER_PROFILE}
+              source={user?.photoUrl || PLACEHOLDER_PROFILE}
               style={styles.image}
               resizeMode="cover"
             />
-            <Pressable style={styles.editButton}>
-              <Feather
-                name="edit-3"
-                size={24}
-                color={primaryColor.greenNormal}
-              />
-            </Pressable>
           </View>
         </View>
 
@@ -203,15 +200,6 @@ function createStyles(
       width: 200,
       height: 200,
       borderRadius: 100,
-    },
-    editButton: {
-      position: "absolute",
-      bottom: 32,
-      right: 16,
-      zIndex: 10,
-      backgroundColor: "white",
-      padding: 6,
-      borderRadius: 50,
     },
     actionButtonContainer: {
       flexDirection: "column",

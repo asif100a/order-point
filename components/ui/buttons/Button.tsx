@@ -16,6 +16,7 @@ export default function Button({
   height,
   padding,
   loading,
+  disabled,
 }: {
   title: string;
   onPress?: (event: GestureResponderEvent) => void;
@@ -24,6 +25,7 @@ export default function Button({
   padding?: number;
   loading?: boolean;
   loadingText?: string;
+  disabled?: boolean;
 }) {
   const { primaryColor } = useTheme();
 
@@ -32,7 +34,7 @@ export default function Button({
       onPress={onPress ? onPress : () => {}}
       activeOpacity={0.7}
       style={[{ marginTop: 20 }, style]}
-      disabled={loading}
+      disabled={loading || disabled}
     >
       <LinearGradient
         colors={["#556D55", "#76A976"]}

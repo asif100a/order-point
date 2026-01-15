@@ -29,7 +29,6 @@ export default function AddPhoto() {
     undefined
   );
   const [savedImage, setSavedImage] = useState<string | undefined>(undefined);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
 
@@ -98,6 +97,7 @@ export default function AddPhoto() {
     formData.append("image", uri);
     try {
       const res = await updateUser(formData).unwrap();
+      console.log('Photo update Res: ', res)
       // ✅ Check for error in the response
       if ("error" in res) {
         // Handle different error types
@@ -124,6 +124,7 @@ export default function AddPhoto() {
           text1: "Success",
           text2: "Photo saved successfully",
         });
+        router.push('/auth/sign_in')
       }
     } catch (error) {
       console.error("❌Error while saving photo: ", error);
@@ -178,6 +179,7 @@ export default function AddPhoto() {
               <Button
                 title="Done"
                 onPress={() => handleSavePhoto(uploadedImage || "")}
+                loading={isUpdateLoading}
               />
               <ButtonOutline title="Change Picture" onPress={handleOpenSheet} />
             </View>

@@ -1,8 +1,20 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableHighlight,
+} from "react-native";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
-import { useRouter } from "expo-router";
 import useTheme from "@/hooks/useTheme";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
@@ -10,18 +22,29 @@ import PLACEHOLDER_PROFILE from "@/assets/images/profile/placeholder_profile.png
 import TextInputField from "@/components/ui/form/TextInputField";
 import EmailInputField from "@/components/ui/form/EmailInputField";
 import Button from "@/components/ui/buttons/Button";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
+import Feather from "@expo/vector-icons/Feather";
+import { LinearGradient } from "expo-linear-gradient";
+import useAuth from "@/hooks/useAuth";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
 
 export default function EditProfileScreen({
   handleUpdate,
+  isUpdateLoading,
 }: {
-  handleUpdate: (name: string, email: string, phoneNumber: string) => void;
+  handleUpdate: (
+    name: string,
+    email: string,
+    address: string,
+    phoneNumber: string,
+    photoURI: string
+  ) => void;
+  isUpdateLoading: boolean;
 }) {
   // Hook Calls
-  const router = useRouter();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { theme, colorScheme, primaryColor } = useTheme();
+  const { isAuthLoading, user } = useAuth();
 
   // State Definitions
   const [isSheetOpen, setSheetOpen] = useState<boolean>(false);
@@ -30,6 +53,7 @@ export default function EditProfileScreen({
   );
   const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   // Custom Styles
@@ -66,7 +90,27 @@ export default function EditProfileScreen({
     }
   };
 
-  const onSubmit = () => handleUpdate(userName, email, phoneNumber);
+  const handleCloseSheet = useCallback(() => {
+    bottomSheetRef.current?.close();
+  }, []);
+
+  const onSubmit = () =>
+    handleUpdate(userName, email, address, phoneNumber, uploadedImage || "");
+
+  useEffect(() => {
+    if (uploadedImage) handleCloseSheet();
+  }, [uploadedImage, handleCloseSheet]);
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user?.name);
+      setEmail(user?.email);
+      setAddress(user?.address);
+      setPhoneNumber(user?.contractNumber);
+    }
+  }, [user]);
+
+  if (isAuthLoading) return <LoaderUI />;
 
   return (
     <SafeAreaView style={[styles.container]}>
@@ -83,22 +127,27 @@ export default function EditProfileScreen({
         <View style={styles.imageContainer}>
           <Image
             source={
-              uploadedImage ? { uri: uploadedImage } : PLACEHOLDER_PROFILE
+              uploadedImage
+                ? { uri: uploadedImage }
+                : user?.photoUrl || PLACEHOLDER_PROFILE
             }
             style={styles.image}
             resizeMode="cover"
           />
+          <TouchableHighlight
+            onPress={handleOpenSheet}
+            style={styles.editButton}
+          >
+            <LinearGradient
+              colors={["#556D55", "#76A976"]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+              style={{ borderRadius: 50, padding: 4 }}
+            >
+              <Feather name="edit-3" size={20} color={"white"} />
+            </LinearGradient>
+          </TouchableHighlight>
         </View>
-
-        <Pressable style={styles.uploadButton} onPress={handleOpenSheet}>
-          <Text style={styles.uploadButtonText}>Upload Profile</Text>
-          {/* Icon */}
-          <MaterialCommunityIcons
-            name="cloud-upload-outline"
-            size={24}
-            color={primaryColor.greenNormal}
-          />
-        </Pressable>
       </View>
 
       {/* Input Fields */}
@@ -112,7 +161,15 @@ export default function EditProfileScreen({
         />
 
         {/* Email */}
-        <EmailInputField value={email} onEmailChange={setEmail} />
+        <EmailInputField value={email} onEmailChange={setEmail} readOnly />
+
+        {/* Address */}
+        <TextInputField
+          label="Address"
+          value={address}
+          onTextChange={setAddress}
+          placeholder="Enter your address"
+        />
 
         {/* Phone Number */}
         <TextInputField
@@ -123,7 +180,7 @@ export default function EditProfileScreen({
         />
 
         {/* Update Button */}
-        <Button title="Update" onPress={onSubmit} />
+        <Button title="Update" onPress={onSubmit} loading={isUpdateLoading} />
       </View>
 
       {/* Bottom Sheet */}
@@ -197,21 +254,12 @@ function createStyles({
       height: 150,
       borderRadius: 100,
     },
-    uploadButton: {
-      padding: 8,
-      paddingHorizontal: 12,
-      backgroundColor: primaryColor.secondaryGreen,
-      borderRadius: 8,
-      flexDirection: "row",
-      gap: 6,
-      alignItems: "center",
-      marginTop: 16,
-      marginHorizontal: "auto",
-    },
-    uploadButtonText: {
-      fontSize: 14,
-      fontWeight: 400,
-      color: primaryColor.greenNormal,
+    editButton: {
+      position: "absolute",
+      bottom: 0,
+      right: 16,
+      zIndex: 10,
+      borderRadius: 50,
     },
     form: {
       flexDirection: "column",

@@ -25,7 +25,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Button from "../buttons/Button";
 import { Link } from "expo-router";
 
-const TABS = ["Featured", "New", "Near by me"];
+const TABS = ["In-Person", "Online", "Services"];
 
 const CATEGORIES: CategoryType[] = [
   {

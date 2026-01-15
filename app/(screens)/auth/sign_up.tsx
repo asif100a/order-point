@@ -80,7 +80,7 @@ export default function SignUp() {
 
   const handleSignUp = async (data: UserType) => {
     // console.log("User data: ", data);
-    // if (!VerifyUser(data)) return;
+    if (!VerifyUser(data)) return;
 
     const newUser = {
       name: data.name,
@@ -89,8 +89,8 @@ export default function SignUp() {
       contractNumber: data.phoneNumber,
     };
     try {
-router.push('/profile/add_photo')
-      return;
+      // router.push('/profile/add_photo')
+      //       return;
       const res = await register(newUser as any);
       // console.log("Completed Response: ", res);
 
@@ -118,11 +118,11 @@ router.push('/profile/add_photo')
         Toast.show({
           type: "success",
           text1: "Success",
-          text2: "Your have signed up successfully",
+          text2: "An OTP sent to your email address",
         });
         router.push({
           pathname: "/auth/confirmation_code",
-          params: { email: data?.email, destination: "/add_photo" },
+          params: { email: data?.email, destination: "/profile/add_photo" },
         });
       }
     } catch (error) {
