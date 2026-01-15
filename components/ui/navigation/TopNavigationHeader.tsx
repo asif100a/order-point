@@ -1,7 +1,7 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { ExternalPathString, RelativePathString, useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 
@@ -11,21 +11,10 @@ export default function TopNavigationHeader({
   description,
 }: {
   title: string;
-  link?:
-    | RelativePathString
-    | ExternalPathString
-    | `/?${string}`
-    | `/#${string}`
-    | `/modal?${string}`
-    | `/modal#${string}`
-    | `/_sitemap?${string}`
-    | `/_sitemap#${string}`
-    | "/"
-    | "/modal"
-    | "/_sitemap";
+  link?: string | boolean;
   description: string;
 }) {
-  const router = useRouter();
+  const navigation = useNavigation();
   const { theme, colorScheme, primaryColor } = useTheme();
 
   const styles = createStyles({ theme, colorScheme, primaryColor });
@@ -35,7 +24,10 @@ export default function TopNavigationHeader({
       <View style={styles.titleContainer}>
         {/* Prev Button */}
         {link && (
-          <Pressable onPress={() => router.push(link)} style={styles.prevArrow}>
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={styles.prevArrow}
+          >
             <AntDesign name="left" size={22} color="black" />
           </Pressable>
         )}

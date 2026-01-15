@@ -129,7 +129,7 @@ export default function EditProfileScreen({
             source={
               uploadedImage
                 ? { uri: uploadedImage }
-                : user?.photoUrl || PLACEHOLDER_PROFILE
+                : user?.photoUrl ? {uri: user?.photoUrl} : PLACEHOLDER_PROFILE
             }
             style={styles.image}
             resizeMode="cover"

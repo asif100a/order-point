@@ -52,7 +52,7 @@ export default function AccountScreen() {
         <View style={styles.addPhotoContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={user?.photoUrl || PLACEHOLDER_PROFILE}
+              source={user?.photoUrl ? {uri: user?.photoUrl} : PLACEHOLDER_PROFILE}
               style={styles.image}
               resizeMode="cover"
             />

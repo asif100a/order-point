@@ -29,8 +29,18 @@ export default function EditProfile() {
       longitude: 0,
       address,
     };
+    console.log("Photo URI: ", photoURI);
+    // ✅ Create a proper file object for the image
+    const filename = photoURI.split('/').pop() || 'photo.jpg';
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : 'image/jpeg';
+    
     const formData = new FormData();
-    formData.append("image", photoURI);
+    formData.append("image", {
+      uri: photoURI,
+      name: filename,
+      type
+    } as any);
     formData.append("data", JSON.stringify(newData));
     try {
       const res = await updateUser(formData).unwrap();
