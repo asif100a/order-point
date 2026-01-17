@@ -20,7 +20,7 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import DeleteNotificationModal from "@/app/modals/DeleteNotificationModal";
+import ConfirmModal from "@/app/modals/ConfirmModal";
 
 interface NotificationData {
   title: string;
@@ -152,6 +152,10 @@ export default function NotificationScreen() {
     }
   };
 
+  const handleDeleteNotification = () => {
+
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <TopNavigationHeader
@@ -190,9 +194,12 @@ export default function NotificationScreen() {
       </View>
 
       {/* Display modal */}
-      <DeleteNotificationModal
+      <ConfirmModal
         visible={showDeleteModal}
         setVisible={setShowDeleteModal}
+        title="Are you sure!"
+        description="you want to delete Notification?"
+        onConfirm={handleDeleteNotification}
       />
     </SafeAreaView>
   );
@@ -201,7 +208,7 @@ export default function NotificationScreen() {
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     container: {

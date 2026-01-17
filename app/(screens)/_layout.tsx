@@ -68,6 +68,9 @@ export default function _layout() {
 
       {/* Search Page */}
       <Stack.Screen name="user/search" options={{ headerShown: false }} />
+
+      {/* Faq Page */}
+      <Stack.Screen name="common/faq" options={{ headerShown: false }} />
     </Stack>
   );
 }

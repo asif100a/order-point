@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   Pressable,
@@ -22,13 +22,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
 import useAuth from "@/hooks/useAuth";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
+import ConfirmModal from "@/app/modals/ConfirmModal";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
   const router = useRouter();
   const { isAuthLoading, user } = useAuth();
+  const [openDeleteProfilePopup, setOpenDeleteProfilePopup] =
+    useState<boolean>(false);
+  const [openLogoutPopup, setOpenLogoutPopup] = useState<boolean>(false);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
+
+  const handleDeleteAccount = () => {};
 
   const handleLogout = async () => {
     // Remove the OTP from the AsyncStorage
@@ -40,154 +46,183 @@ export default function AccountScreen() {
   if (isAuthLoading) return <LoaderUI />;
 
   return (
-    <ScreenContainer>
-      <View style={styles.container}>
-        <TopNavigationHeader
-          title="Profile"
-          description=""
-          link={"/(tabs)/analytics" as any}
-        />
+    <View>
+      <ScreenContainer>
+        <View style={styles.container}>
+          <TopNavigationHeader
+            title="Profile"
+            description=""
+            link={"/(tabs)/analytics" as any}
+          />
 
-        {/* Profile View */}
-        <View style={styles.addPhotoContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={
-                user?.photoUrl ? { uri: user?.photoUrl } : PLACEHOLDER_PROFILE
-              }
-              style={styles.image}
-              resizeMode="cover"
-            />
+          {/* Profile View */}
+          <View style={styles.addPhotoContainer}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={
+                  user?.photoUrl ? { uri: user?.photoUrl } : PLACEHOLDER_PROFILE
+                }
+                style={styles.image}
+                resizeMode="cover"
+              />
+            </View>
           </View>
-        </View>
 
-        {/* Action buttons */}
-        <View style={styles.actionButtonContainer}>
-          {/* Edit Profile */}
-          <Link href={"/profile/edit_profile"} asChild>
+          {/* Action buttons */}
+          <View style={styles.actionButtonContainer}>
+            {/* Edit Profile */}
+            <Link href={"/profile/edit_profile"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <FontAwesome name="user-o" size={24} color="black" />
+                  <Text style={styles.buttonText}>Edit Profile</Text>
+                </View>
+
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
+            {/* Manage Subscription */}
             <Pressable style={styles.actionButton}>
               <View style={styles.logoTextPair}>
                 {/* Icon */}
-                <FontAwesome name="user-o" size={24} color="black" />
-                <Text style={styles.buttonText}>Edit Profile</Text>
+                <FontAwesome6 name="crown" size={24} color="black" />
+                <Text style={styles.buttonText}>Manage Subscription</Text>
               </View>
 
               {/* Icon */}
               <AntDesign name="right" size={18} color="black" />
             </Pressable>
-          </Link>
-          {/* Manage Subscription */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <FontAwesome6 name="crown" size={24} color="black" />
-              <Text style={styles.buttonText}>Manage Subscription</Text>
-            </View>
+            {/* Change Password */}
+            <Link href={"/profile/change_password"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <Ionicons name="key-outline" size={24} color="black" />
+                  <Text style={styles.buttonText}>Change Password</Text>
+                </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
-          {/* Change Password */}
-          <Link href={"/profile/change_password"} asChild>
-            <Pressable style={styles.actionButton}>
-              <View style={styles.logoTextPair}>
                 {/* Icon */}
-                <Ionicons name="key-outline" size={24} color="black" />
-                <Text style={styles.buttonText}>Change Password</Text>
-              </View>
-
-              {/* Icon */}
-              <AntDesign name="right" size={18} color="black" />
-            </Pressable>
-          </Link>
-          {/* Terms & Condition */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <Ionicons name="document-text-outline" size={24} color="black" />
-              <Text style={styles.buttonText}>Terms & Condition</Text>
-            </View>
-
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
-          {/* Privacy & Policy */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <AntDesign name="check-circle" size={24} color="black" />
-              <Text style={styles.buttonText}>Privacy & Policy</Text>
-            </View>
-
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
-          {/* FAQ */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <Entypo name="text-document" size={24} color="black" />
-              <Text style={styles.buttonText}>FAQ</Text>
-            </View>
-
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
-          {/* Notification Manage */}
-          <Link href={"/notification"} asChild>
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
+            {/* Terms & Condition */}
             <Pressable style={styles.actionButton}>
               <View style={styles.logoTextPair}>
                 {/* Icon */}
                 <Ionicons
-                  name="notifications-outline"
+                  name="document-text-outline"
                   size={24}
                   color="black"
                 />
-                <Text style={styles.buttonText}>Notification Manage</Text>
+                <Text style={styles.buttonText}>Terms & Condition</Text>
               </View>
 
               {/* Icon */}
               <AntDesign name="right" size={18} color="black" />
             </Pressable>
-          </Link>
-          {/* Delete Profile */}
-          <Pressable style={styles.actionButton}>
-            <View style={styles.logoTextPair}>
-              {/* Icon */}
-              <MaterialIcons name="delete-forever" size={24} color="black" />
-              <Text style={styles.buttonText}>Delete Profile</Text>
-            </View>
+            {/* Privacy & Policy */}
+            <Pressable style={styles.actionButton}>
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <AntDesign name="check-circle" size={24} color="black" />
+                <Text style={styles.buttonText}>Privacy & Policy</Text>
+              </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </Pressable>
-          {/* Log Out */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={[styles.actionButton, styles.logoutButton]}
-            onPress={handleLogout}
-          >
-            <View style={styles.logoTextPair}>
               {/* Icon */}
-              <AntDesign name="logout" size={24} color="black" />
-              <Text style={[styles.buttonText, styles.logoutButtonText]}>
-                Log Out
-              </Text>
-            </View>
+              <AntDesign name="right" size={18} color="black" />
+            </Pressable>
+            {/* FAQ */}
+            <Link href={"/common/faq"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <Entypo name="text-document" size={24} color="black" />
+                  <Text style={styles.buttonText}>FAQ</Text>
+                </View>
 
-            {/* Icon */}
-            <AntDesign name="right" size={18} color="black" />
-          </TouchableOpacity>
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
+            {/* Notification Manage */}
+            <Link href={"/notification"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <Ionicons
+                    name="notifications-outline"
+                    size={24}
+                    color="black"
+                  />
+                  <Text style={styles.buttonText}>Notification Manage</Text>
+                </View>
+
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
+            {/* Delete Profile */}
+            <Pressable
+              onPress={() => setOpenDeleteProfilePopup(true)}
+              style={styles.actionButton}
+            >
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <MaterialIcons name="delete-forever" size={24} color="black" />
+                <Text style={styles.buttonText}>Delete Profile</Text>
+              </View>
+
+              {/* Icon */}
+              <AntDesign name="right" size={18} color="black" />
+            </Pressable>
+            {/* Log Out */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={[styles.actionButton, styles.logoutButton]}
+              onPress={() => setOpenLogoutPopup(true)}
+            >
+              <View style={styles.logoTextPair}>
+                {/* Icon */}
+                <AntDesign name="logout" size={24} color="black" />
+                <Text style={[styles.buttonText, styles.logoutButtonText]}>
+                  Log Out
+                </Text>
+              </View>
+
+              {/* Icon */}
+              <AntDesign name="right" size={18} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScreenContainer>
+      </ScreenContainer>
+
+      {/* Delete Profile Popup */}
+      <ConfirmModal
+        visible={openDeleteProfilePopup}
+        setVisible={setOpenDeleteProfilePopup}
+        title="Are you sure?"
+        description="Do you want to delete your profile?"
+        onConfirm={handleDeleteAccount}
+      />
+
+      {/* Logout Popup */}
+      <ConfirmModal
+        visible={openLogoutPopup}
+        setVisible={setOpenLogoutPopup}
+        title="Are you sure you?"
+        description="Do want to Log-out your profile?"
+        onConfirm={handleLogout}
+      />
+    </View>
   );
 }
 
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     container: {

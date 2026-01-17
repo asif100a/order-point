@@ -4,12 +4,22 @@ import ModalContainer from "./_modalContainer/ModalContainer";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 
-export default function DeleteNotificationModal({
+export default function ConfirmModal({
   visible,
   setVisible,
+  onConfirm = () => {},
+  title,
+  description,
+  confirmText = "Yes",
+  cancelText = "No",
 }: {
   visible: boolean;
   setVisible: (value: boolean) => void;
+  onConfirm?: () => void;
+  title: string;
+  description: string;
+  confirmText?: string;
+  cancelText?: string;
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ colorScheme, primaryColor });
@@ -18,10 +28,8 @@ export default function DeleteNotificationModal({
     <ModalContainer visible={visible} setVisible={setVisible}>
       <View>
         <View>
-          <Text style={styles.title}>Are you sure!</Text>
-          <Text style={styles.description}>
-            Do you want to delete Notification?
-          </Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.description}>{description}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -29,12 +37,15 @@ export default function DeleteNotificationModal({
             onPress={() => setVisible(false)}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>No</Text>
+            <Text style={styles.buttonText}>{cancelText}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={onConfirm}
             style={[styles.button, { backgroundColor: "#BF0000" }]}
           >
-            <Text style={[styles.buttonText, { color: "white" }]}>Yes</Text>
+            <Text style={[styles.buttonText, { color: "white" }]}>
+              {confirmText}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
