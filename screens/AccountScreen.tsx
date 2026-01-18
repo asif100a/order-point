@@ -23,6 +23,7 @@ import { Link, useRouter } from "expo-router";
 import useAuth from "@/hooks/useAuth";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import ConfirmModal from "@/app/modals/ConfirmModal";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -49,11 +50,7 @@ export default function AccountScreen() {
     <View>
       <ScreenContainer>
         <View style={styles.container}>
-          <TopNavigationHeader
-            title="Profile"
-            description=""
-            link={"/(tabs)/analytics" as any}
-          />
+          <TopNavigationHeader title="Profile" description="" link />
 
           {/* Profile View */}
           <View style={styles.addPhotoContainer}>
@@ -94,6 +91,19 @@ export default function AccountScreen() {
               {/* Icon */}
               <AntDesign name="right" size={18} color="black" />
             </Pressable>
+            {/* Manage Subscription */}
+            <Link href={"/user/contact_us"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <FontAwesome5 name="headset" size={24} color="black" />
+                  <Text style={styles.buttonText}>Support</Text>
+                </View>
+
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
             {/* Change Password */}
             <Link href={"/profile/change_password"} asChild>
               <Pressable style={styles.actionButton}>
@@ -108,31 +118,35 @@ export default function AccountScreen() {
               </Pressable>
             </Link>
             {/* Terms & Condition */}
-            <Pressable style={styles.actionButton}>
-              <View style={styles.logoTextPair}>
-                {/* Icon */}
-                <Ionicons
-                  name="document-text-outline"
-                  size={24}
-                  color="black"
-                />
-                <Text style={styles.buttonText}>Terms & Condition</Text>
-              </View>
+            <Link href={"/common/terms_and_conditions"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <Ionicons
+                    name="document-text-outline"
+                    size={24}
+                    color="black"
+                  />
+                  <Text style={styles.buttonText}>Terms & Condition</Text>
+                </View>
 
-              {/* Icon */}
-              <AntDesign name="right" size={18} color="black" />
-            </Pressable>
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
             {/* Privacy & Policy */}
-            <Pressable style={styles.actionButton}>
-              <View style={styles.logoTextPair}>
-                {/* Icon */}
-                <AntDesign name="check-circle" size={24} color="black" />
-                <Text style={styles.buttonText}>Privacy & Policy</Text>
-              </View>
+            <Link href={"/common/privacy_policy"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <AntDesign name="check-circle" size={24} color="black" />
+                  <Text style={styles.buttonText}>Privacy & Policy</Text>
+                </View>
 
-              {/* Icon */}
-              <AntDesign name="right" size={18} color="black" />
-            </Pressable>
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
             {/* FAQ */}
             <Link href={"/common/faq"} asChild>
               <Pressable style={styles.actionButton}>

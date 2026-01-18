@@ -66,11 +66,11 @@ export default function _layout() {
       {/* qr_code Page */}
       <Stack.Screen name="qr_code" options={{ headerShown: false }} />
 
-      {/* Search Page */}
-      <Stack.Screen name="user/search" options={{ headerShown: false }} />
+      {/* User Pages */}
+      <Stack.Screen name="user" options={{ headerShown: false }} />
 
-      {/* Faq Page */}
-      <Stack.Screen name="common/faq" options={{ headerShown: false }} />
+      {/* Common Pages */}
+      <Stack.Screen name="common" options={{ headerShown: false }} />
     </Stack>
   );
 }

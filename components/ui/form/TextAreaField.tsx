@@ -3,16 +3,18 @@ import React from "react";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 
-export default function EmailInputField({
+export default function TextAreaField({
+  label = "Text",
   value,
-  onEmailChange,
-  readOnly = false,
-  label= 'Email'
+  onTextChange,
+  placeholder = "Enter Your Text",
+  numberOfLines = 5,
 }: {
+  label?: string;
   value: string;
-  onEmailChange: (value: string) => void;
-  readOnly?: boolean
-  label?: string
+  onTextChange: (value: string) => void;
+  placeholder?: string;
+  numberOfLines?: number;
 }) {
   const { colorScheme, primaryColor } = useTheme();
 
@@ -22,12 +24,14 @@ export default function EmailInputField({
     <View style={styles.inputContainer}>
       <Text style={[styles.label, styles.primaryFontSize]}>{label}</Text>
       <TextInput
+        numberOfLines={numberOfLines}
+        multiline
         style={styles.inputField}
-        placeholder="Enter your email"
+        placeholder={placeholder}
         value={value}
-        onChangeText={onEmailChange}
-        keyboardType="email-address"
-        readOnly={readOnly}
+        onChangeText={onTextChange}
+        keyboardType="default"
+        textAlignVertical="top"
       />
     </View>
   );
@@ -53,13 +57,14 @@ function createStyles({
     },
     inputField: {
       width: "100%",
-      height: 50,
+      height: 120,
       borderWidth: 1,
       backgroundColor:
         colorScheme === "dark" ? "white" : primaryColor.primaryGray,
       borderColor: colorScheme === "dark" ? "white" : primaryColor.primaryGray,
       borderRadius: 24,
       paddingHorizontal: 16,
+      paddingVertical: 16
     },
   });
 }
