@@ -9,14 +9,69 @@ import TextInputField from "@/components/ui/form/TextInputField";
 import TextAreaField from "@/components/ui/form/TextAreaField";
 import Button from "@/components/ui/buttons/Button";
 import Feather from "@expo/vector-icons/Feather";
+import { useCreateSupportMutation } from "@/store/api/supportApi";
+import Toast from "react-native-toast-message";
+import useAuth from "@/hooks/useAuth";
+import LoaderUI from "@/components/ui/loader/LoaderUI";
 
 export default function ContactUs() {
   const { colorScheme, theme, primaryColor } = useTheme();
+  const { user, isAuthLoading } = useAuth();
   const styles = createStyles({ colorScheme, theme, primaryColor });
+
+  const [createSupport, { isLoading: isSupportLoading }] =
+    useCreateSupportMutation();
 
   const [email, setEmail] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+
+  const handleCreateSupport = async () => {
+    const newData = {
+      author: user?._id,
+      email,
+      subject,
+      messages: message,
+    };
+
+    try {
+      const res = await createSupport(newData).unwrap();
+      // ✅ Check for error in the response
+      if ("error" in res) {
+        // Handle different error types
+        const err = res.error as {
+          status?: number;
+          message?: string;
+          data?: { message: string };
+        };
+        const errorMessage =
+          "status" in err && err.status != null
+            ? `Error: ${err.status} ${err.message || err?.data?.message}`
+            : "Unknown error";
+
+        return Toast.show({
+          type: "error",
+          text1: "Sending support message Failed",
+          text2: errorMessage,
+        });
+      }
+
+      if (res.success) {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Support message sent successfully",
+        });
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      }
+    } catch (error) {
+      console.error("❌ Error while sending support message: ", error);
+    }
+  };
+
+  if (isAuthLoading) return <LoaderUI />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,7 +102,11 @@ export default function ContactUs() {
             onTextChange={setMessage}
           />
 
-          <Button title="Send Message" />
+          <Button
+            title="Send Message"
+            onPress={handleCreateSupport}
+            loading={isSupportLoading}
+          />
         </View>
 
         <View style={styles.bottomInfo}>
@@ -87,7 +146,7 @@ const createStyles = ({
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       fontSize: 18,
       fontWeight: 600,
-      marginBottom: 6
+      marginBottom: 6,
     },
     description: {
       color: colorScheme === "dark" ? "white" : primaryColor.secondaryBlack,
@@ -104,7 +163,7 @@ const createStyles = ({
       flexDirection: "row",
       alignItems: "center",
       gap: 8,
-      marginBottom: 8
+      marginBottom: 8,
     },
     infoText: {
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
