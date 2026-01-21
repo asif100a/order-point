@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import SuccessIcon from "@/assets/images/common/success.png";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
@@ -7,12 +14,15 @@ import Button from "../../../components/ui/buttons/Button";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function Congratulation() {
   const router = useRouter();
   const { theme, colorScheme, primaryColor } = useTheme();
   const [discountCode] = useState("**********");
   const [copied, setCopied] = useState(false);
+
+  let contactInfo = false;
 
   const windowHeight = Dimensions.get("screen").height;
 
@@ -37,33 +47,45 @@ export default function Congratulation() {
           description=""
           link={"/(tabs)" as any}
         />
-        
+
         <View style={styles.contentWrapper}>
           {/* Badge Icon */}
           <Image source={SuccessIcon} style={styles.image} />
-          
+
           {/* Discount Code Section */}
           <View style={styles.discountSection}>
             <Text style={styles.discountLabel}>
               {"Here's"} your exclusive discount code.
             </Text>
-            
+
             <View style={styles.codeContainer}>
               <Text style={styles.discountCode}>{discountCode}</Text>
-              <TouchableOpacity 
-                style={styles.copyButton}
-                onPress={handleCopy}
-              >
+              <TouchableOpacity style={styles.copyButton} onPress={handleCopy}>
                 <Text style={styles.copyButtonText}>
                   {copied ? "Copied!" : "Copy"}
                 </Text>
               </TouchableOpacity>
             </View>
-            
+
             <Text style={styles.trackingNote}>
-              Once you copy this code, it will be counted as used and tracked on your profile.
+              Once you copy this code, it will be counted as used and tracked on
+              your profile.
             </Text>
           </View>
+
+          {/* Contact Information */}
+          {contactInfo && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Contact Information</Text>
+
+              <View style={styles.contactCard}>
+                <View style={styles.contactIconContainer}>
+                  <MaterialIcons name="email" size={20} color="#6B8F6B" />
+                </View>
+                <Text style={styles.contactText}>youremail.com</Text>
+              </View>
+            </View>
+          )}
 
           {/* Bottom Message */}
           <View style={styles.bottomMessage}>
@@ -158,6 +180,40 @@ function createStyles({
       color: "#666",
       lineHeight: 20,
       paddingHorizontal: 8,
+    },
+    section: {
+      paddingHorizontal: 16,
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      marginBottom: 12,
+    },
+    contactCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colorScheme === "dark" ? "#1C1C1E" : "#FFFFFF",
+      paddingVertical: 14,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colorScheme === "dark" ? "#2C2C2E" : "#E8E8E8",
+      gap: 12,
+    },
+    contactIconContainer: {
+      width: 36,
+      height: 36,
+      borderRadius: 8,
+      backgroundColor: "#E8F5E9",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    contactText: {
+      fontSize: 15,
+      fontWeight: "500",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
     },
     bottomMessage: {
       paddingBottom: 40,

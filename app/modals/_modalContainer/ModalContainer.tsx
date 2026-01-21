@@ -16,7 +16,7 @@ export default function ModalContainer({
   const styles = createStyles({ primaryColor, colorScheme });
 
   return (
-    <View style={{position: 'absolute'}}>
+    <View>
       <Modal
         visible={visible}
         transparent

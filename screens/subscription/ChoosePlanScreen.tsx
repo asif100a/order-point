@@ -1,67 +1,76 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import React, { useState } from "react";
-import ScreenContainer from "@/components/ui/layout/ScreenContainer";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import React from "react";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
-import TopTab from "@/components/ui/TopTab";
-import CrownIcon from "@/assets/images/choosePlan/crown.png";
-import CheckMarkIcon from "@/assets/icons/check_mark.png";
-import plan_overlap_1 from "@/assets/icons/plan_overlap_1.png";
-import plan_overlap_2 from "@/assets/icons/plan_overlap_2.png";
+// import CrownIcon from "@/assets/images/choosePlan/crown.png";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "@/components/ui/buttons/Button";
-import ButtonOutline from "@/components/ui/buttons/ButtonOutline";
 import { useRouter } from "expo-router";
+import Feather from "@expo/vector-icons/Feather";
+import Button from "@/components/ui/buttons/Button";
 
 export type tabType = "monthly" | "yearly";
 
 interface PlanType {
   title: string;
-  description: string;
+  subtitle: string;
   price: number;
+  period: string;
+  badge?: string;
   features: string[];
+  colors: string[];
+  textColor: string;
 }
-
-const TABS: tabType[] = ["monthly", "yearly"];
 
 const PLANS: PlanType[] = [
   {
-    title: "Monthly plan",
-    description: "Enjoy exclusive discounts & perks every month.",
-    price: 5.0,
+    title: "$59",
+    period: "yearly",
+    subtitle: "Billed annually. Save $10 per year",
+    price: 59.0,
+    badge: "BEST VALUE",
+    colors: ["#6B8F6B", "#7FA87F"],
+    textColor: "white",
     features: [
-      "Unlimited access to local discounts & perks",
-      "Digital membership card with QR code",
-      "Instant discount validation at partner shops",
-      "Notifications for new offers & updates",
-      "Manage your subscription anytime",
+      "Unlimited access to exclusive SaveKey discounts",
+      "Redeem discounts directly in the app",
+      "Valid at participating Wisconsin small businesses",
+      "New deals added regularly",
+      "Cancel anytime",
     ],
   },
   {
-    title: "Yearly plan",
-    description: "Enjoy exclusive discounts & perks every year.",
-    price: 50.0,
+    title: "$6",
+    period: "monthly",
+    subtitle: "Pay monthly, cancel anytime",
+    price: 6.0,
+    colors: ["#FFFFFF", "#FFFFFF"],
+    textColor: "#333333",
     features: [
-      "Unlimited access to local discounts & perks",
-      "Digital membership card with QR code",
-      "Instant discount validation at partner shops",
-      "Notifications for new offers & updates",
-      "Manage your subscription anytime",
+      "Unlimited access to exclusive SaveKey discounts",
+      "Redeem discounts directly in the app",
+      "Valid at participating Wisconsin small businesses",
+      "New deals added regularly",
+      "Cancel anytime",
     ],
   },
 ];
 
 export default function ChoosePlanScreen() {
   const router = useRouter();
-  const [active, setActive] = useState<tabType>("monthly");
-
   const { colorScheme, theme, primaryColor } = useTheme();
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
-  const handlePayment = () => {
+  const handlePayment = (plan: PlanType) => {
     router.push("/subscription/payment");
   };
 
@@ -69,95 +78,97 @@ export default function ChoosePlanScreen() {
     <SafeAreaView style={styles.mainContainer}>
       <TopNavigationHeader
         title="Choose your plan"
-        description=""
+        description="Get access to exclusive SaveKey discounts"
         link={"/profile/add_photo" as any}
       />
-      {/* Tab */}
-      <TopTab tabs={TABS} active={active} setActive={setActive as any} />
 
-      <LinearGradient
-        colors={["#1CD77A", "#0BF3E7"]}
-        start={{ x: 0, y: 1 }}
-        end={{ x: 0, y: 0 }}
-        style={styles.gradientContainer}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 16 }}
       >
-        <View>
-          {/* <Image
-            source={plan_overlap_1}
-            width={260}
-            height={150}
-            style={styles.overLapImg1}
-          />
-          <Image
-            source={plan_overlap_1}
-            width={260}
-            height={150}
-            style={styles.overLapImg2}
-          /> */}
-
-          <MainContent
-            styles={styles}
-            data={active === "monthly" ? PLANS[0] : PLANS[1]}
-          />
-        </View>
-      </LinearGradient>
-
-      {/* Buttons */}
-      <Button title="Payment Now" onPress={handlePayment} />
-      <ButtonOutline
-        title="Skip"
-        onPress={() => router.push("/subscription/payment")}
-      />
-    </SafeAreaView>
-  );
-}
-
-export function MainContent({ styles, data }: { styles: any; data: PlanType }) {
-  return (
-    <View style={styles.contentContainer}>
-      <View style={styles.imgPrice}>
-        <Image source={CrownIcon} width={48} height={48} alt="Crown" />
-        <Text style={styles.price}>${data.price}</Text>
-      </View>
-
-      {/* Title & Description */}
-      <View>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.description}>{data.description}</Text>
-      </View>
-
-      {/* Features */}
-      <View>
-        <Text style={styles.featureTitle}>Features list</Text>
-
-        <View style={styles.featureContainer}>
-          <FlatList
-            data={data.features}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.feature}>
-                  <Image
-                    source={CheckMarkIcon}
-                    width={20}
-                    height={20}
-                    alt="Checkmark"
-                  />
-                  <Text style={styles.featureText}>{item}</Text>
+        {PLANS.map((item, i: number) => (
+          <View key={i.toString()} style={styles.planWrapper}>
+            <LinearGradient
+              colors={item.colors}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+              style={[
+                styles.gradientContainer,
+                i === 1 && styles.whitePlanContainer,
+              ]}
+            >
+              <View style={styles.contentContainer}>
+                {/* Header with Price and Badge */}
+                <View style={styles.headerRow}>
+                  <View style={styles.priceContainer}>
+                    <Text style={[styles.price, { color: item.textColor }]}>
+                      {item.title}
+                    </Text>
+                    <Text style={[styles.period, { color: item.textColor }]}>
+                      / {item.period}
+                    </Text>
+                  </View>
+                  {item.badge && (
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>{item.badge}</Text>
+                    </View>
+                  )}
                 </View>
-              );
-            }}
-          />
-        </View>
-      </View>
-    </View>
+
+                {/* Subtitle */}
+                <Text style={[styles.subtitle, { color: item.textColor }]}>
+                  {item.subtitle}
+                </Text>
+
+                {/* Features Title */}
+                <Text style={[styles.featureTitle, { color: item.textColor }]}>
+                  What you get
+                </Text>
+
+                {/* Features List */}
+                <View style={styles.featureContainer}>
+                  {item.features.map((feature, index) => (
+                    <View key={index} style={styles.feature}>
+                      <Feather
+                        name="check-circle"
+                        size={20}
+                        color={item.textColor === "white" ? "white" : "#6B8F6B"}
+                      />
+                      <Text
+                        style={[styles.featureText, { color: item.textColor }]}
+                      >
+                        {feature}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Purchase Button */}
+                {i === 0 ? (
+                  <TouchableOpacity
+                    style={[styles.purchaseButton]}
+                    onPress={() => handlePayment(item)}
+                  >
+                    <Text style={[styles.purchaseButtonText]}>
+                      Purchase Plan
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <Button title="Purchase Plan" />
+                )}
+              </View>
+            </LinearGradient>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     mainContainer: {
@@ -165,75 +176,93 @@ function createStyles(
       backgroundColor: theme.background,
       height: "100%",
     },
-    gradientContainer: {
-      position: "relative",
-      height: "auto",
-      width: "100%",
+    planWrapper: {
       marginTop: 16,
-      borderRadius: 16,
-      padding: 16,
-      zIndex: 1,
     },
-    overLapImg1: {
-      position: "absolute",
-      zIndex: 10,
-      top: 100,
-      right: 0,
-      borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: "white",
+    gradientContainer: {
+      borderRadius: 20,
+      padding: 20,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
     },
-    overLapImg2: {
-      width: 260,
-      height: 150,
-      top: 0,
-      right: 0,
+    whitePlanContainer: {
       borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: "white",
+      borderColor: "#E5E5E5",
     },
     contentContainer: {
-      backgroundColor: "transparent",
-      padding: 16,
-      marginTop: 16,
       flexDirection: "column",
       gap: 16,
     },
-    imgPrice: {
+    headerRow: {
       flexDirection: "row",
       justifyContent: "space-between",
-      width: "100%",
+      alignItems: "flex-start",
+    },
+    priceContainer: {
+      flexDirection: "row",
+      alignItems: "baseline",
     },
     price: {
-      fontSize: 26,
-      fontWeight: "semibold",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      fontSize: 40,
+      fontWeight: "700",
     },
-    title: {
-      fontSize: 24,
-      fontWeight: "semibold",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+    period: {
+      fontSize: 18,
+      fontWeight: "400",
+      marginLeft: 4,
     },
-    description: {
-      fontSize: 16,
-      fontWeight: "normal",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginTop: 2,
+    badge: {
+      backgroundColor: "white",
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 20,
+    },
+    badgeText: {
+      fontSize: 12,
+      fontWeight: "600",
+      color: "#6B8F6B",
+    },
+    subtitle: {
+      fontSize: 15,
+      fontWeight: "400",
+      marginTop: -8,
     },
     featureTitle: {
       fontSize: 16,
-      fontWeight: "medium",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 6,
+      fontWeight: "600",
+      marginTop: 4,
+    },
+    featureContainer: {
+      gap: 10,
     },
     feature: {
       flexDirection: "row",
-      alignItems: "center",
-      gap: 6,
-      marginTop: 6,
+      alignItems: "flex-start",
+      gap: 10,
     },
     featureText: {
       fontSize: 14,
+      fontWeight: "400",
+      flex: 1,
+      lineHeight: 20,
+    },
+    purchaseButton: {
+      borderRadius: 30,
+      paddingVertical: 16,
+      alignItems: "center",
+      marginTop: 8,
+      backgroundColor: "white",
+    },
+    purchaseButtonText: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: "#6B8F6B",
     },
   });
 }

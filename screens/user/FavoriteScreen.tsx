@@ -7,15 +7,14 @@ import {
   ImageSourcePropType,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { CategoryType } from "@/app/(screens)/favorite";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Fontisto from "@expo/vector-icons/Fontisto";
-import Feather from "@expo/vector-icons/Feather";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ConfirmModal from "@/app/modals/ConfirmModal";
 
 export default function FavoriteScreen({
   categories,
@@ -23,121 +22,95 @@ export default function FavoriteScreen({
   categories: CategoryType[];
 }) {
   const { colorScheme, theme, primaryColor } = useTheme();
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TopNavigationHeader
-        title="Favorite"
-        description=""
-        link={"/(tabs)" as any}
-      />
+    <>
+      <SafeAreaView style={styles.container}>
+        <TopNavigationHeader title="Favorite" description="" link />
 
-      {/* Category Cards */}
-      <View>
-        <FlatList
-          data={categories}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 32 }}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              {/* Image */}
-
-              <View style={styles.hotelImgTitleDescriptionContainer}>
-                <Image
-                  source={item.image as ImageSourcePropType}
-                  width={100}
-                  height={118}
-                  alt={item.title}
-                  style={styles.image}
-                />
-                <View style={styles.titleDescriptionContainer}>
-                  <View style={styles.hotel}>
-                    <Image
-                      source={item.hotelImage as ImageSourcePropType}
-                      alt={item.hotelName}
-                      width={32}
-                      height={32}
-                    />
-                    <Text style={styles.hotelText}>{item.hotelName}</Text>
-                  </View>
-                  {/* Title & Description */}
-                  <View style={styles.titleDescriptionContainer}>
-                    <View style={styles.titleContainer}>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <View style={styles.categoryContainer}>
-                        <Text style={styles.category}>{item.category}</Text>
-                      </View>
-                    </View>
-                    <Text style={styles.description}>{item.description}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.contentContainer}>
-                {/* Hotel Name & Location */}
-                {/* Info */}
-                <View style={styles.infoContainer}>
-                  <View style={styles.infoContentContainer}>
-                    {/* Discount */}
-                    <View style={styles.infoContent}>
-                      {/* Icon & Title */}
-                      <View style={styles.iconTitle}>
-                        <MaterialCommunityIcons
-                          name="ticket-percent-outline"
-                          size={24}
-                          color="black"
-                        />
-                        <Text style={styles.infoText}>Discount</Text>
-                      </View>
-
-                      <Text>{item.discount}</Text>
-                    </View>
-                    {/* Date */}
-                    <View style={styles.infoContent}>
-                      <View style={styles.iconTitle}>
-                        <Fontisto name="calendar" size={24} color="black" />
-                        <Text style={styles.infoText}>Date</Text>
-                      </View>
-
-                      <Text>{item.date}</Text>
-                    </View>
-                    {/* Stat time */}
-                    <View style={styles.infoContent}>
-                      <View style={styles.iconTitle}>
-                        <Feather name="clock" size={24} color="black" />
-                        <Text style={styles.infoText}>Stat time</Text>
-                      </View>
-
-                      <Text>{item.startTime}</Text>
-                    </View>
-                  </View>
-                </View>
-                {/* Button */}
-                <TouchableOpacity
-                  style={styles.roundButton}
-                  activeOpacity={0.7}
-                >
-                  <MaterialCommunityIcons
-                    name="delete-forever-outline"
-                    size={24}
-                    color="red"
+        {/* Category Cards */}
+        <View>
+          <FlatList
+            data={categories}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 32 }}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <View style={styles.cardContent}>
+                  {/* Left: Image */}
+                  <Image
+                    source={item.image as ImageSourcePropType}
+                    style={styles.image}
+                    alt={item.title}
                   />
-                </TouchableOpacity>
+
+                  {/* Middle: Content */}
+                  <View style={styles.middleContent}>
+                    {/* Title */}
+                    <Text style={styles.title} numberOfLines={1}>
+                      {item.title}
+                    </Text>
+
+                    {/* Discount Tag */}
+                    <View style={styles.discountTag}>
+                      <Text style={styles.discountText}>{item.discount}</Text>
+                    </View>
+
+                    {/* Usage Info */}
+                    <View style={styles.usageInfo}>
+                      <Text style={styles.usageLabel}>
+                        {"You've"} used this discount:
+                      </Text>
+                      <Text style={styles.usageValue}>2/5</Text>
+                    </View>
+
+                    {/* Location */}
+                    <View style={styles.locationContainer}>
+                      <Text style={styles.locationLabel}>Location:</Text>
+                      <Text style={styles.locationValue} numberOfLines={1}>
+                        {item.location || "Mohakhali, Dhaka"}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Right: Delete Button */}
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    activeOpacity={0.7}
+                    onPress={() => setShowDeleteModal(true)}
+                  >
+                    <MaterialCommunityIcons
+                      name="delete-outline"
+                      size={24}
+                      color="#FF3B30"
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+            )}
+          />
+        </View>
+      </SafeAreaView>
+
+      {/* Modal */}
+      <ConfirmModal
+        visible={showDeleteModal}
+        setVisible={setShowDeleteModal}
+        title="Are you sure?"
+        description="Do you want to delete from favorite list"
+      />
+    </>
   );
 }
 
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     container: {
@@ -145,115 +118,87 @@ function createStyles(
       padding: 16,
       backgroundColor: theme.background,
     },
-    categoryText: {
-      fontSize: 18,
-      fontWeight: "500",
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 12,
-    },
     card: {
-      backgroundColor: "#F5F5F7",
-      flexDirection: "column",
-      gap: 14,
-      padding: 16,
-      borderRadius: 16,
-      marginBottom: 18,
+      backgroundColor: colorScheme === "dark" ? "#1C1C1E" : "#FFFFFF",
+      borderRadius: 12,
+      padding: 12,
+      marginBottom: 12,
+      borderWidth: 1,
+      borderColor: primaryColor.borderColor,
     },
-    hotelImgTitleDescriptionContainer: {
+    cardContent: {
       flexDirection: "row",
       alignItems: "flex-start",
-      gap: 16,
+      gap: 12,
     },
     image: {
-      width: 100,
-      height: 117,
-      borderRadius: 12,
+      width: 72,
+      height: 72,
+      borderRadius: 8,
       flexShrink: 0,
     },
-    contentContainer: {
-      width: "100%",
-      flexDirection: "row",
-      alignItems: "flex-end",
-      gap: 10,
+    middleContent: {
+      flex: 1,
+      gap: 6,
     },
-    hotel: {
+    title: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      marginBottom: 2,
+    },
+    discountTag: {
+      alignSelf: "flex-start",
+      backgroundColor: "#FFF3F0",
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 4,
+    },
+    discountText: {
+      fontSize: 12,
+      fontWeight: "500",
+      color: "#FF6B4A",
+    },
+    usageInfo: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 4,
+      gap: 6,
     },
-    hotelText: {
-      fontSize: 18,
-      fontWeight: "semibold",
+    usageLabel: {
+      fontSize: 13,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : "#666666",
+    },
+    usageValue: {
+      fontSize: 13,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
     },
     locationContainer: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 0,
-    },
-    linkText: {
-      color: primaryColor.greenNormal,
-      textDecorationLine: "underline",
-    },
-    titleDescriptionContainer: {
-      flex: 1,
-      flexShrink: 1,
-    },
-    titleContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: "semibold",
-      marginBottom: 6,
-    },
-    categoryContainer: {
-      padding: 4,
-      backgroundColor: primaryColor.secondaryGreen,
-      borderRadius: 4,
-    },
-    category: {
-      fontSize: 14,
-      fontWeight: "normal",
-      color: primaryColor.greenNormal,
-    },
-    description: {
-      fontSize: 14,
-      color: primaryColor.secondaryBlack,
+      gap: 6,
       flexWrap: "wrap",
     },
-    infoContainer: {
+    locationLabel: {
+      fontSize: 13,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : "#666666",
+    },
+    locationValue: {
+      fontSize: 13,
+      fontWeight: "500",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       flex: 1,
     },
-    infoContentContainer: {
-      flexDirection: "column",
-      gap: 12,
-    },
-    infoContent: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-    iconTitle: {
-      flexDirection: "row",
-      gap: 4,
-      alignItems: "center",
-    },
-    infoText: {
-      fontSize: 14,
-      fontWeight: "medium",
-    },
-    roundButton: {
-      borderRadius: 50,
-      backgroundColor: primaryColor.secondaryRed,
-      width: 48,
-      height: 48,
+    deleteButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: "#FFE5E5",
       justifyContent: "center",
       alignItems: "center",
-    },
-    activeButton: {
-      backgroundColor: primaryColor.secondaryRed,
+      flexShrink: 0,
     },
   });
 }

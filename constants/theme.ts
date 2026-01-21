@@ -33,7 +33,8 @@ export const Colors: ColorsTypes = {
     secondaryGreen: '#E9EFEB',
     primaryGray: '#F3F3F5',
     primaryRed: '#FD003A',
-    secondaryRed: '#FD003A26'
+    secondaryRed: '#FD003A26',
+    borderColor: '#E3E3E3'
   },
 };
 

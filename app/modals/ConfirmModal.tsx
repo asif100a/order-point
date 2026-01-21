@@ -5,7 +5,7 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSchemeTypes, PrimaryColorTypes } from "@/types";
 
 export default function ConfirmModal({
-  visible,
+  visible = false,
   setVisible,
   onConfirm = () => {},
   title,

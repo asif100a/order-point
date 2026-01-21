@@ -20,6 +20,7 @@ import gallery1 from "@/assets/images/details/gallery1.png";
 import gallery2 from "@/assets/images/details/gallery2.png";
 import gallery3 from "@/assets/images/details/gallery3.png";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "@/components/ui/buttons/Button";
 
 export default function DetailsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -160,11 +161,7 @@ export default function DetailsScreen() {
             {/* Entrance & Welcome Area */}
             <View style={styles.conditionGroup}>
               <View style={styles.conditionHeader}>
-                <Feather
-                  name="check-circle"
-                  size={18}
-                  color={'#FC7757'}
-                />
+                <Feather name="check-circle" size={18} color={"#FC7757"} />
                 <Text style={styles.conditionTitle}>
                   Entrance & Welcome Area
                 </Text>
@@ -204,11 +201,7 @@ export default function DetailsScreen() {
             {/* Cake & Dessert Section */}
             <View style={styles.conditionGroup}>
               <View style={styles.conditionHeader}>
-                <Feather
-                  name="check-circle"
-                  size={18}
-                  color={'#FC7757'}
-                />
+                <Feather name="check-circle" size={18} color={"#FC7757"} />
                 <Text style={styles.conditionTitle}>
                   Cake & Dessert Section
                 </Text>
@@ -244,11 +237,7 @@ export default function DetailsScreen() {
             {/* Photo Zone */}
             <View style={styles.conditionGroup}>
               <View style={styles.conditionHeader}>
-                <Feather
-                  name="check-circle"
-                  size={18}
-                  color={'#FC7757'}
-                />
+                <Feather name="check-circle" size={18} color={"#FC7757"} />
                 <Text style={styles.conditionTitle}>Photo Zone</Text>
               </View>
               <View style={styles.conditionList}>
@@ -319,6 +308,10 @@ export default function DetailsScreen() {
             <Image source={gallery3} style={styles.galleryImg} />
           </View>
         </View>
+
+        <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+          <Button title="Use Discount" />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -327,13 +320,14 @@ export default function DetailsScreen() {
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     mainContainer: {
       backgroundColor: colorScheme === "dark" ? "#1a1313" : "#F9FAFB",
     },
-    scrollContainer: {},
+    scrollContainer: {
+    },
     container: {
       paddingHorizontal: 16,
       paddingBottom: 24,

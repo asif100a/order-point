@@ -2,32 +2,30 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   Image,
-  Pressable,
   ImageSourcePropType,
+  Pressable,
 } from "react-native";
 import React, { useCallback, useState } from "react";
-import useTheme from "@/hooks/useTheme";
 import {
   CategoryType,
   ColorSchemeTypes,
+  DealType,
   PrimaryColorTypes,
   ThemeTypes,
 } from "@/types";
-import Tabs from "./Tabs";
+import { SafeAreaView } from "react-native-safe-area-context";
+import useTheme from "@/hooks/useTheme";
+import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
+import { FontAwesome } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import Button from "@/components/ui/buttons/Button";
 import CategoryImg1 from "@/assets/images/category/category1.png";
 import CategoryImg2 from "@/assets/images/category/category2.png";
 import CategoryImg3 from "@/assets/images/category/category3.png";
 import hotelImg from "@/assets/images/category/hotel.png";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Feather from "@expo/vector-icons/Feather";
-import Button from "../buttons/Button";
-import { Link } from "expo-router";
 
-const TABS = ["In-Person", "Online", "Services"];
-
-const CATEGORIES: CategoryType[] = [
+const DEALS: DealType[] = [
   {
     id: "1",
     title: "Vegetable Burger",
@@ -78,9 +76,9 @@ const CATEGORIES: CategoryType[] = [
   },
 ];
 
-export default function Categories() {
+export default function AllDeals() {
   const { colorScheme, theme, primaryColor } = useTheme();
-  const [activeTab, setActiveTab] = useState<string>(TABS[0]);
+
   const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(
     new Set(),
   );
@@ -99,7 +97,7 @@ export default function Categories() {
     });
   };
 
-  const category = useCallback(
+  const dealCard = useCallback(
     ({ item }: { item: CategoryType }) => {
       const isBookmarked = bookmarkedItems.has(item.id);
 
@@ -119,11 +117,9 @@ export default function Categories() {
               {/* Title and Bookmark */}
               <View style={styles.titleRow}>
                 <View style={styles.titleDiscount}>
-                  <Link href={`/details/[${item.id}]`} asChild>
-                    <Text style={styles.title} numberOfLines={1}>
-                      {item.hotelName}
-                    </Text>
-                  </Link>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.hotelName}
+                  </Text>
                   {/* Discount */}
                   <Text style={styles.discountText}>
                     {item.discount}% off on all time
@@ -170,7 +166,9 @@ export default function Categories() {
             </View>
           </View>
           {/* Use Discount Button */}
-          <Button title="Use Discount" />
+          <Link href={`/details/[${item.id}]`} asChild>
+            <Button title="Use Discount" />
+          </Link>
         </View>
       );
     },
@@ -196,23 +194,9 @@ export default function Categories() {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Tabs */}
-      <View style={styles.tabContainer}>
-        <Tabs tabs={TABS} active={activeTab} setActive={setActiveTab} />
-      </View>
-
-      <Text style={styles.categoryText}>Available Discounts</Text>
-
-      {/* Category Cards */}
-      <FlatList
-        data={CATEGORIES}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        style={{ height: "auto", marginTop: 12, paddingBottom: 16 }}
-        renderItem={category}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <TopNavigationHeader title="All Deal" description="" link />
+    </SafeAreaView>
   );
 }
 
@@ -223,18 +207,61 @@ function createStyles(
 ) {
   return StyleSheet.create({
     container: {
-      width: "100%",
-      height: "100%",
+      flex: 1,
+      padding: 16,
+      backgroundColor: theme.background,
     },
-    tabContainer: {
-      marginTop: 12,
-      marginBottom: 8,
+    middleContent: {
+      flex: 1,
+      gap: 6,
     },
-    categoryText: {
-      fontSize: 18,
+    discountTag: {
+      alignSelf: "flex-start",
+      backgroundColor: "#FFF3F0",
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 4,
+    },
+    usageInfo: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+    },
+    usageLabel: {
+      fontSize: 13,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : "#666666",
+    },
+    usageValue: {
+      fontSize: 13,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+    },
+    locationContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+      flexWrap: "wrap",
+    },
+    locationLabel: {
+      fontSize: 13,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : "#666666",
+    },
+    locationValue: {
+      fontSize: 13,
       fontWeight: "500",
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 12,
+      flex: 1,
+    },
+    deleteButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: "#FFE5E5",
+      justifyContent: "center",
+      alignItems: "center",
+      flexShrink: 0,
     },
     card: {
       backgroundColor: theme.background,

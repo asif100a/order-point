@@ -4,6 +4,8 @@ import {
   StyleSheet,
   Image,
   ImageSourcePropType,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
@@ -11,154 +13,218 @@ import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
 import walletGreenIcon from "@/assets/icons/wallet-green.png";
 import redeemIcon from "@/assets/icons/redeem.png";
-import visitPlaceIcon from "@/assets/icons/visit-place.png";
-import dollarPurpleIcon from "@/assets/icons/dollar-purple.png";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import ScreenContainer from "@/components/ui/layout/ScreenContainer";
-import VisitPatternChart from "@/components/ui/analyticsPage/VisitPatternChart";
-import FavoriteCategoriesChart from "@/components/ui/analyticsPage/FavoriteCategoriesChart";
-import YearlySavingsChart from "@/components/ui/analyticsPage/YearlySavingsChart";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from "@expo/vector-icons";
 
 type StateType = {
   title: string;
-  description: string;
   icon: string;
   mainText: number;
-  isCurrency: boolean;
   progress?: number;
 };
 
-type RedemptionCategoryType = {
-  label: string;
-  value: number;
+type BusinessItemType = {
+  id: string;
+  name: string;
+  location: string;
+  totalSales: number;
+  image: string;
 };
 
 const states: StateType[] = [
   {
-    title: "Total Saved",
-    description: "This Month",
+    title: "Total Business",
     mainText: 245,
     icon: walletGreenIcon,
-    isCurrency: true,
     progress: 6,
   },
   {
-    title: "Deal Redeem",
-    description: "This Month",
+    title: "Redemption",
     mainText: 35,
     icon: redeemIcon,
-    isCurrency: false,
-  },
-  {
-    title: "Total Visit",
-    description: "This Month",
-    mainText: 720,
-    icon: visitPlaceIcon,
-    isCurrency: false,
-    progress: 6,
-  },
-  {
-    title: "Avg. Saving",
-    description: "This Month",
-    mainText: 27,
-    icon: dollarPurpleIcon,
-    isCurrency: false,
   },
 ];
 
-const redemptionCategory: RedemptionCategoryType[] = [
-  { label: "Food & Dining", value: 58 },
-  { label: "Gym & Wellness", value: 26 },
-  { label: "Retail", value: 10 },
-  { label: "Entertainment", value: 6 },
+// Mock data for top businesses
+const topBusinesses: BusinessItemType[] = [
+  {
+    id: "1",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "2",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "3",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "4",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "5",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "6",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+];
+
+// Mock data for top redemptions (same structure)
+const topRedemptions: BusinessItemType[] = [
+  {
+    id: "1",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "2",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
+  {
+    id: "3",
+    name: "Daily Daawat-Gulshan 1",
+    location: "Location",
+    totalSales: 2375,
+    image: "https://via.placeholder.com/48",
+  },
 ];
 
 export default function AnalyticsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
-
-  const [selectedYearlyFavoriteCategory, setSelectedYearlyFavoriteCategory] =
-    useState("");
+  const [activeTab, setActiveTab] = useState<"business" | "redemption">("business");
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
+  const currentData = activeTab === "business" ? topBusinesses : topRedemptions;
+
   return (
-    <ScreenContainer>
-      <TopNavigationHeader
-        title="Personal Analytics"
-        description="Track your deals, savings, and partner engagement"
-        link={"/(tabs)/favorite" as any}
-      />
-
-      {/* States */}
-      <View style={styles.stateContainer}>
-        {states.map((state: StateType, index: number) => (
-          <View key={index.toString()} style={styles.stateCard}>
-            <View style={styles.stateTitleImgPair}>
-              <Text style={styles.stateTitle}>{state.title}</Text>
-              <Image
-                source={state.icon as ImageSourcePropType}
-                style={styles.stateImg}
-                alt={state.title}
-              />
-            </View>
-            <Text style={styles.stateMainText}>
-              {state.isCurrency && "$"}
-              {state.mainText}
-            </Text>
-            <View style={styles.stateProgressDescriptionPair}>
-              {state.progress && (
-                <View style={styles.stateProgress}>
-                  <MaterialCommunityIcons
-                    name="chart-line-variant"
-                    size={18}
-                    color={primaryColor.greenNormal}
-                  />
-                  <Text style={styles.stateProgressText}>
-                    {state.progress}%
-                  </Text>
-                </View>
-              )}
-              <Text style={styles.stateDescription}>{state.description}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-
-      {/* Redemption by Category */}
-      <View style={styles.redemptionContainer}>
-        <Text style={styles.redemptionTitle}>Redemption by Category</Text>
-        {redemptionCategory.map(
-          (cat: RedemptionCategoryType, index: number) => (
-            <>
-              <View key={index.toString()} style={styles.redemptionCategory}>
-                <Text style={styles.redemptionCategoryText}>{cat.label}</Text>
-                <Text style={styles.redemptionCategoryText}>{cat.value}%</Text>
-              </View>
-              {redemptionCategory.length !== index + 1 && (
-                <View style={styles.redemptionDivider} />
-              )}
-            </>
-          )
-        )}
-      </View>
-
-      {/* Overview in Charts */}
-      <View style={styles.overviewSection}>
-        <Text style={styles.overviewTitle}>Overview</Text>
-
-        {/* Weekly Visit Pattern:: Chart */}
-        <VisitPatternChart />
-
-        {/* Favorite Categories:: Chart */}
-        <FavoriteCategoriesChart
-          selected={selectedYearlyFavoriteCategory}
-          setSelected={setSelectedYearlyFavoriteCategory}
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TopNavigationHeader
+          title="Personal Analytics"
+          description="Track your deals, savings, and partner engagement"
+          link={"/(tabs)/favorite" as any}
         />
 
-        {/* Yearly Savings:: Chart */}
-        <YearlySavingsChart />
-      </View>
-    </ScreenContainer>
+        {/* States */}
+        <View style={styles.stateContainer}>
+          {states.map((state: StateType, index: number) => (
+            <View key={index.toString()} style={styles.stateCard}>
+              <View style={styles.stateTitleImgPair}>
+                <Text style={styles.stateTitle}>{state.title}</Text>
+                <Image
+                  source={state.icon as ImageSourcePropType}
+                  style={styles.stateImg}
+                  alt={state.title}
+                />
+              </View>
+              <Text style={styles.stateMainText}>{state.mainText}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Top Business / Redemption Section */}
+        <View style={styles.topSection}>
+          {/* Tabs */}
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                activeTab === "business" && styles.activeTab,
+              ]}
+              onPress={() => setActiveTab("business")}
+            >
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === "business" && styles.activeTabText,
+                ]}
+              >
+                Top Business
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                activeTab === "redemption" && styles.activeTab,
+              ]}
+              onPress={() => setActiveTab("redemption")}
+            >
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === "redemption" && styles.activeTabText,
+                ]}
+              >
+                Top Redemption
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Business List */}
+          <View style={styles.businessList}>
+            {currentData.map((item) => (
+              <View key={item.id} style={styles.businessItem}>
+                <View style={styles.businessLeft}>
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.businessImage}
+                  />
+                  <View style={styles.businessInfo}>
+                    <Text style={styles.businessName}>{item.name}</Text>
+                    <View style={styles.locationContainer}>
+                      <Feather
+                        name="map-pin"
+                        size={14}
+                        color={
+                          colorScheme === "dark"
+                            ? "#999"
+                            : primaryColor.secondaryBlack
+                        }
+                      />
+                      <Text style={styles.locationText}>{item.location}</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.businessRight}>
+                  <Text style={styles.salesLabel}>Total sales</Text>
+                  <Text style={styles.salesValue}>{item.totalSales}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -168,6 +234,11 @@ function createStyles(
   primaryColor: PrimaryColorTypes
 ) {
   return StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: theme.background,
+    },
     stateContainer: {
       flexDirection: "row",
       flexWrap: "wrap",
@@ -180,7 +251,7 @@ function createStyles(
       padding: 16,
       borderWidth: 1,
       borderStyle: "solid",
-      borderColor: primaryColor.greenNormal,
+      borderColor: "#CBEEDC",
       borderRadius: 16,
     },
     stateTitleImgPair: {
@@ -190,7 +261,7 @@ function createStyles(
     },
     stateTitle: {
       fontSize: 16,
-      fontWeight: 500,
+      fontWeight: "500",
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
     },
     stateImg: {
@@ -199,78 +270,96 @@ function createStyles(
     },
     stateMainText: {
       fontSize: 28,
-      fontWeight: 600,
+      fontWeight: "600",
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       marginVertical: 8,
     },
-    stateProgressDescriptionPair: {
+    topSection: {
+      marginTop: 32,
+      marginBottom: 20,
+    },
+    tabContainer: {
       flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
+      justifyContent: 'space-between',
+      marginBottom: 20,
     },
-    stateProgress: {
-      padding: 4,
-      paddingHorizontal: 8,
-      backgroundColor: primaryColor.secondaryGreen,
-      borderRadius: 8,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 2,
+    tab: {
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      marginRight: 8,
+      width: '48%'
     },
-    stateProgressText: {
-      fontSize: 14,
-      fontWeight: 500,
-      color: primaryColor.greenNormal,
+    activeTab: {
+      borderBottomWidth: 2,
+      borderBottomColor: primaryColor.greenNormal,
     },
-    stateDescription: {
-      fontSize: 14,
-      fontWeight: 400,
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-    },
-    redemptionContainer: {
-      padding: 16,
-      backgroundColor: primaryColor.primaryGray,
-      borderRadius: 16,
-      marginTop: 28,
-    },
-    redemptionTitle: {
-      fontSize: 18,
-      fontWeight: 500,
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-      marginBottom: 16,
-    },
-    redemptionCategory: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    redemptionCategoryText: {
+    tabText: {
       fontSize: 16,
-      fontWeight: 500,
-      color: colorScheme === "dark" ? "white" : "#505050",
+      fontWeight: "500",
+      color: colorScheme === "dark" ? "#999" : "#8F8F8F",
+      textAlign: 'center'
     },
-    redemptionDivider: {
-      width: "100%",
-      height: 1,
-      backgroundColor: primaryColor.secondaryBlack,
-      marginVertical: 16,
+    activeTabText: {
+      color: primaryColor.greenNormal,
+      fontWeight: "600",
     },
-    overviewSection: {
-      marginTop: 18,
-      paddingBottom: 76,
-      flexDirection: "column",
-      gap: 24,
-    },
-    overviewTitle: {
-      fontSize: 22,
-      fontWeight: 600,
-      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
-    },
-    chartContainer: {
+    businessList: {
+      gap: 12,
+      backgroundColor: primaryColor.primaryGray,
       padding: 16,
-      borderRadius: 16,
-      marginBottom: 28,
+      borderRadius: 16
+    },
+    businessItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: 12,
+      backgroundColor: colorScheme === "dark" ? "#1C1C1E" : "#fff",
+      borderRadius: 12,
+    },
+    businessLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+    },
+    businessImage: {
+      width: 48,
+      height: 48,
+      borderRadius: 8,
+      marginRight: 12,
+    },
+    businessInfo: {
+      flex: 1,
+    },
+    businessName: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
+      marginBottom: 4,
+    },
+    locationContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+    },
+    locationText: {
+      fontSize: 12,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : primaryColor.secondaryBlack,
+    },
+    businessRight: {
+      alignItems: "flex-end",
+    },
+    salesLabel: {
+      fontSize: 12,
+      fontWeight: "400",
+      color: colorScheme === "dark" ? "#999" : "#8F8F8F",
+      marginBottom: 2,
+    },
+    salesValue: {
+      fontSize: 16,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
     },
   });
 }

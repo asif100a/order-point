@@ -81,16 +81,18 @@ export default function AccountScreen() {
               </Pressable>
             </Link>
             {/* Manage Subscription */}
-            <Pressable style={styles.actionButton}>
-              <View style={styles.logoTextPair}>
-                {/* Icon */}
-                <FontAwesome6 name="crown" size={24} color="black" />
-                <Text style={styles.buttonText}>Manage Subscription</Text>
-              </View>
+            <Link href={"/subscription/choose_plan"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <FontAwesome6 name="crown" size={24} color="black" />
+                  <Text style={styles.buttonText}>Manage Subscription</Text>
+                </View>
 
-              {/* Icon */}
-              <AntDesign name="right" size={18} color="black" />
-            </Pressable>
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
             {/* Manage Subscription */}
             <Link href={"/user/contact_us"} asChild>
               <Pressable style={styles.actionButton}>

@@ -31,6 +31,7 @@ export interface PrimaryColorTypes {
   primaryGray: string;
   primaryRed: string;
   secondaryRed: string;
+  borderColor: string;
 }
 
 export interface ColorsTypes {
@@ -56,6 +57,22 @@ export interface WidgetTypes {
 }
 
 export interface CategoryType {
+  id: string;
+  title: string;
+  description: string;
+  hotelName: string;
+  hotelImage: string;
+  image: string;
+  discount: number;
+  date: string;
+  startTime: string;
+  category: "New Deal" | "Expire Soon";
+  location: string;
+  usedCount?: number;
+  maxUsage?: number;
+}
+
+export interface DealType {
   id: string;
   title: string;
   description: string;

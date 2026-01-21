@@ -8,7 +8,7 @@ export const userApi = baseApi.injectEndpoints({
     createSupport: builder.mutation({
       query: (data) => ({
         url: BASE_POINT,
-        method: "PUT",
+        method: "POST",
         body: data,
       }),
       invalidatesTags: [tagTypes.support],
@@ -16,7 +16,7 @@ export const userApi = baseApi.injectEndpoints({
     mySupport: builder.query({
       query: (data) => ({
         url: BASE_POINT + 'my-support',
-        method: "PUT",
+        method: "GET",
         body: data,
       }),
       providesTags: [tagTypes.support],
@@ -24,7 +24,7 @@ export const userApi = baseApi.injectEndpoints({
     singleSupport: builder.query({
       query: (id) => ({
         url: BASE_POINT + `/${id}`,
-        method: "PUT",
+        method: "GET",
       }),
       providesTags: [tagTypes.support],
     }),
