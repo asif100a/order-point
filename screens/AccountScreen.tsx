@@ -24,6 +24,7 @@ import useAuth from "@/hooks/useAuth";
 import LoaderUI from "@/components/ui/loader/LoaderUI";
 import ConfirmModal from "@/app/modals/ConfirmModal";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function AccountScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
@@ -113,6 +114,23 @@ export default function AccountScreen() {
                   {/* Icon */}
                   <Ionicons name="key-outline" size={24} color="black" />
                   <Text style={styles.buttonText}>Change Password</Text>
+                </View>
+
+                {/* Icon */}
+                <AntDesign name="right" size={18} color="black" />
+              </Pressable>
+            </Link>
+            {/* About Us */}
+            <Link href={"/common/about_us"} asChild>
+              <Pressable style={styles.actionButton}>
+                <View style={styles.logoTextPair}>
+                  {/* Icon */}
+                  <MaterialCommunityIcons
+                    name="information-slab-circle-outline"
+                    size={24}
+                    color="black"
+                  />
+                  <Text style={styles.buttonText}>About Us</Text>
                 </View>
 
                 {/* Icon */}
