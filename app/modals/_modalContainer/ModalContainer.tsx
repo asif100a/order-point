@@ -7,7 +7,7 @@ export default function ModalContainer({
   visible,
   setVisible,
   children,
-  style
+  style,
 }: {
   visible: boolean;
   setVisible: (value: boolean) => void;
@@ -18,22 +18,28 @@ export default function ModalContainer({
   const styles = createStyles({ primaryColor, colorScheme });
 
   return (
-    <View>
-      <Modal
-        visible={visible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setVisible(false)}
-      >
-        <View style={styles.overlay}>
-          <View style={[styles.modalBox, {...style}]}>{children}</View>
-        </View>
-      </Modal>
-    </View>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setVisible(false)}
+      style={{ borderWidth: 1, borderColor: "red", borderStyle: "solid" }}
+      statusBarTranslucent
+    >
+      <View style={styles.overlay}>
+        <View style={[styles.modalBox, { ...style }]}>{children}</View>
+      </View>
+    </Modal>
   );
 }
 
-function createStyles({ primaryColor, colorScheme }: { colorScheme: ColorSchemeTypes, primaryColor: PrimaryColorTypes }) {
+function createStyles({
+  primaryColor,
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeTypes;
+  primaryColor: PrimaryColorTypes;
+}) {
   return StyleSheet.create({
     overlay: {
       flex: 1,
@@ -43,7 +49,7 @@ function createStyles({ primaryColor, colorScheme }: { colorScheme: ColorSchemeT
     },
     modalBox: {
       width: "93%",
-      backgroundColor: colorScheme === 'dark' ? '#1a1515' : "#fff",
+      backgroundColor: colorScheme === "dark" ? "#1a1515" : "#fff",
       borderRadius: 10,
       padding: 20,
       elevation: 5,
