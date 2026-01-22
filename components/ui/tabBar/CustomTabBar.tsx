@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet, Pressable, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { UserRole } from "@/types";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface CustomTabBarProps extends BottomTabBarProps {
   userRole?: UserRole;
@@ -15,6 +15,8 @@ export function CustomTabBar({
   navigation,
   userRole,
 }: CustomTabBarProps) {
+  const insets = useSafeAreaInsets();
+
   // Define which routes are visible for each role
   const getVisibleRoutes = () => {
     return state.routes.filter((route) => {
@@ -42,7 +44,14 @@ export function CustomTabBar({
   const visibleRoutes = getVisibleRoutes();
 
   return (
-    <View style={styles.tabBarContainer}>
+    <View
+      style={[
+        styles.tabBarContainer,
+        {
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 5,
+        },
+      ]}
+    >
       {visibleRoutes.map((route) => {
         const { options } = descriptors[route.key];
         const label =
@@ -142,14 +151,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderTopColor: "#e0e0e0",
-    height: 65,
-    paddingBottom: 5,
     paddingTop: 5,
   },
   tabButton: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 8,
   },
   tabContent: {
     alignItems: "center",
@@ -158,7 +166,7 @@ const styles = StyleSheet.create({
   },
   activeIndicator: {
     position: "absolute",
-    top: -10,
+    top: -14,
     width: 60,
     height: 6,
     backgroundColor: "#76A976",

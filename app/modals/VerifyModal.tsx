@@ -22,13 +22,17 @@ export default function VerifyModal({
   const styles = createStyles({ colorScheme, primaryColor });
 
   return (
-    <ModalContainer visible={visible} setVisible={setVisible}>
+    <ModalContainer
+      visible={visible}
+      setVisible={setVisible}
+      style={{ position: "relative" }}
+    >
       {/* Close Button */}
       <TouchableOpacity
         onPress={() => setVisible(false)}
         style={styles.closeButton}
       >
-        <Feather name="x" size={18} color={primaryColor.primaryRed} />
+        <Feather name="x" size={20} color={primaryColor.primaryRed} />
       </TouchableOpacity>
 
       <View style={styles.container}>
@@ -59,6 +63,9 @@ function createStyles({
       padding: 4,
       backgroundColor: primaryColor.primaryGray,
       borderRadius: 50,
+      position: "absolute",
+      top: 8,
+      right: 8,
     },
     loader: {},
     verifyText: {

@@ -7,10 +7,12 @@ export default function ModalContainer({
   visible,
   setVisible,
   children,
+  style
 }: {
   visible: boolean;
   setVisible: (value: boolean) => void;
   children: React.ReactNode;
+  style?: object;
 }) {
   const { theme, colorScheme, primaryColor } = useTheme();
   const styles = createStyles({ primaryColor, colorScheme });
@@ -24,7 +26,7 @@ export default function ModalContainer({
         onRequestClose={() => setVisible(false)}
       >
         <View style={styles.overlay}>
-          <View style={styles.modalBox}>{children}</View>
+          <View style={[styles.modalBox, {...style}]}>{children}</View>
         </View>
       </Modal>
     </View>
