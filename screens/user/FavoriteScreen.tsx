@@ -116,6 +116,7 @@ function createStyles(
     container: {
       flex: 1,
       padding: 16,
+      paddingBottom: 28,
       backgroundColor: theme.background,
     },
     card: {

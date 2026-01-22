@@ -4,10 +4,10 @@ import {
   StyleSheet,
   Image,
   ImageSourcePropType,
-  ScrollView,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import TopNavigationHeader from "@/components/ui/navigation/TopNavigationHeader";
 import { ColorSchemeTypes, PrimaryColorTypes, ThemeTypes } from "@/types";
 import useTheme from "@/hooks/useTheme";
@@ -118,112 +118,123 @@ const topRedemptions: BusinessItemType[] = [
 
 export default function AnalyticsScreen() {
   const { colorScheme, theme, primaryColor } = useTheme();
-  const [activeTab, setActiveTab] = useState<"business" | "redemption">("business");
+  const [activeTab, setActiveTab] = useState<"business" | "redemption">(
+    "business",
+  );
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
   const currentData = activeTab === "business" ? topBusinesses : topRedemptions;
 
+  const itemList = useCallback(
+    ({ item, index }: { item: any; index: number }) => (
+      <View key={item.id} style={styles.businessItem}>
+        <View style={styles.businessLeft}>
+          <Image source={{ uri: item.image }} style={styles.businessImage} />
+          <View style={styles.businessInfo}>
+            <Text style={styles.businessName}>{item.name}</Text>
+            <View style={styles.locationContainer}>
+              <Feather
+                name="map-pin"
+                size={14}
+                color={
+                  colorScheme === "dark" ? "#999" : primaryColor.secondaryBlack
+                }
+              />
+              <Text style={styles.locationText}>{item.location}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.businessRight}>
+          <Text style={styles.salesLabel}>Total sales</Text>
+          <Text style={styles.salesValue}>{item.totalSales}</Text>
+        </View>
+      </View>
+    ),
+    [
+      colorScheme,
+      primaryColor.secondaryBlack,
+      styles.businessImage,
+      styles.businessInfo,
+      styles.businessItem,
+      styles.businessLeft,
+      styles.businessName,
+      styles.businessRight,
+      styles.locationContainer,
+      styles.locationText,
+      styles.salesLabel,
+      styles.salesValue,
+    ],
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <TopNavigationHeader
-          title="Personal Analytics"
-          description="Track your deals, savings, and partner engagement"
-          link={"/(tabs)/favorite" as any}
-        />
+      <TopNavigationHeader
+        title="Personal Analytics"
+        description="Track your deals, savings, and partner engagement"
+        link={"/(tabs)/favorite" as any}
+      />
 
-        {/* States */}
-        <View style={styles.stateContainer}>
-          {states.map((state: StateType, index: number) => (
-            <View key={index.toString()} style={styles.stateCard}>
-              <View style={styles.stateTitleImgPair}>
-                <Text style={styles.stateTitle}>{state.title}</Text>
-                <Image
-                  source={state.icon as ImageSourcePropType}
-                  style={styles.stateImg}
-                  alt={state.title}
-                />
-              </View>
-              <Text style={styles.stateMainText}>{state.mainText}</Text>
+      {/* States */}
+      <View style={styles.stateContainer}>
+        {states.map((state: StateType, index: number) => (
+          <View key={index.toString()} style={styles.stateCard}>
+            <View style={styles.stateTitleImgPair}>
+              <Text style={styles.stateTitle}>{state.title}</Text>
+              <Image
+                source={state.icon as ImageSourcePropType}
+                style={styles.stateImg}
+                alt={state.title}
+              />
             </View>
-          ))}
+            <Text style={styles.stateMainText}>{state.mainText}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Top Business / Redemption Section */}
+      <View style={{ flex: 1, marginTop: 24, borderWidth: 1, height: '100%' }}>
+        {/* Tabs */}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === "business" && styles.activeTab]}
+            onPress={() => setActiveTab("business")}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "business" && styles.activeTabText,
+              ]}
+            >
+              Top Business
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.tab, activeTab === "redemption" && styles.activeTab]}
+            onPress={() => setActiveTab("redemption")}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "redemption" && styles.activeTabText,
+              ]}
+            >
+              Top Redemption
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Top Business / Redemption Section */}
-        <View style={styles.topSection}>
-          {/* Tabs */}
-          <View style={styles.tabContainer}>
-            <TouchableOpacity
-              style={[
-                styles.tab,
-                activeTab === "business" && styles.activeTab,
-              ]}
-              onPress={() => setActiveTab("business")}
-            >
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === "business" && styles.activeTabText,
-                ]}
-              >
-                Top Business
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.tab,
-                activeTab === "redemption" && styles.activeTab,
-              ]}
-              onPress={() => setActiveTab("redemption")}
-            >
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === "redemption" && styles.activeTabText,
-                ]}
-              >
-                Top Redemption
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Business List */}
-          <View style={styles.businessList}>
-            {currentData.map((item) => (
-              <View key={item.id} style={styles.businessItem}>
-                <View style={styles.businessLeft}>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={styles.businessImage}
-                  />
-                  <View style={styles.businessInfo}>
-                    <Text style={styles.businessName}>{item.name}</Text>
-                    <View style={styles.locationContainer}>
-                      <Feather
-                        name="map-pin"
-                        size={14}
-                        color={
-                          colorScheme === "dark"
-                            ? "#999"
-                            : primaryColor.secondaryBlack
-                        }
-                      />
-                      <Text style={styles.locationText}>{item.location}</Text>
-                    </View>
-                  </View>
-                </View>
-
-                <View style={styles.businessRight}>
-                  <Text style={styles.salesLabel}>Total sales</Text>
-                  <Text style={styles.salesValue}>{item.totalSales}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
+        {/* Business List */}
+        <FlatList
+          data={currentData}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={itemList}
+          contentContainerStyle={styles.businessList}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -231,13 +242,15 @@ export default function AnalyticsScreen() {
 function createStyles(
   theme: ThemeTypes,
   colorScheme: ColorSchemeTypes,
-  primaryColor: PrimaryColorTypes
+  primaryColor: PrimaryColorTypes,
 ) {
   return StyleSheet.create({
     container: {
       flex: 1,
       padding: 16,
       backgroundColor: theme.background,
+      borderWidth: 1,
+      borderColor: "red",
     },
     stateContainer: {
       flexDirection: "row",
@@ -274,20 +287,16 @@ function createStyles(
       color: colorScheme === "dark" ? "white" : primaryColor.primaryBlack,
       marginVertical: 8,
     },
-    topSection: {
-      marginTop: 32,
-      marginBottom: 20,
-    },
     tabContainer: {
       flexDirection: "row",
-      justifyContent: 'space-between',
+      justifyContent: "space-between",
       marginBottom: 20,
     },
     tab: {
       paddingVertical: 12,
       paddingHorizontal: 16,
       marginRight: 8,
-      width: '48%'
+      width: "48%",
     },
     activeTab: {
       borderBottomWidth: 2,
@@ -297,7 +306,7 @@ function createStyles(
       fontSize: 16,
       fontWeight: "500",
       color: colorScheme === "dark" ? "#999" : "#8F8F8F",
-      textAlign: 'center'
+      textAlign: "center",
     },
     activeTabText: {
       color: primaryColor.greenNormal,
@@ -307,7 +316,7 @@ function createStyles(
       gap: 12,
       backgroundColor: primaryColor.primaryGray,
       padding: 16,
-      borderRadius: 16
+      borderRadius: 16,
     },
     businessItem: {
       flexDirection: "row",
