@@ -24,6 +24,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Button from "../buttons/Button";
 import { Link } from "expo-router";
+import VerifyModal from "@/app/modals/VerifyModal";
 
 const TABS = ["In-Person", "Online", "Services"];
 
@@ -84,6 +85,7 @@ export default function Categories() {
   const [bookmarkedItems, setBookmarkedItems] = useState<Set<string>>(
     new Set(),
   );
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const styles = createStyles(theme, colorScheme, primaryColor);
 
@@ -170,7 +172,7 @@ export default function Categories() {
             </View>
           </View>
           {/* Use Discount Button */}
-          <Button title="Use Discount" />
+          <Button title="Use Discount" onPress={() => setModalVisible(true)} />
         </View>
       );
     },
@@ -212,6 +214,9 @@ export default function Categories() {
         style={{ height: "auto", marginTop: 12, paddingBottom: 16 }}
         renderItem={category}
       />
+
+      {/* Modal */}
+      <VerifyModal visible={isModalVisible} setVisible={setModalVisible} />
     </View>
   );
 }

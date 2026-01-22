@@ -3,32 +3,38 @@ import { View, StyleSheet, Pressable, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import * as Haptics from "expo-haptics";
 import { UserRole } from "@/types";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface CustomTabBarProps extends BottomTabBarProps {
   userRole?: UserRole;
 }
 
-export function CustomTabBar({ state, descriptors, navigation, userRole }: CustomTabBarProps) {
+export function CustomTabBar({
+  state,
+  descriptors,
+  navigation,
+  userRole,
+}: CustomTabBarProps) {
   // Define which routes are visible for each role
   const getVisibleRoutes = () => {
     return state.routes.filter((route) => {
       const routeName = route.name;
-      
+
       // Common routes visible to all
       if (routeName === "index" || routeName === "account") {
         return true;
       }
-      
+
       // User-specific routes
       if (userRole === "user") {
         return routeName === "favorite" || routeName === "analytics";
       }
-      
+
       // Business-specific routes
       if (userRole === "business") {
         return routeName === "deals" || routeName === "insights";
       }
-      
+
       return false;
     });
   };
@@ -43,8 +49,8 @@ export function CustomTabBar({ state, descriptors, navigation, userRole }: Custo
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         // Get the original index from state.routes to check if focused
         const routeIndex = state.routes.findIndex((r) => r.key === route.key);
@@ -52,7 +58,7 @@ export function CustomTabBar({ state, descriptors, navigation, userRole }: Custo
 
         const onPress = () => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          
+
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,
@@ -84,7 +90,7 @@ export function CustomTabBar({ state, descriptors, navigation, userRole }: Custo
             <View style={styles.tabContent}>
               {/* Top indicator bar for active tab */}
               {isFocused && <View style={styles.activeIndicator} />}
-              
+
               {/* Icon */}
               {options.tabBarIcon &&
                 options.tabBarIcon({
@@ -92,7 +98,7 @@ export function CustomTabBar({ state, descriptors, navigation, userRole }: Custo
                   color: isFocused ? "#556D55" : "#999",
                   size: 24,
                 })}
-              
+
               {/* Label */}
               <View style={styles.labelContainer}>
                 {typeof label === "string" ? (
